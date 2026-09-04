@@ -1,5 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const TheaterAcademyApp());
@@ -79,7 +80,6 @@ class HomeScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // شريط البصمة والتوقيع الرسمي للمطور
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
@@ -184,30 +184,41 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
     });
 
     try {
-      final aiModel = GenerativeModel(
-        model: 'gemini-1.5-flash',
-        apiKey: _geminiApiKey,
-        systemInstruction: Content.text(
-            'أنت مساعد ذكي ومحترف جداً متخصص في مجال المسرح والفنون الدرامية، تم تطويرك ببرمجة خاصة بواسطة المطور إبراهيم سامي. تجيب كخبير أكاديمي وإخراجي ومسرحي متخصص في قسم: ${widget.department['title']}. قدم إجابات عميقة، مبدعة، ومفصلة ودقيقة.'
-        ),
+      final url = Uri.parse(
+          'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$_geminiApiKey');
+
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          "contents": [
+            {
+              "parts": [
+                {
+                  "text": "أنت مساعد ذكي ومحترف جداً متخصص في مجال المسرح والفنون الدرامية، تم تطويرك بواسطة المطور إبراهيم سامي. تجيب كخبير أكاديمي وإخراجي ومسرحي متخصص في قسم: ${widget.department['title']}. السؤال هو: $q"
+                }
+              ]
+            }
+          ]
+        }),
       );
 
-      final content = [Content.text(q)];
-      final response = await aiModel.generateContent(content);
-      
-      setState(() {
-        _chatMessages.add({
-          'sender': 'ai',
-          'text': response.text ?? 'عذراً، لم أستطع توليد الإجابة.'
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final aiText = data['candidates'][0]['content']['parts'][0]['text'];
+        setState(() {
+          _chatMessages.add({'sender': 'ai', 'text': aiText});
+          _isLoading = false;
         });
-        _isLoading = false;
-      });
+      } else {
+        setState(() {
+          _chatMessages.add({'sender': 'ai', 'text': 'عذراً، حدث خطأ في استجابة الخادم.'});
+          _isLoading = false;
+        });
+      }
     } catch (e) {
       setState(() {
-        _chatMessages.add({
-          'sender': 'ai',
-          'text': 'حدث خطأ في الاتصال بالمساعد الذكي. تأكد من صحة مفتاح الـ API أو اتصال الإنترنت.'
-        });
+        _chatMessages.add({'sender': 'ai', 'text': 'تعذر الاتصال بالإنترنت أو المساعد الذكي.'});
         _isLoading = false;
       });
     }
