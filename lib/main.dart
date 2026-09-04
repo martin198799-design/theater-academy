@@ -10,10 +10,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(title: const Text('Theater Academy')),
+        appBar: AppBar(
+          title: const Text('أكاديمية المسرح'),
+          backgroundColor: Colors.deepPurple,
+        ),
         body: const Center(
-          child: Text('أكاديمية المسرح تعمل بنجاح', style: TextStyle(fontSize: 20)),
+          child: Text(
+            'مرحباً بك يا إبراهيم، التطبيق يعمل بنجاح!',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
         ),
       ),
     );
