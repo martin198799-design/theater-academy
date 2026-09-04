@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 
 void main() {
   runApp(const TheaterAcademyApp());
@@ -10,7 +11,7 @@ class TheaterAcademyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'أكاديمية المسرح الذكية',
+      title: 'خشبة المسرح',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.dark,
@@ -35,36 +36,36 @@ class HomeScreen extends StatelessWidget {
       'title': 'قسم الإخراج المسرحي',
       'icon': Icons.movie_filter,
       'description': 'دراسة الرؤية الإخراجية، التكوين الحركي، وتوجيه الممثلين.',
-      'details': 'يعتبر الإخراج المسرحي العقل المدبر للعمل الفني؛ حيث يترجم النص الأدبي إلى عرض بصري وحركي على خشبة المسرح، من خلال إدارة الممثلين، توزيع الكتل، وتصميم حركة الإضاءة والديكور.',
-      'studyMaterial': '📖 الدراسات الشاملة لقسم الإخراج:\n\n1. مدرسة العرض المسرحي الحديث وتفكيك النص.\n2. التكوين الحركي (Blocking) وتوظيف الفضاء المسرحي.\n3. إدارة الممثل واستنطاق الطاقات الشعورية الداخلية.\n4. التناغم بين السينوغرافيا والرؤية الإخراجية العامة.',
+      'details': 'يعتبر الإخراج المسرحي العقل المدبر للعمل الفني؛ حيث يترجم النص الأدبي إلى عرض بصري وحركي على خشبة المسرح.',
+      'studyMaterial': '📖 الدراسات الشاملة لقسم الإخراج:\n\n1. تفكيك النص المسرحي وإعادة صياغته بصرياً.\n2. التكوين الحركي (Blocking) وتوظيف الفضاء.\n3. إدارة الممثل واستنطاق الطاقات الشعورية.',
     },
     {
       'title': 'قسم النصوص المسرحية',
       'icon': Icons.menu_book,
       'description': 'تحليل البناء الدرامي، النصوص الكلاسيكية والحديثة.',
-      'details': 'يهتم هذا القسم بدراسة البناء الدرامي للحبكة، الصراع، الشخصيات، والحوار. يشمل تحليل النصوص الكلاسيكية (مثل مسرحيات شكسبير والإغريق) والنصوص الحديثة والمعاصرة.',
-      'studyMaterial': '📖 الدراسات الشاملة لقسم النصوص:\n\n1. علم البنيات الدرامية وتحليل الحبكة (الارتقاء، الذروة، الانفراج).\n2. دراسة النصوص الكلاسيكية والملحمية.\n3. تقنيات كتابة الحوار المبطن والحدث الخفي.\n4. المسرح العبثي والواقعي الحديث.',
+      'details': 'يهتم هذا القسم بدراسة البناء الدرامي للحبكة، الصراع، الشخصيات، والحوار الدرامي.',
+      'studyMaterial': '📖 الدراسات الشاملة لقسم النصوص:\n\n1. علم البنيات الدرامية وتحليل الحبكة.\n2. دراسة النصوص الكلاسيكية والملحمية والعبثية.\n3. تقنيات كتابة الحوار المبطن.',
     },
     {
       'title': 'قسم الإضاءة',
       'icon': Icons.highlight,
       'description': 'توزيع الضوء، درجات الألوان، وخلق الحالة النفسية للمشهد.',
-      'details': 'الإضاءة المسرحية ليست مجرد رؤية للممثلين، بل هي عنصر درامي بحد ذاته يخلق الأبعاد النفسية، يحدد الزمن والمكان، ويوجه عين المشاهد نحو بؤرة الحدث عبر درجات الألوان والظلال.',
-      'studyMaterial': '📖 الدراسات الشاملة لقسم الإضاءة:\n\n1. علم الفيزيولوجيا النفسية للألوان على المسرح.\n2. توزيع البؤر الضوئية (Spotlights) والتحكم بالظلال.\n3. الإضاءة التعبيرية مقابل الإضاءة التسجيلية الواقعية.\n4. المزامنة بين الموسيقى وتغيرات الإضاءة.',
+      'details': 'الإضاءة المسرحية عنصر درامي أساسي يخلق الأبعاد النفسية، والزمنية للمشهد.',
+      'studyMaterial': '📖 الدراسات الشاملة لقسم الإضاءة:\n\n1. سيمولوجيا الألوان وتأثيرها النفسي.\n2. توزيع البؤر الضوئية وصناعة الظلال التعبيرية (Chiaroscuro).',
     },
     {
       'title': 'قسم الأزياء',
       'icon': Icons.checkroom,
       'description': 'تصميم ملابس الشخصيات بما يتناسب مع الحقبة الزمنية والدراما.',
-      'details': 'يعنى بتصميم الأزياء التي تعكس الحالة الاجتماعية والنفسية للشخصية، وتتوافق بدقة مع الحقبة التاريخية أو الرؤية الإخراجية المعاصرة للعرض.',
-      'studyMaterial': '📖 الدراسات الشاملة لقسم الأزياء:\n\n1. سيمياء الأزياء ودلالات الألوان التاريخية.\n2. تصميم الزي بما يعكس الصراع النفسي والطبقي للشخصية.\n3. تقنيات الخامات المسرحية وتحملها لدرجات حرارة الإضاءة.\n4. الأزياء التعبيرية في المسرح التجريبي.',
+      'details': 'يعنى بتصميم الأزياء التي تعكس الحالة الاجتماعية والنفسية للشخصية وتاريخها.',
+      'studyMaterial': '📖 الدراسات الشاملة لقسم الأزياء:\n\n1. سيمياء الأزياء والدلالات التاريخية للحقبة.\n2. تصميم الزي المعبر عن الصراع الطبقي والنفسي.',
     },
     {
       'title': 'قسم التمثيل',
       'icon': Icons.theater_comedy,
       'description': 'تقنيات الأداء الصوتي، التعبير الجسدي، وتقمص الشخصيات.',
-      'details': 'يركز هذا القسم على إعداد الممثل جسدياً ونفسياً وصوتياً، والتدريب على أدوات التعبير، تقمص الأبعاد المختلفة للشخصية، والانسجام التام على خشبة المسرح.',
-      'studyMaterial': '📖 الدراسات الشاملة لقسم التمثيل:\n\n1. مدرسة ستانسلافسكي والذاكرة الانفعالية.\n2. إعداد الجسد وفنون الميم والتعبير الحركي.\n3. هندسة الصوت، التنفس، ومخارج الحروف على خشبة المسرح.\n4. كسر الجدار الرابع والتعامل المباشر مع الجمهور.',
+      'details': 'يركز هذا القسم على إعداد الممثل جسدياً، نفسياً، وصوتياً وتقمص الأبعاد المختلفة.',
+      'studyMaterial': '📖 الدراسات الشاملة لقسم التمثيل:\n\n1. مدرسة ستانسلافسكي والذاكرة الانفعالية.\n2. هندسة الصوت ومخارج الحروف والتعبير الجسدي.',
     },
   ];
 
@@ -72,61 +73,70 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'أكاديمية المسرح الذكية',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-        ),
+        title: const Text('خشبة المسرح', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
         centerTitle: true,
         backgroundColor: const Color(0xFF1A1A1A),
-        elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: ListView.builder(
-          itemCount: departments.length,
-          itemBuilder: (context, index) {
-            final dept = departments[index];
-            return Card(
-              margin: const EdgeInsets.symmetric(vertical: 8.0),
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-                side: BorderSide(color: Colors.amber.withOpacity(0.3), width: 1),
-              ),
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(16.0),
-                leading: CircleAvatar(
-                  backgroundColor: Colors.amber.withOpacity(0.2),
-                  child: Icon(dept['icon'], color: Colors.amber),
+      body: Column(
+        children: [
+          // شريط البصمة والتوقيع الرسمي للمطور
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+            color: Colors.amber.withOpacity(0.1),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.verified, color: Colors.amber, size: 16),
+                const SizedBox(width: 8),
+                Text(
+                  'تصميم وتطوير: إبراهيم سامي',
+                  style: TextStyle(color: Colors.amber[300], fontSize: 13, fontWeight: FontWeight.bold),
                 ),
-                title: Text(
-                  dept['title'],
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                subtitle: Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Text(
-                    dept['description'],
-                    style: TextStyle(fontSize: 14, color: Colors.grey[400]),
-                  ),
-                ),
-                trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.amber),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DepartmentDetailScreen(department: dept),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: ListView.builder(
+                itemCount: departments.length,
+                itemBuilder: (context, index) {
+                  final dept = departments[index];
+                  return Card(
+                    margin: const EdgeInsets.symmetric(vertical: 8.0),
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      side: BorderSide(color: Colors.amber.withOpacity(0.3), width: 1),
+                    ),
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(16.0),
+                      leading: CircleAvatar(
+                        backgroundColor: Colors.amber.withOpacity(0.2),
+                        child: Icon(dept['icon'], color: Colors.amber),
+                      ),
+                      title: Text(dept['title'], style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+                      subtitle: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(dept['description'], style: TextStyle(fontSize: 14, color: Colors.grey[400])),
+                      ),
+                      trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.amber),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DepartmentDetailScreen(department: dept),
+                          ),
+                        );
+                      },
                     ),
                   );
                 },
               ),
-            );
-          },
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -147,6 +157,10 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
   
   late final List<Map<String, String>> _chatMessages;
   final List<String> _userNotes = [];
+  bool _isLoading = false;
+
+  // ضع مفتاح الـ API الخاص بـ Gemini هنا
+  static const String _geminiApiKey = 'ضع_مفتاح_API_هنا';
 
   @override
   void initState() {
@@ -154,37 +168,49 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
     _chatMessages = [
       {
         'sender': 'ai',
-        'text': 'أهلاً بك يا إبراهيم! أنا مساعدك الذكي الشامل لـ (${widget.department['title']}). اسألني عن أي تفصيل فني، تحليل نصوص، مدارس إخراجية، أو رؤى فنية وسأجيبك بكل عمق واحترافية.'
+        'text': 'أهلاً بك في (${widget.department['title']}). أنا مساعدك الذكي الشامل، اسألني عن أي استفسار فني أو إخراجي أو نصي وسأجيبك بعمق واحترافية.'
       }
     ];
   }
 
-  // محرك توليد الردود الذكية الشاملة ليحاكي المساعد الحقيقي
-  void _askAi() {
+  Future<void> _askGeminiAi() async {
     String q = _questionController.text.trim();
     if (q.isEmpty) return;
 
     setState(() {
       _chatMessages.add({'sender': 'user', 'text': q});
       _questionController.clear();
-
-      String reply = '';
-      String queryLower = q.toLowerCase();
-
-      if (queryLower.contains('هاملت') || queryLower.contains('شكسبير')) {
-        reply = '🎭 إجابة تخصصية حول هاملت:\nمسرحية "هاملت" لويليام شكسبير تعد قمة المسرح التراجيدي العالمي. تدور حول ثيمة الانتقام، الشك الوجودي، والتردد النفسي.\n\n💡 رؤية إخراجية مقترحة: إبراز ثيمة "الجنون المتعمد" كقناع دفاعي ضد سلطة القصر الفاسدة، مع توظيف إضاءة Chiaroscuro (الضوء والظلال العميقة) لتجسيد الانقسام الداخلي لشخصية هاملت.';
-      } else if (queryLower.contains('صح النوم') || queryLower.contains('بترا') || queryLower.contains('مسرحية عربية')) {
-        reply = '📜 إجابة تحليلية للنصوص العربية:\nالأعمال الملحمية مثل "صح النوم" أو "بترا" تحمل أبعاداً فلسفية واجتماعية عميقة. تعتمد على دمج التراث الشعبي برؤية نقدية معاصرة.\n\n💡 توجيه إخراجي: يفضل التركيز على الإيقاع الجماعي، توظيف الكورال البشري، والربط بين الحوار الشعري والمشاهد البصرية المعبرة.';
-      } else if (queryLower.contains('طرق') || queryLower.contains('اساليب') || queryLower.contains('مدرسة') || queryLower.contains('إخراج')) {
-        reply = '🎬 أهم المدارس والطرق الإخراجية المسرحية:\n1. الإخراج الواقعي/النفسي (المعتمد على مدرسة ستانسلافسكي).\n2. الإخراج الملحمي (عند برتولت بريشت - كسر الجدار الرابع وتعطيل الإيهام).\n3. مسرح العبث واللامعقول (صامويل بيكيت - إبراز عبثية الوجود الإنساني).\n4. المسرح التعبيري والتشكيلي (الاعتماد الكلي على الجسد والسينوغرافيا).';
-      } else if (queryLower.contains('ممثل') || queryLower.contains('تمثيل') || queryLower.contains('أداء')) {
-        reply = '🎭 ركائز إعداد الممثل المحترف:\n- الصدق الشعوري والانطلاق من الذاكرة الانفعالية.\n- السيطرة التامة على مخارج الحروف والطبقات الصوتية.\n- الوعي بلغة الجسد وتوزيع الطاقة الحركية على خشبة المسرح لتصل إلى أبعد مشجّع في القاعة.';
-      } else {
-        reply = '💡 تحليل ذكي وشامل لسؤالك في (${widget.department['title']}):\n" ${q} "\n\nيتطلب هذا الجانب أكاديمياً دراسة متأنية للنص والعنصر البصري. ننصح دائماً بدمج الرؤية الفلسفية مع التطبيق العملي للكتل والحركة على الخشبة لضمان خروج العرض بأعلى مستوى إبداعي.';
-      }
-
-      _chatMessages.add({'sender': 'ai', 'text': reply});
+      _isLoading = true;
     });
+
+    try {
+      final aiModel = GenerativeModel(
+        model: 'gemini-1.5-flash',
+        apiKey: _geminiApiKey,
+        systemInstruction: Content.text(
+            'أنت مساعد ذكي ومحترف جداً متخصص في مجال المسرح والفنون الدرامية، تم تطويرك ببرمجة خاصة بواسطة المطور إبراهيم سامي. تجيب كخبير أكاديمي وإخراجي ومسرحي متخصص في قسم: ${widget.department['title']}. قدم إجابات عميقة، مبدعة، ومفصلة ودقيقة.'
+        ),
+      );
+
+      final content = [Content.text(q)];
+      final response = await aiModel.generateContent(content);
+      
+      setState(() {
+        _chatMessages.add({
+          'sender': 'ai',
+          'text': response.text ?? 'عذراً، لم أستطع توليد الإجابة.'
+        });
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _chatMessages.add({
+          'sender': 'ai',
+          'text': 'حدث خطأ في الاتصال بالمساعد الذكي. تأكد من صحة مفتاح الـ API أو اتصال الإنترنت.'
+        });
+        _isLoading = false;
+      });
+    }
   }
 
   void _addNote() {
@@ -216,18 +242,11 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            Text(
-              widget.department['title'],
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.amber),
-            ),
+            Text(widget.department['title'], style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.amber)),
             const SizedBox(height: 8),
-            Text(
-              widget.department['details'],
-              style: TextStyle(fontSize: 14, color: Colors.grey[300], height: 1.4),
-            ),
+            Text(widget.department['details'], style: TextStyle(fontSize: 14, color: Colors.grey[300], height: 1.4)),
             const Divider(height: 30, color: Colors.grey),
 
-            // الدراسات والشروحات الكاملة
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -235,21 +254,17 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: Colors.amber.withOpacity(0.3)),
               ),
-              child: Text(
-                widget.department['studyMaterial'],
-                style: const TextStyle(fontSize: 14, color: Colors.white, height: 1.5),
-              ),
+              child: Text(widget.department['studyMaterial'], style: const TextStyle(fontSize: 14, color: Colors.white, height: 1.5)),
             ),
             const SizedBox(height: 24),
 
-            // المساعد الذكي التفاعلي الشامل
             const Text(
-              '🤖 المساعد الذكي الشامل (اسألني عن أي شيئ):',
+              '🤖 المساعد الذكي (يشبه Gemini):',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.amberAccent),
             ),
             const SizedBox(height: 10),
             Container(
-              height: 260,
+              height: 280,
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: const Color(0xFF181818),
@@ -280,6 +295,11 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
                 },
               ),
             ),
+            if (_isLoading)
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Center(child: CircularProgressIndicator(color: Colors.amber)),
+              ),
             const SizedBox(height: 8),
             Row(
               children: [
@@ -287,7 +307,7 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
                   child: TextField(
                     controller: _questionController,
                     decoration: InputDecoration(
-                      hintText: 'اسأل عن أي شيء (نصوص، إخراج، تمثيل، مدارس)...',
+                      hintText: 'اسألني عن أي تفصيل في المسرح...',
                       hintStyle: TextStyle(color: Colors.grey[600], fontSize: 13),
                       filled: true,
                       fillColor: const Color(0xFF1E1E1E),
@@ -297,7 +317,7 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
                 ),
                 const SizedBox(width: 8),
                 IconButton(
-                  onPressed: _askAi,
+                  onPressed: _isLoading ? null : _askGeminiAi,
                   icon: const Icon(Icons.send, color: Colors.amber),
                   style: IconButton.styleFrom(backgroundColor: const Color(0xFF1E1E1E)),
                 ),
@@ -305,11 +325,7 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
             ),
             const Divider(height: 35, color: Colors.grey),
 
-            // دفتر الملاحظات الشخصية
-            const Text(
-              '📝 دفتر أفكارك وملاحظاتك الإبداعية:',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
-            ),
+            const Text('📝 دفتر أفكارك وملاحظاتك الإبداعية:', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
             const SizedBox(height: 10),
             TextField(
               controller: _notesController,
