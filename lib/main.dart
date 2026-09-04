@@ -145,28 +145,45 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
   final TextEditingController _questionController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
   
-  final List<Map<String, String>> _chatMessages = [
-    {'sender': 'ai', 'text': 'مرحباً بك في المساعد الذكي التفاعلي! اطرح أي سؤال فني أو أكاديمي يخطر في بالك وسأقوم بالإجابة عليه فوراً.'}
-  ];
-  
+  late final List<Map<String, String>> _chatMessages;
   final List<String> _userNotes = [];
 
+  @override
+  void initState() {
+    super.initState();
+    _chatMessages = [
+      {
+        'sender': 'ai',
+        'text': 'أهلاً بك يا إبراهيم! أنا مساعدك الذكي المتخصص في (${widget.department['title']}). اسألني عن أي نص، تحليل، رؤية إخراجية، أو تقنية فنية وسأجيبك فوراً.'
+      }
+    ];
+  }
+
   void _askAi() {
-    String question = _questionController.text.trim();
-    if (question.isNotEmpty) {
-      setState(() {
-        _chatMessages.add({'sender': 'user', 'text': question});
-        
-        // توليد رد ذكي محاكي ومخصص حسب طبيعة القسم
-        String aiReply = 'بخصوص سؤالك في (${widget.department['title']}): "${question}"، ينصح أكاديمياً بالتركيز على دراسة النص بعمق وتطبيق التكنيك الفني المناسب لتعزيز البعد الدرامي.';
-        if (question.contains('كيف') || question.contains('طريقة')) {
-          aiReply = 'إليك التوجيه الفني للإجابة: ابدأ بتحليل المكونات الأساسية، ثم وظّف الأدوات الإبداعية الخاصة بالقسم لتصل إلى التناغم المطلوب على خشبة المسرح.';
-        }
-        
-        _chatMessages.add({'sender': 'ai', 'text': aiReply});
-        _questionController.clear();
-      });
-    }
+    String q = _questionController.text.trim();
+    if (q.isEmpty) return;
+
+    setState(() {
+      _chatMessages.add({'sender': 'user', 'text': q});
+      _questionController.clear();
+
+      // ردود ذكية ومخصصة حسب السؤال ومجال القسم
+      String reply = 'أهلاً بك. بصفتي مساعدك الذكي، أرى أن دراسة هذا الجانب في (${widget.department['title']}) تتطلب الغوص في تفاصيل النص وتوظيف الأدوات التعبيرية بدقة عالية.';
+
+      if (q.contains('هاملت') || q.contains('شكسبير')) {
+        reply = '🎭 مشهد مقترح من مسرحية "هاملت" (المونولوج الشهير):\n\nهاملت: "أكون أو لا أكون.. تلك هي المسألة. أيهما أكثر نبلاً في النفس؟ أن تتحمل ضربات القدر الظالم وسهامه، أم أن تثور على طوفان من الأحزان وفي الصراع تضع لها حدّاً؟"\n\n💡 توجيه إخراجي: يفضل في هذا المشهد استخدام إضاءة بؤرية (Spotlight) جانبية خافتة لتعكس صراع الشخصية الداخلي وعزلتها.';
+      } else if (q.contains('صح النوم') || q.contains('بترا')) {
+        reply = '📜 بخصوص مسرحيات مثل "صح النوم" أو "بترا"، فهي تمثل إرثاً درامياً غنياً يدمج بين الشعرية والرمزية السياسية والاجتماعية. يمكن تحليل البناء الدرامي عبر التركيز على الصراع بين السلطة والفرد، وتوظيف الإيقاع الموسيقي الشعبي كعنصر درامي فاعل.';
+      } else if (q.contains('إخراج') || q.contains('رؤية')) {
+        reply = '🎬 الرؤية الإخراجية المتكاملة تعتمد على تفكيك النص الأصلي، إيجاد "ثيمة مركزية" (Core Theme)، وتوجيه الممثلين للعمل بروح الفريق الواحد مع إخضاع السينوغرافيا والإضاءة لخدمة المعنى الكلي.';
+      } else if (q.contains('تمثيل') || q.contains('ممثل')) {
+        reply = '🎭 إعداد الممثل يبدأ من التحكم المطلق في أدواته الثلاثة: الجسد، الصوت، والذاكرة الانفعالية. تذكر دائماً أن الصمت الناطق على المسرح أحياناً يكون أقوى بكثير من أطول الحوارات.';
+      } else {
+        reply = '💡 إجابة ذكية واحترافية: سؤالك في (${widget.department['title']}) يفتح الباب أمام آفاق إبداعية واسعة. ننصح دائماً بالربط بين البعد النظري والتطبيق العملي على خشبة المسرح لضمان نجاح العرض.';
+      }
+
+      _chatMessages.add({'sender': 'ai', 'text': reply});
+    });
   }
 
   void _addNote() {
@@ -190,7 +207,6 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // العنوان والأيقونة
             Center(
               child: CircleAvatar(
                 radius: 35,
@@ -210,7 +226,7 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
             ),
             const Divider(height: 30, color: Colors.grey),
 
-            // الدراسات والشروحات الكاملة للقسم
+            // الدراسات والشروحات الكاملة
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -225,14 +241,14 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
             ),
             const SizedBox(height: 24),
 
-            // قسم المساعد الذكي (سؤال وجواب متوفر طوال الوقت)
+            // المساعد الذكي التفاعلي (سؤال وجواب دائم)
             const Text(
-              '🤖 المساعد الذكي (سؤال وجواب دائم):',
+              '🤖 المساعد الذكي التفاعلي (اسألني بأي وقت):',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.amberAccent),
             ),
             const SizedBox(height: 10),
             Container(
-              height: 220,
+              height: 250,
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: const Color(0xFF181818),
@@ -249,14 +265,14 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
                     child: Container(
                       margin: const EdgeInsets.symmetric(vertical: 4),
                       padding: const EdgeInsets.all(10),
-                      constraints: const BoxConstraints(maxWidth: 260),
+                      constraints: const BoxConstraints(maxWidth: 280),
                       decoration: BoxDecoration(
                         color: isUser ? Colors.amber[800] : const Color(0xFF252525),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
                         msg['text']!,
-                        style: TextStyle(fontSize: 13, color: isUser ? Colors.black : Colors.white),
+                        style: TextStyle(fontSize: 13, color: isUser ? Colors.black : Colors.white, height: 1.3),
                       ),
                     ),
                   );
@@ -270,7 +286,7 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
                   child: TextField(
                     controller: _questionController,
                     decoration: InputDecoration(
-                      hintText: 'اسأل المساعد الذكي عن أي استفسار مسرحي...',
+                      hintText: 'اطرح سؤالك أو اطلب نصاً أو رؤية فنية...',
                       hintStyle: TextStyle(color: Colors.grey[600], fontSize: 13),
                       filled: true,
                       fillColor: const Color(0xFF1E1E1E),
