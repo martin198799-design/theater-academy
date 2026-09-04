@@ -29,5 +29,8 @@ jobs:
     - name: Install dependencies
       run: flutter pub get
 
+    - name: Create Android files
+      run: flutter create . --platforms=android --org com.example.theater_academy
+
     - name: Build APK
       run: flutter build apk --release
