@@ -13,13 +13,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('أكاديمية المسرح'),
+    title: const Text('أكاديمية المسرح'),
           backgroundColor: Colors.deepPurple,
         ),
         body: const Center(
           child: Text(
-            'مرحباً بك يا إبراهيم، التطبيق يعمل بنجاح!',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            'أكاديمية المسرح تعمل بنجاح',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
         ),
       ),
