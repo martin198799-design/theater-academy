@@ -29,5 +29,10 @@ jobs:
     - name: Install dependencies
       run: flutter pub get
 
+    - name: Clean and Recreate Android
+      run: |
+        rm -rf android
+        flutter create . --platforms=android --project-name=theater_academy
+
     - name: Build APK
       run: flutter build apk --release
