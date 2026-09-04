@@ -146,8 +146,9 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
   final List<String> _userNotes = [];
   bool _isLoading = false;
 
-  // ضع مفتاح Gemini API الخاص بك هنا بين العلامتين
-  static const String _geminiApiKey = 'مفتاحك_هنا';
+  // ضع   // ضع مفتاح Gemini API الخاص بك هنا
+  static const String _geminiApiKey = 'ضع_مفتاحك_هنا_بالحروف_الإنجليزية';
+
 
   @override
   void initState() {
