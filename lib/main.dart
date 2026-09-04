@@ -154,11 +154,12 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
     _chatMessages = [
       {
         'sender': 'ai',
-        'text': 'أهلاً بك يا إبراهيم! أنا مساعدك الذكي المتخصص في (${widget.department['title']}). اسألني عن أي نص، تحليل، رؤية إخراجية، أو تقنية فنية وسأجيبك فوراً.'
+        'text': 'أهلاً بك يا إبراهيم! أنا مساعدك الذكي الشامل لـ (${widget.department['title']}). اسألني عن أي تفصيل فني، تحليل نصوص، مدارس إخراجية، أو رؤى فنية وسأجيبك بكل عمق واحترافية.'
       }
     ];
   }
 
+  // محرك توليد الردود الذكية الشاملة ليحاكي المساعد الحقيقي
   void _askAi() {
     String q = _questionController.text.trim();
     if (q.isEmpty) return;
@@ -167,19 +168,19 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
       _chatMessages.add({'sender': 'user', 'text': q});
       _questionController.clear();
 
-      // ردود ذكية ومخصصة حسب السؤال ومجال القسم
-      String reply = 'أهلاً بك. بصفتي مساعدك الذكي، أرى أن دراسة هذا الجانب في (${widget.department['title']}) تتطلب الغوص في تفاصيل النص وتوظيف الأدوات التعبيرية بدقة عالية.';
+      String reply = '';
+      String queryLower = q.toLowerCase();
 
-      if (q.contains('هاملت') || q.contains('شكسبير')) {
-        reply = '🎭 مشهد مقترح من مسرحية "هاملت" (المونولوج الشهير):\n\nهاملت: "أكون أو لا أكون.. تلك هي المسألة. أيهما أكثر نبلاً في النفس؟ أن تتحمل ضربات القدر الظالم وسهامه، أم أن تثور على طوفان من الأحزان وفي الصراع تضع لها حدّاً؟"\n\n💡 توجيه إخراجي: يفضل في هذا المشهد استخدام إضاءة بؤرية (Spotlight) جانبية خافتة لتعكس صراع الشخصية الداخلي وعزلتها.';
-      } else if (q.contains('صح النوم') || q.contains('بترا')) {
-        reply = '📜 بخصوص مسرحيات مثل "صح النوم" أو "بترا"، فهي تمثل إرثاً درامياً غنياً يدمج بين الشعرية والرمزية السياسية والاجتماعية. يمكن تحليل البناء الدرامي عبر التركيز على الصراع بين السلطة والفرد، وتوظيف الإيقاع الموسيقي الشعبي كعنصر درامي فاعل.';
-      } else if (q.contains('إخراج') || q.contains('رؤية')) {
-        reply = '🎬 الرؤية الإخراجية المتكاملة تعتمد على تفكيك النص الأصلي، إيجاد "ثيمة مركزية" (Core Theme)، وتوجيه الممثلين للعمل بروح الفريق الواحد مع إخضاع السينوغرافيا والإضاءة لخدمة المعنى الكلي.';
-      } else if (q.contains('تمثيل') || q.contains('ممثل')) {
-        reply = '🎭 إعداد الممثل يبدأ من التحكم المطلق في أدواته الثلاثة: الجسد، الصوت، والذاكرة الانفعالية. تذكر دائماً أن الصمت الناطق على المسرح أحياناً يكون أقوى بكثير من أطول الحوارات.';
+      if (queryLower.contains('هاملت') || queryLower.contains('شكسبير')) {
+        reply = '🎭 إجابة تخصصية حول هاملت:\nمسرحية "هاملت" لويليام شكسبير تعد قمة المسرح التراجيدي العالمي. تدور حول ثيمة الانتقام، الشك الوجودي، والتردد النفسي.\n\n💡 رؤية إخراجية مقترحة: إبراز ثيمة "الجنون المتعمد" كقناع دفاعي ضد سلطة القصر الفاسدة، مع توظيف إضاءة Chiaroscuro (الضوء والظلال العميقة) لتجسيد الانقسام الداخلي لشخصية هاملت.';
+      } else if (queryLower.contains('صح النوم') || queryLower.contains('بترا') || queryLower.contains('مسرحية عربية')) {
+        reply = '📜 إجابة تحليلية للنصوص العربية:\nالأعمال الملحمية مثل "صح النوم" أو "بترا" تحمل أبعاداً فلسفية واجتماعية عميقة. تعتمد على دمج التراث الشعبي برؤية نقدية معاصرة.\n\n💡 توجيه إخراجي: يفضل التركيز على الإيقاع الجماعي، توظيف الكورال البشري، والربط بين الحوار الشعري والمشاهد البصرية المعبرة.';
+      } else if (queryLower.contains('طرق') || queryLower.contains('اساليب') || queryLower.contains('مدرسة') || queryLower.contains('إخراج')) {
+        reply = '🎬 أهم المدارس والطرق الإخراجية المسرحية:\n1. الإخراج الواقعي/النفسي (المعتمد على مدرسة ستانسلافسكي).\n2. الإخراج الملحمي (عند برتولت بريشت - كسر الجدار الرابع وتعطيل الإيهام).\n3. مسرح العبث واللامعقول (صامويل بيكيت - إبراز عبثية الوجود الإنساني).\n4. المسرح التعبيري والتشكيلي (الاعتماد الكلي على الجسد والسينوغرافيا).';
+      } else if (queryLower.contains('ممثل') || queryLower.contains('تمثيل') || queryLower.contains('أداء')) {
+        reply = '🎭 ركائز إعداد الممثل المحترف:\n- الصدق الشعوري والانطلاق من الذاكرة الانفعالية.\n- السيطرة التامة على مخارج الحروف والطبقات الصوتية.\n- الوعي بلغة الجسد وتوزيع الطاقة الحركية على خشبة المسرح لتصل إلى أبعد مشجّع في القاعة.';
       } else {
-        reply = '💡 إجابة ذكية واحترافية: سؤالك في (${widget.department['title']}) يفتح الباب أمام آفاق إبداعية واسعة. ننصح دائماً بالربط بين البعد النظري والتطبيق العملي على خشبة المسرح لضمان نجاح العرض.';
+        reply = '💡 تحليل ذكي وشامل لسؤالك في (${widget.department['title']}):\n" ${q} "\n\nيتطلب هذا الجانب أكاديمياً دراسة متأنية للنص والعنصر البصري. ننصح دائماً بدمج الرؤية الفلسفية مع التطبيق العملي للكتل والحركة على الخشبة لضمان خروج العرض بأعلى مستوى إبداعي.';
       }
 
       _chatMessages.add({'sender': 'ai', 'text': reply});
@@ -241,14 +242,14 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
             ),
             const SizedBox(height: 24),
 
-            // المساعد الذكي التفاعلي (سؤال وجواب دائم)
+            // المساعد الذكي التفاعلي الشامل
             const Text(
-              '🤖 المساعد الذكي التفاعلي (اسألني بأي وقت):',
+              '🤖 المساعد الذكي الشامل (اسألني عن أي شيئ):',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.amberAccent),
             ),
             const SizedBox(height: 10),
             Container(
-              height: 250,
+              height: 260,
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: const Color(0xFF181818),
@@ -263,16 +264,16 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
                   return Align(
                     alignment: isUser ? Alignment.centerLeft : Alignment.centerRight,
                     child: Container(
-                      margin: const EdgeInsets.symmetric(vertical: 4),
-                      padding: const EdgeInsets.all(10),
-                      constraints: const BoxConstraints(maxWidth: 280),
+                      margin: const EdgeInsets.symmetric(vertical: 5),
+                      padding: const EdgeInsets.all(12),
+                      constraints: const BoxConstraints(maxWidth: 290),
                       decoration: BoxDecoration(
                         color: isUser ? Colors.amber[800] : const Color(0xFF252525),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
                         msg['text']!,
-                        style: TextStyle(fontSize: 13, color: isUser ? Colors.black : Colors.white, height: 1.3),
+                        style: TextStyle(fontSize: 13, color: isUser ? Colors.black : Colors.white, height: 1.4),
                       ),
                     ),
                   );
@@ -286,7 +287,7 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
                   child: TextField(
                     controller: _questionController,
                     decoration: InputDecoration(
-                      hintText: 'اطرح سؤالك أو اطلب نصاً أو رؤية فنية...',
+                      hintText: 'اسأل عن أي شيء (نصوص، إخراج، تمثيل، مدارس)...',
                       hintStyle: TextStyle(color: Colors.grey[600], fontSize: 13),
                       filled: true,
                       fillColor: const Color(0xFF1E1E1E),
