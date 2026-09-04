@@ -29,10 +29,5 @@ jobs:
     - name: Install dependencies
       run: flutter pub get
 
-    - name: Fix Android configuration
-      run: |
-        rm -rf android
-        flutter create . --platforms=android --org com.theater.academy
-
     - name: Build APK
       run: flutter build apk --release
