@@ -69,8 +69,26 @@ class HomeScreen extends StatelessWidget {
                       );
                     },
                   ),
-                  const _AcademyCard(title: 'رؤى الإخراج', icon: Icons.movie_creation),
-                  const _AcademyCard(title: 'إدارة المسرح', icon: Icons.theater_comedy),
+                  _AcademyCard(
+                    title: 'رؤى الإخراج',
+                    icon: Icons.movie_creation,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const DirectingScreen()),
+                      );
+                    },
+                  ),
+                  _AcademyCard(
+                    title: 'إدارة المسرح',
+                    icon: Icons.theater_comedy,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ManagementScreen()),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
@@ -128,44 +146,23 @@ class ScriptsScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: const [
-          ScriptTile(
+          AcademyDetailTile(
             title: 'مسرحية هاملت (Hamlet)',
             description: 'للكاتب وليم شكسبير - دراما الخطيئة، الانتقام، والتردد الوجودي.',
           ),
-          ScriptTile(
+          AcademyDetailTile(
             title: 'مسرحية في انتظار غودو (Waiting for Godot)',
             description: 'للكاتب صموئيل بيكيت - تحفة العبث واللايقين البشري.',
           ),
-          ScriptTile(
-            title: 'مسرحية الأم كولاج (Mother Courage and Her Children)',
+          AcademyDetailTile(
+            title: 'مسرحية الأم كولاج (Mother Courage)',
             description: 'للكاتب برتولت بريشت - مسرح الملحمة ونقد أهوال الحرب.',
           ),
-          ScriptTile(
+          AcademyDetailTile(
             title: 'مسرحية أوديب الملك (Oedipus Rex)',
             description: 'للكاتب سوفوكليس - قمة التراجيديا الإغريقية ومواجهة القدر.',
           ),
         ],
-      ),
-    );
-  }
-}
-
-class ScriptTile extends StatelessWidget {
-  final String title;
-  final String description;
-
-  const ScriptTile({required this.title, required this.description});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: const Color(0xFF1E1E1E),
-      margin: const EdgeInsets.only(bottom: 12),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: ListTile(
-        title: Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-        subtitle: Text(description, style: const TextStyle(color: Colors.white60)),
-        trailing: const Icon(Icons.arrow_forward_ios, color: Colors.deepPurpleAccent, size: 16),
       ),
     );
   }
@@ -182,12 +179,95 @@ class ActingScreen extends StatelessWidget {
         backgroundColor: const Color(0xFF1F1F1F),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: const Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Text(
-          'تقنيات التجسيد الدرامي، تحليل الشخصيات، وتمارين الأداء الصوتي والحركي.',
-          style: TextStyle(color: Colors.white70, fontSize: 16),
-        ),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: const [
+          AcademyDetailTile(
+            title: 'تقنيات التجسيد الدرامي',
+            description: 'دراسة أدوات الممثل الجسدية والنفسية لبناء الشخصية بعمق.',
+          ),
+          AcademyDetailTile(
+            title: 'الأداء الصوتي والإلقاء',
+            description: 'تمارين التنفس، طبقات الصوت، التلونيّة الصوتية، ومخارج الحروف.',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class DirectingScreen extends StatelessWidget {
+  const DirectingScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('رؤى الإخراج', style: TextStyle(color: Colors.white)),
+        backgroundColor: const Color(0xFF1F1F1F),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: const [
+          AcademyDetailTile(
+            title: 'التكوين البصري وتخطيط الحركة',
+            description: 'توزيع الممثلين على الخشبة، هندسة الكتل، وتشكيل اللوحات البصرية.',
+          ),
+          AcademyDetailTile(
+            title: 'الرؤية الإخراجية والسينوغرافيا',
+            description: 'توظيف الإضاءة، الديكور، والموسيقى لخدمة الفكرة الدرامية للنص.',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ManagementScreen extends StatelessWidget {
+  const ManagementScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('إدارة المسرح', style: TextStyle(color: Colors.white)),
+        backgroundColor: const Color(0xFF1F1F1F),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: const [
+          AcademyDetailTile(
+            title: 'إدارة خشبة المسرح (Stage Management)',
+            description: 'تنظيم البروفات، إدارة الإشارات الفنية، والتنسيق بين طاقم العمل.',
+          ),
+          AcademyDetailTile(
+            title: 'الإنتاج وإدارة الكواليس',
+            description: 'تجهيز المتطلبات اللوجستية، إدارة الوقت، والتعامل مع الطوارئ العرضية.',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class AcademyDetailTile extends StatelessWidget {
+  final String title;
+  final String description;
+
+  const AcademyDetailTile({required this.title, required this.description});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: const Color(0xFF1E1E1E),
+      margin: const EdgeInsets.only(bottom: 12),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: ListTile(
+        title: Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        subtitle: Text(description, style: const TextStyle(color: Colors.white60)),
+        trailing: const Icon(Icons.arrow_forward_ios, color: Colors.deepPurpleAccent, size: 16),
       ),
     );
   }
