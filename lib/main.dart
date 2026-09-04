@@ -121,16 +121,29 @@ class ScriptsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('النصوص المسرحية', style: TextStyle(color: Colors.white)),
+        title: const Text('النصوص المسرحية العالمية', style: TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF1F1F1F),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: const [
-          ScriptTile(title: 'مسرحية صح النوم', description: 'النص الكامل ورؤية الإخراج الأكاديمية.'),
-          ScriptTile(title: 'مسرحية بترا', description: 'دراما تاريخية وملحمية.'),
-          ScriptTile(title: 'نصوص ميسوبوتاميا وبابل', description: 'أعمال درامية مستوحاة من التاريخ العريق.'),
+          ScriptTile(
+            title: 'مسرحية هاملت (Hamlet)',
+            description: 'للكاتب وليم شكسبير - دراما الخطيئة، الانتقام، والتردد الوجودي.',
+          ),
+          ScriptTile(
+            title: 'مسرحية في انتظار غودو (Waiting for Godot)',
+            description: 'للكاتب صموئيل بيكيت - تحفة العبث واللايقين البشري.',
+          ),
+          ScriptTile(
+            title: 'مسرحية الأم كولاج (Mother Courage and Her Children)',
+            description: 'للكاتب برتولت بريشت - مسرح الملحمة ونقد أهوال الحرب.',
+          ),
+          ScriptTile(
+            title: 'مسرحية أوديب الملك (Oedipus Rex)',
+            description: 'للكاتب سوفوكليس - قمة التراجيديا الإغريقية ومواجهة القدر.',
+          ),
         ],
       ),
     );
