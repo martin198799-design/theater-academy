@@ -145,11 +145,8 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
   late final List<Map<String, String>> _chatMessages;
   final List<String> _userNotes = [];
   bool _isLoading = false;
+    static const String _geminiApiKey = 'AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
 
-  // ضع مفتاح Gemini API الخاص بك هنا (حروف وأرقام إنجليزية فقط بدون أي فراغات أو كلمات عربية)
-  static const String _geminiApiKey = 'AIzaSy_ضع_مفتاحك_هنا_بالحروف_الإنجليزية';
-
-  @override
   void initState() {
     super.initState();
     _chatMessages = [
