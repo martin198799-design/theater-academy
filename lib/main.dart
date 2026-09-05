@@ -146,9 +146,8 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
   final List<String> _userNotes = [];
   bool _isLoading = false;
 
-  // ضع   // ضع مفتاح Gemini API الخاص بك هنا
-  static const String _geminiApiKey = 'ضع_مفتاحك_هنا_بالحروف_الإنجليزية';
-
+  // ضع مفتاح Gemini API الخاص بك هنا (حروف وأرقام إنجليزية فقط بدون أي فراغات أو كلمات عربية)
+  static const String _geminiApiKey = 'AIzaSy_ضع_مفتاحك_هنا_بالحروف_الإنجليزية';
 
   @override
   void initState() {
@@ -156,7 +155,7 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
     _chatMessages = [
       {
         'sender': 'ai',
-        'text': 'أهلاً بك في (${widget.department['title']}). أنا مساعدك الذكي الشامل، اسألني عن أي استفسار فني أو إخراجي أو نصي وسأجيبك بعمق واحترافية.'
+        'text': 'أهلاً بك في (${widget.department['title']}). أنا مساعدك الذكي الشامل، اسألني عن أي استفسار فني أو إخراجي أو نصي وسأجيبك بعمق واحتراتية.'
       }
     ];
   }
