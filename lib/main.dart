@@ -145,14 +145,16 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
   late final List<Map<String, String>> _chatMessages;
   final List<String> _userNotes = [];
   bool _isLoading = false;
-    static const String _geminiApiKey = 'AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
 
+  static const String _geminiApiKey = 'AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
+
+  @override
   void initState() {
     super.initState();
     _chatMessages = [
       {
         'sender': 'ai',
-        'text': 'أهلاً بك في (${widget.department['title']}). أنا مساعدك الذكي الشامل، اسألني عن أي استفسار فني أو إخراجي أو نصي وسأجيبك بعمق واحتراتية.'
+        'text': 'أهلاً بك في (${widget.department['title']}). أنا مساعدك الذكي الشامل، اسألني عن أي استفسار فني أو إخراجي أو نصي وسأجيبك بعمق واحترافية.'
       }
     ];
   }
