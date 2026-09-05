@@ -146,8 +146,8 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
   final List<String> _userNotes = [];
   bool _isLoading = false;
 
-  // ضع مفتاحك الحقيقي هنا بين علامتي التنصيص بدلاً من الأحرف الوهمية
-  static const String _geminiApiKey = 'AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
+  
+static const String _geminiApiKey = 'AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
 
   @override
   void initState() {
