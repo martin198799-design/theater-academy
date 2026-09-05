@@ -111,7 +111,8 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
 
   @override
   void initState() {
-    super.initState();
+    super.initState(static const String _geminiApiKey = 'AIzaSyAQ.Ab8RN6Jplf6NeY3N-S9UAmOD7HU8yIjelaHsNYqNwNVP2e2GHg';
+);
     _chatMessages = [
       {
         'sender': 'ai',
