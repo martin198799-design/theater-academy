@@ -45,6 +45,16 @@ class DepartmentsScreen extends StatelessWidget {
       'description': 'تصميم المنظر المسرحي، الإضاءة، والازياء.',
       'icon': Icons.lightbulb,
     },
+    {
+      'title': 'قسم النصوص المسرحية',
+      'description': 'تحليل البناء الدرامي، الحوار، وتوجيهات المؤلف.',
+      'icon': Icons.menu_book,
+    },
+    {
+      'title': 'مكتبة النصوص العالمية',
+      'description': 'استعراض وقراءة أبرز النصوص والمسرحيات العالمية والعربية.',
+      'icon': Icons.library_books,
+    },
   ];
 
   @override
@@ -107,7 +117,7 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
   final List<String> _userNotes = [];
   bool _isLoading = false;
 
-  static const String _geminiApiKey = 'AIzaSyAQ.Ab8RN6Jplf6NeY3N-S9UAmOD7HU8yIjelaHsNYqNwNVP2e2GHg';
+  static const String _geminiApiKey = 'AIzaSyAQAb8RN6Jplf6NeY3N-S9UAmOD7HU8yIjelaHsNYqNwNVP2e2GHg';
 
   @override
   void initState() {
@@ -199,7 +209,6 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
         ),
         body: TabBarView(
           children: [
-            // تاب المساعد الذكي
             Column(
               children: [
                 Expanded(
@@ -250,7 +259,6 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
                 ),
               ],
             ),
-            // تاب الملاحظات
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
