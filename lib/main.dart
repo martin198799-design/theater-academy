@@ -19,7 +19,7 @@ class TheaterAcademyApp extends StatelessWidget {
         primaryColor: Colors.amber[800],
         scaffoldBackgroundColor: const Color(0xFF121212),
         cardColor: const Color(0xFF1E1E1E),
-        colorScheme: ColorScheme.dark(
+        colorScheme: const ColorScheme.dark(
           primary: Colors.amber,
           secondary: Colors.amberAccent,
         ),
@@ -146,8 +146,8 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
   final List<String> _userNotes = [];
   bool _isLoading = false;
 
-  static const String _geminiApiKey = static const String _geminiApiKey = 'مفتاحك_الحقيقي_هنا';
-
+  // ضع مفتاحك الحقيقي هنا بين علامتي التنصيص بدلاً من الأحرف الوهمية
+  static const String _geminiApiKey = 'AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
 
   @override
   void initState() {
