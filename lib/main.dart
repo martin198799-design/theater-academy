@@ -1,5 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const TheaterAcademyApp());
@@ -40,14 +41,10 @@ class DepartmentsScreen extends StatelessWidget {
 يُعد التمثيل المسرحي الفن الحي الذي يترجم النص الأدبي إلى كائن حقيقي ينبض بالحياة على الخشبة. لقد تطور هذا الفن عبر العصور من الطقوس البدائية والمسرح الإغريقي اليوناني المعتمد على الأقنعة، مروراً بمسرح النهضة وشكسبير، وصولاً إلى المدارس الحديثة في القرن العشرين.
 
 2. مدرسة قسطنطين ستانسلافسكي (الواقعية النفسية):
-تعتمد على مبدأ "عصر الوجد" أو المعايشة الداخلية. لا يقف الممثل مقلداً لحركات الشخصية، بل يتقمص روحها عبر أسلوب "الذاكرة الانفعالية" واستدعاء التجارب الشخصية.
+تعتمد على مبدأ "عصر الوجد" أو المعايشة الداخلية واستدعاء "الذاكرة الانفعالية".
 
 3. مدرسة برتولت بريخت (المسرح الملحمي والتغريب):
-تختلف كلياً عن المدرسة الواقعية؛ فهي ترفض اندماج الممثل عاطفياً بشكل كامل مع الشخصية، مستخدماً تقنيات "التغريب" (Verfremdungseffekt) كالأغاني واللافتات.
-
-4. تمارين عملية لتطوير أداء الممثل:
-- تمارين التنفس الحجابي والتحكم بالرنين الصوتي.
-- الارتجال الموجه لخلق الاستجابة الفورية والبديهة العالية.
+ترفض اندماج الممثل كلياً بالشخصية وتستخدم تقنيات التغريب لإبقاء المتفرج واعياً.
 ''',
     },
     {
@@ -58,13 +55,10 @@ class DepartmentsScreen extends StatelessWidget {
 📚 الموسوعة الأكاديمية الشاملة - قسم الإخراج المسرحي:
 
 1. ماهية الإخراج المسرحي ووظيفة المخرج:
-المخرج هو المؤلف الثاني للعرض المسرحي؛ فهو العقل المدبر الذي يربط خيوط النص، السينوغرافيا، أداء الممثلين، والموسيقى في سيمفونية بصرية واحدة مترابطة.
+المخرج هو المؤلف الثاني للعرض المسرحي؛ يربط خيوط النص، السينوغرافيا، أداء الممثلين، والموسيقى في سيمفونية بصرية واحدة.
 
 2. المسرح الفقير عند جيرزي غروتوفسكي:
-مدرسة ثورية ألغيت فيها كافة زوائد العرض التقليدي، ليبقى فقط عناء الممثل وقدرته الجسدية والصوتية المطلقة في خلق الفضاء الدرامي المباشر.
-
-3. مسرح العبث واللاوعي (صموئيل بيكيت):
-مدرسة تمردت على القواعد التقليدية للحبكة والبداية والنهاية، وتركز على عبثية الوجود الإنساني وغياب التواصل الحقيقي.
+مدرسة تعتمد كلياً على طاقة الممثل الجسدية والصوتية المطلقة متخلدة عن زوائد الديكور.
 ''',
     },
     {
@@ -73,15 +67,7 @@ class DepartmentsScreen extends StatelessWidget {
       'icon': Icons.lightbulb,
       'content': '''
 📚 الموسوعة الأكاديمية الشاملة - قسم السينوغرافيا والديكور:
-
-1. مفهوم السينوغرافيا الشاملة:
-ليست مجرد رسم ديكور أو تعليق أضواء، بل هي الفن البصري المتكامل الذي يصنع "بيئة العرض" المسرحي.
-
-2. الديكور والكتل الفراغية:
-يعتمد تصميم المنظر المسرحي على الرمزية والتجريد أحياناً لدعم الدلالة النفسية للحدث.
-
-3. فلسفة الإضاءة المسرحية:
-الضوء هو "الرسام الخفي" على الخشبة، وظيفته توجيه بصر المتفرج وخلق الحالة النفسية.
+تتكامل في هذا القسم عناصر الفضاء، الكتل، الإضاءة (الرسام الخفي)، والأزياء لخلق بيئة العرض المعبرة عن الصراع الداخلي.
 ''',
     },
     {
@@ -90,12 +76,7 @@ class DepartmentsScreen extends StatelessWidget {
       'icon': Icons.menu_book,
       'content': '''
 📚 الموسوعة الأكاديمية الشاملة - قسم النصوص المسرحية:
-
-1. بنية النص المسرحي الكلاسيكي والحديث:
-يقوم النص المسرحي على الصراع كمحرك أساسي للأحداث (البداية، تصاعد الحدث، الذروة، والانفراج).
-
-2. آليات بناء الشخصيات الدرامية:
-تُبنى الشخصية عبر ثلاثة أبعاد: البعد الفسيولوجي، السيكولوجي، والاجتماعي.
+يرتكز النص على الصراع، وتصاعد الأحداث، والذروة، وفهم الأبعاد الثلاثة للشخصية وما وراء السطور (Subtext).
 ''',
     },
     {
@@ -103,15 +84,8 @@ class DepartmentsScreen extends StatelessWidget {
       'description': 'استعراض وقراءة أبرز النصوص والمسرحيات العالمية والعربية الخالدة.',
       'icon': Icons.library_books,
       'content': '''
-📚 الموسوعة الأكاديمية الشاملة - مكتبة النصوص العالمية والعربية:
-
-1. روائع المسرح العالمي:
-- مسرحيات وليام شكسبير (هاملت، مكبت، الملك لير).
-- مسرح العبث: (في انتظار غودو) لصموئيل بيكيت.
-
-2. روائع المسرح العربي:
-- توفيق الحكيم (أهل الكهف).
-- سعد الله ونوس (حفلة سمر من أجل خمسة حزيران).
+📚 الموسوعة الأكاديمية الشاملة - المكتبة المسرحية:
+تضم روائع شكسبير، مسرح العبث لبيكيت، وأعمال سعد الله ونوس وتوفيق الحكيم.
 ''',
     },
   ];
@@ -176,8 +150,6 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
   final List<String> _userNotes = [];
   bool _isLoading = false;
 
-  late final GenerativeModel _geminiModel;
-
   @override
   void initState() {
     super.initState();
@@ -187,15 +159,9 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
         'text': 'أهلاً بك في ${widget.department['title']}. أنا خبيرك الأكاديمي، اسألني عن أي استفسار وسأجيبك تفصيلياً.'
       }
     ];
-
-    // 💡 ضع مفتاحك الحقيقي هنا (الذي يبدأ بـ AIzaSy...) أو اترك المفتاح الاحتياطي التجريبي
-    _geminiModel = GenerativeModel(
-      model: 'gemini-1.5-flash',
-      apiKey: 'AIzaSyDummyKeyForTestingAndFallbackMode', 
-    );
   }
 
-  Future<void> _sendToSmartAssistant(String prompt) async {
+  Future<void> _sendToLiveGemini(String prompt) async {
     if (prompt.trim().isEmpty) return;
 
     setState(() {
@@ -204,64 +170,50 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
     });
     _questionController.clear();
 
-    String reply = "";
+    // 💡 تم ترك خانة التوكن فارغة هنا لتجاوز حظر GitHub الأمني بنجاح
+    const String accessToken = "";
+    
+    final url = Uri.parse("https://generativelanguage.googleapis.com/v1beta/interactions");
 
     try {
-      final content = [
-        Content.text(
-          'أنت خبير أكاديمي متخصص حصرياً في ${widget.department['title']} ضمن أكاديمية الفنون المسرحية. '
-          'أجب عن السؤال التالي بأسلوب أكاديمي وعميق ومفصل باللغة العربية: "$prompt"'
-        )
-      ];
-      final response = await _geminiModel.generateContent(content);
-      if (response.text != null && response.text!.isNotEmpty) {
-        reply = response.text!;
+      final response = await http.post(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $accessToken",
+        },
+        body: jsonEncode({
+          "model": "gemini-3.8-flash",
+          "input": "أنت خبير أكاديمي مسرحي متخصص حصرياً في ${widget.department['title']}. أجب عن السؤال التالي بأسلوب أكاديمي وعميق ومفصل باللغة العربية: $prompt"
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        String aiReply = data["output_text"] ?? data["interaction"]?["output_text"] ?? "تم استلام الرد بنجاح.";
+        
+        setState(() {
+          _chatMessages.add({'sender': 'ai', 'text': aiReply});
+          _isLoading = false;
+        });
       } else {
-        throw Exception('Empty response');
+        setState(() {
+          _chatMessages.add({
+            'sender': 'ai', 
+            'text': 'عذراً، حدث استجابة من الخادم (كود الخطأ: ${response.statusCode}).'
+          });
+          _isLoading = false;
+        });
       }
     } catch (e) {
-      // نظام الردود الاحتياطية الذكية الفورية المتكاملة
-      String deptTitle = widget.department['title'];
-      
-      final List<String> actingResponses = [
-        "إجابة أكاديمية حول ($prompt):\n\n• في فن التمثيل، يتطلب هذا الجانب تركيزاً عميقاً على الصدق الداخلي والذاكرة الانفعالية للممثل.\n• من الضروري ربط كل حركة جسدية بدوافع نفسية حقيقية لئلا يتحول الأداء إلى افتعال.",
-        "منظور مسرحي حول ($prompt):\n\n• يعتمد بناء الشخصية هنا على تفكيك الأبعاد الثلاثة (الفسيولوجية، السيكولوجية، والاجتماعية).\n• التدريب المستمر على الارتجال الموجه يمنح الممثل مرونة عالية للتعامل مع أي مفاجأة على الخشبة."
-      ];
-
-      final List<String> directingResponses = [
-        "رؤية إخراجية لـ ($prompt):\n\n• المخرج الناجح لا ينقل النص بحرفيته، بل يخلق له فضاءً بصرياً وفلسفياً معاصراً يخدم دلالات النص الكامنة.\n• توظيف السينوغرافيا والكتل الحركية يجب أن يكون مدروساً ليعكس صراع الشخصيات.",
-        "توجيه إخراجي حول ($prompt):\n\n• يعتمد الإخراج المعاصر على كسر الإيهام وإشراك المتفرج عقلياً وفكرياً في الحدث المسرحي."
-      ];
-
-      final List<String> scenographyResponses = [
-        "معالجة سينوغرافية لـ ($prompt):\n\n• السينوغرافيا ليست مجرد ديكور جامد، بل هي بيئة حية تتفاعل مع حركة الممثل وتترجم الصراع النفسي بصرياً.\n• توظيف الإضاءة كـ 'رسم خفي' يوجه انتباه المشاهد ويخلق المزاج النفسي الملائم للمشهد."
-      ];
-
-      final List<String> scriptsResponses = [
-        "قراءة تحليلية للنص حول ($prompt):\n\n• يرتكز البناء الدرامي المتماسك على عقدة محكمة، تصاعد منطقي للأحداث، وذروة صراع تكشف عن أبعاد الشخصيات.\n• يكمن السر الحقيقي في الحوار المسرحي فيما وراء الكلمات (Subtext)."
-      ];
-
-      final List<String> libraryResponses = [
-        "إضاءة على المكتبة المسرحية حول ($prompt):\n\n• النصوص المسرحية الخالدة تتميز بقدرتها على طرح تساؤلات إنسانية ووجودية لا تخضع لزمن معين.\n• إعادة قراءة هذه النصوص إخراجياً تفتح آفاقاً جديدة لا تنتهي من التأويلات."
-      ];
-
-      if (deptTitle.contains('التمثيل')) {
-        reply = (actingResponses..shuffle()).first;
-      } else if (deptTitle.contains('الإخراج')) {
-        reply = (directingResponses..shuffle()).first;
-      } else if (deptTitle.contains('السينوغرافيا')) {
-        reply = (scenographyResponses..shuffle()).first;
-      } else if (deptTitle.contains('النصوص')) {
-        reply = (scriptsResponses..shuffle()).first;
-      } else {
-        reply = (libraryResponses..shuffle()).first;
-      }
+      setState(() {
+        _chatMessages.add({
+          'sender': 'ai', 
+          'text': 'خطأ في الاتصال بالشبكة: $e'
+        });
+        _isLoading = false;
+      });
     }
-
-    setState(() {
-      _chatMessages.add({'sender': 'ai', 'text': reply});
-      _isLoading = false;
-    });
   }
 
   void _saveNote() {
@@ -284,14 +236,13 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
             isScrollable: true,
             tabs: [
               Tab(icon: Icon(Icons.menu_book), text: 'الموسوعة الشاملة'),
-              Tab(icon: Icon(Icons.smart_toy), text: 'المساعد الذكي'),
+              Tab(icon: Icon(Icons.smart_toy), text: 'المساعد الذكي (حي)'),
               Tab(icon: Icon(Icons.note), text: 'ملاحظاتي'),
             ],
           ),
         ),
         body: TabBarView(
           children: [
-            // 1. الموسوعة الشاملة
             SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
               child: Card(
@@ -312,7 +263,6 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
                 ),
               ),
             ),
-            // 2. المساعد الذكي
             Column(
               children: [
                 Expanded(
@@ -348,7 +298,7 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
                         child: TextField(
                           controller: _questionController,
                           decoration: const InputDecoration(
-                            hintText: 'اسأل عن أي تفصيل في هذا القسم...',
+                            hintText: 'اسأل خبير جيمناي الحي...',
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.symmetric(horizontal: 8),
                           ),
@@ -356,14 +306,13 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
                       ),
                       IconButton(
                         icon: const Icon(Icons.send, color: Colors.amber),
-                        onPressed: () => _sendToSmartAssistant(_questionController.text),
+                        onPressed: () => _sendToLiveGemini(_questionController.text),
                       ),
                     ],
                   ),
                 ),
               ],
             ),
-            // 3. الملاحظات
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
