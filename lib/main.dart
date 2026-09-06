@@ -190,7 +190,7 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
   final List<String> _userNotes = [];
   bool _isLoading = false;
 
-  // إعداد نموذج Gemini الحقيقي
+  // إعداد نموذج Gemini الحقيقي مع المفتاح المعتمد
   late final GenerativeModel _geminiModel;
 
   @override
@@ -203,14 +203,12 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
       }
     ];
 
-    // تهيئة نموذج Gemini باستخدام مفتاح الـ API
     _geminiModel = GenerativeModel(
       model: 'gemini-1.5-flash',
-      apiKey: 'AIzaSyA...', // ضع مفتاح الـ API الصحيح الخاص بك هنا
+      apiKey: 'AQ.Ab8RN6LOBl2CenlSbkHPfEbSJgmCCkDkV0-_AUMB_XfEOmy4LA',
     );
   }
 
-  // النظام الهجين: يحاول الاتصال بـ Gemini أولاً، وإذا فشل يتحول بذكاء للنظام المحلي المتنوع
   Future<void> _sendToSmartAssistant(String prompt) async {
     if (prompt.trim().isEmpty) return;
 
@@ -223,7 +221,6 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
     String reply = "";
 
     try {
-      // محاولة الاتصال بـ Google Gemini الحقيقي عبر الإنترنت
       final content = [
         Content.text(
           'أنت خبير أكاديمي متخصص حصرياً في ${widget.department['title']} ضمن أكاديمية الفنون المسرحية. '
@@ -237,7 +234,6 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
         throw Exception('Empty response');
       }
     } catch (e) {
-      // النظام الاحتياطي المحلي الذكي والمتنوع لمنع أي تكرار
       String deptTitle = widget.department['title'];
       
       final List<String> actingResponses = [
