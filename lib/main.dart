@@ -190,7 +190,7 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
   final List<String> _userNotes = [];
   bool _isLoading = false;
 
-  // إعداد نموذج Gemini الحقيقي مع المفتاح المعتمد
+  // إعداد نموذج Gemini الحقيقي مع المفتاح الصحيح المعتمد
   late final GenerativeModel _geminiModel;
 
   @override
@@ -205,7 +205,7 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
 
     _geminiModel = GenerativeModel(
       model: 'gemini-1.5-flash',
-      apiKey: 'AQ.Ab8RN6LOBl2CenlSbkHPfEbSJgmCCkDkV0-_AUMB_XfEOmy4LA',
+      apiKey: 'AQ.Ab8RN6L2Sb3CRVVvvqUwRNusib3ZIzx4Fp4T2nA9Cn6sTPnt6w',
     );
   }
 
