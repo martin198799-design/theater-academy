@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 void main() {
   runApp(const TheaterAcademyApp());
@@ -12,7 +10,7 @@ class TheaterAcademyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'المسرحي',
+      title: 'أكاديمية الفنون المسرحية',
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: const Color(0xFF121212),
@@ -32,28 +30,80 @@ class DepartmentsScreen extends StatelessWidget {
   final List<Map<String, dynamic>> departments = const [
     {
       'title': 'قسم التمثيل المسرحي',
-      'description': 'دراسة تقنيات الأداء، تقمص الشخصيات، والصوت.',
+      'description': 'دراسة تقنيات الأداء، تقمص الشخصيات، والصوت، وتمارين التطور.',
       'icon': Icons.theater_comedy,
+      'content': '''
+• مدارس التمثيل ونظرياته:
+- مدرسة قسطنطين ستانسلافسكي (الذاكرة الانفعالية وصدق الإحساس الداخلي).
+- مدرسة برتولت بريخت (التغريب والمسرح الملحمي، تفعيل دور المتفرج الواعي).
+- مدرسة مايرهولد (البيوميكانيك - تدريب الجسد الإيقاعي).
+
+• تمارين عملية لتطوير أداء الممثل:
+1. تمارين التنفس العميق والتحكم بالصوت ومخارج الحروف.
+2. الارتجل الحر لخلق الاستجابة التلقائية للمواقف المفاجئة.
+3. التركيز البصري والصفاء الذهني لعزل المشتتات والاندماج الكامل بالشخصية.
+4. الاسترخاء العضلي للتخلص من التوتر الجسدي قبل صعود الخشبة.
+''',
     },
     {
       'title': 'قسم الإخراج المسرحي',
-      'description': 'بناء الرؤية الإخراجية، التعامل مع الممثل، وتكوين الفضاء.',
+      'description': 'بناء الرؤية الإخراجية، المدارس، والنظريات الإخراجية الحديثة.',
       'icon': Icons.movie_creation,
+      'content': '''
+• أبرز المدارس والنظريات الإخراجية:
+- المسرح الفقير (جيرزي غروتوفسكي): التركيز المطلق على الممثل وإلغاء الديكورات المعقدة.
+- مسرح العبث واللاوعي: التمرد على المنطق التقليدي في طرح الأسئلة الوجودية (صموئيل بيكيت، يوجين يونسكو).
+- المسرح الملحمي: كسر الإيهام وخلق المسافة النقدية بين المتفرج العرض.
+
+• أبرز المخرجين العالميين:
+- بيتر بروك، أوتو فالنتين، وستانسلافسكي في مرحلة الإخراج المبكر.
+''',
     },
     {
       'title': 'قسم السينوغرافيا والديكور',
-      'description': 'تصميم المنظر المسرحي، الإضاءة، والازياء.',
+      'description': 'تصميم المنظر المسرحي، الإضاءة، الأزياء، وفلسفة الفضاء.',
       'icon': Icons.lightbulb,
+      'content': '''
+• عناصر السينوغرافيا الأساسية:
+1. الديكور والكتل الفراغية: توزيع العناصر على الخشبة لدعم الدلالة النفسية والدرامية للنص.
+2. تصميم الإضاءة: توجيه بصر المتفرج، خلق الحالة المزاجية، والتعبير عن الزمن واللون النفسي (التباين، الحِدّة، الظلال).
+3. تصميم الأزياء والمكياج: عكس الطبقة الاجتماعية، العصر التاريخي، والحالة النفسية للشخصية.
+
+• طرق التصميم الحديثة:
+- الاعتماد على الرمزية بدلاً من النقل الواقعي الحرفي للأمكنة.
+- استخدام التكنولوجيا والإسقاطات الضوئية (Projection Mapping) في الفضاء المسرحي المعاصر.
+''',
     },
     {
       'title': 'قسم النصوص المسرحية',
       'description': 'تحليل البناء الدرامي، الحوار، وتوجيهات المؤلف.',
       'icon': Icons.menu_book,
+      'content': '''
+• عناصر البناء الدرامي للنص:
+1. الحدث والحبكة: العقدة، الذروة، والحل الدرامي.
+2. الشخصيات: الأبعاد الثلاثة (الفسيولوجي، السيكولوجي، والاجتماعي).
+3. الحوار: الإيقاع، الدلالة، والصراع الداخلي والخارجي.
+
+• منهجية تحليل النص المسرحي:
+- تفكيك الوحدات الدرامية وتحديد الهدف الخفي (Subtext) وراء كل جملة حوارية.
+''',
     },
     {
       'title': 'مكتبة النصوص العالمية',
-      'description': 'استعراض وقراءة أبرز النصوص والمسرحيات العالمية والعربية.',
+      'description': 'استعراض وقراءة أبرز النصوص والمسرحيات العالمية والعربية الخالدة.',
       'icon': Icons.library_books,
+      'content': '''
+• أبرز النصوص المسرحية العالمية:
+- هاملت، الملك لير، ومكبت (وليام شكسبير).
+- في انتظار غودو (صموئيل بيكيت).
+- حدائق الكرز (أنطون تشيخوف).
+- بيت الارهن (هنريك إبسن).
+
+• أبرز النصوص المسرحية العربية:
+- مسرحيات توفيق الحكيم (أهل الكهف، ششهرزاد).
+- مسرحيات سعد الله ونوس (مملكة الهنواش، حفلة سمر من أجل خمسة حزيران).
+- مسرحيات ألفريد فرج (علي الزيبق، سليمان الحلبي).
+''',
     },
   ];
 
@@ -110,79 +160,8 @@ class DepartmentDetailScreen extends StatefulWidget {
 }
 
 class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
-  final TextEditingController _questionController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
-
-  late final List<Map<String, String>> _chatMessages;
   final List<String> _userNotes = [];
-  bool _isLoading = false;
-
-  static const String _geminiApiKey = 'AIzaSyAQAb8RN6Jplf6NeY3N-S9UAmOD7HU8yIjelaHsNYqNwNVP2e2GHg';
-
-  @override
-  void initState() {
-    super.initState();
-    _chatMessages = [
-      {
-        'sender': 'ai',
-        'text': 'أهلاً بك في ${widget.department['title']}. اسألني عن أي تفصيل في المسرح وسأجيبك بعمق واحترافية.'
-      }
-    ];
-  }
-
-  Future<void> _sendToGemini(String prompt) async {
-    if (prompt.trim().isEmpty) return;
-
-    setState(() {
-      _chatMessages.add({'sender': 'user', 'text': prompt});
-      _isLoading = true;
-    });
-    _questionController.clear();
-
-    try {
-      final url = Uri.parse(
-        'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$_geminiApiKey',
-      );
-
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          "contents": [
-            {
-              "parts": [
-                {
-                  "text": "أنت مساعد أكاديمي متخصص في المسرح والفنون الدرامية. أجب باحترافية وعمق عن السؤال التالي المتعلق بـ ${widget.department['title']}: $prompt"
-                }
-              ]
-            }
-          ]
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        final candidate = data['candidates']?[0];
-        final textResponse = candidate?['content']?['parts']?[0]?['text'] ?? 'عذراً، لم أتمكن من صياغة إجابة.';
-        
-        setState(() {
-          _chatMessages.add({'sender': 'ai', 'text': textResponse});
-        });
-      } else {
-        setState(() {
-          _chatMessages.add({'sender': 'ai', 'text': 'خطأ في الاتصال بالخادم (${response.statusCode})'});
-        });
-      }
-    } catch (e) {
-      setState(() {
-        _chatMessages.add({'sender': 'ai', 'text': 'خطأ في الاستثناء: $e'});
-      });
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
 
   void _saveNote() {
     if (_notesController.text.trim().isNotEmpty) {
@@ -202,63 +181,35 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
           title: Text(widget.department['title']),
           bottom: const TabBar(
             tabs: [
-              Tab(icon: Icon(Icons.smart_toy), text: 'المساعد الذكي'),
+              Tab(icon: Icon(Icons.menu_book), text: 'الموسوعة والدراسات'),
               Tab(icon: Icon(Icons.note), text: 'ملاحظاتي'),
             ],
           ),
         ),
         body: TabBarView(
           children: [
-            Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: _chatMessages.length,
-                    itemBuilder: (context, index) {
-                      final msg = _chatMessages[index];
-                      final isUser = msg['sender'] == 'user';
-                      return Align(
-                        alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(vertical: 6),
-                          padding: const EdgeInsets.all(12),
-                          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
-                          decoration: BoxDecoration(
-                            color: isUser ? Colors.amber.shade800 : Colors.grey.shade800,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(msg['text'] ?? '', style: const TextStyle(color: Colors.white)),
-                        ),
-                      );
-                    },
+            // تاب الموسوعة الأكاديمية الشاملة
+            SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: Card(
+                color: const Color(0xFF1E1E1E),
+                elevation: 4,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Text(
+                    widget.department['content'] ?? 'لا توجد محتويات إضافية حالياً.',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      height: 1.8,
+                      color: Colors.white70,
+                    ),
+                    textDirection: TextDirection.rtl,
                   ),
                 ),
-                if (_isLoading) const LinearProgressIndicator(color: Colors.amber),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  color: Colors.black45,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _questionController,
-                          decoration: const InputDecoration(
-                            hintText: 'اسألني عن أي تفصيل في المسرح...',
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.symmetric(horizontal: 8),
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.send, color: Colors.amber),
-                        onPressed: () => _sendToGemini(_questionController.text),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+              ),
             ),
+            // تاب الملاحظات الشخصية
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -269,7 +220,7 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
                         child: TextField(
                           controller: _notesController,
                           decoration: const InputDecoration(
-                            labelText: 'اكتب ملاحظة مسرحية...',
+                            labelText: 'اكتب ملاحظة أو فكرة مسرحية...',
                             border: OutlineInputBorder(),
                           ),
                         ),
