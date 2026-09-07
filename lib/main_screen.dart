@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'texts_library_screen.dart';
 import 'directing_screen.dart';
 import 'acting_screen.dart';
+import 'decor_screen.dart';
 import 'scenography_screen.dart';
 import 'costumes_screen.dart';
 import 'lighting_screen.dart';
@@ -93,7 +94,12 @@ class MainScreen extends StatelessWidget {
                       icon: Icons.chair_rounded,
                       color: Colors.pink.shade700,
                       onTap: () {
-                        // الانتقال لقسم الديكور لاحقاً
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const DecorScreen(),
+                          ),
+                        );
                       },
                     ),
                     _buildAcademyCard(
