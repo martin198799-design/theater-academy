@@ -4,6 +4,7 @@ import 'directing_screen.dart';
 import 'acting_screen.dart';
 import 'scenography_screen.dart';
 import 'costumes_screen.dart';
+import 'lighting_screen.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -129,7 +130,12 @@ class MainScreen extends StatelessWidget {
                       icon: Icons.lightbulb_rounded,
                       color: Colors.indigo.shade700,
                       onTap: () {
-                        // الانتقال لقسم الإضاءة لاحقاً
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LightingScreen(),
+                          ),
+                        );
                       },
                     ),
                   ],
