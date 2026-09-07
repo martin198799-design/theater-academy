@@ -1,33 +1,29 @@
 import 'package:flutter/material.dart';
+import 'topic_detail_screen.dart';
 
 class DecorScreen extends StatelessWidget {
   const DecorScreen({super.key});
 
   final List<Map<String, String>> decorTopics = const [
     {
-      'title': 'تصميم المنظر المسرحي (Set Design)',
-      'description': 'الأسس الهندسية والبصرية لتشكيل الفضاء المسرحي بما يخدم الرؤية الإخراجية.',
-      'category': 'الأسس الهندسية'
+      'title': 'تصميم الفضاء المسرحي',
+      'description': 'دراسة الكتلة والفراغ، وتوزيع العناصر البصرية لخلق بيئة درامية متكاملة.',
+      'category': 'التصميم البصري'
     },
     {
-      'title': 'المسرح الواقعي والتسجيلي',
-      'description': 'إعادة بناء الواقع بدقة على الخشبة لنقل بيئة الأحداث بتفاصيلها المعمارية.',
-      'category': 'المدارس الواقعية'
+      'title': 'المواد والتقنيات التنفيذية',
+      'description': 'استخدام الخامات المختلفة في بناء الديكور وتشكيل الخلفيات المسرحية.',
+      'category': 'التقنيات والهندسة'
     },
     {
-      'title': 'الديكور التعبيري والرمزى',
-      'description': 'الاستغناء عن التفاصيل الزائدة والتركيز على قطع دلالية تحمل أبعاداً نفسية وفلسفية.',
-      'category': 'الاتجاهات الحديثة'
+      'title': 'الوظيفة الدرامية للديكور',
+      'description': 'كيف يخدم الديكور صراع الشخصيات ويعكس أبعادها النفسية والاجتماعية.',
+      'category': 'الدراسات الجمالية'
     },
     {
-      'title': 'الكتل المتحركة وأنظمة التغيير السريع',
-      'description': 'تقنيات استخدام البانوراما، العربات المتحركة، والديكور الدوار لتغيير المشاهد بسلاسة.',
-      'category': 'التقنيات التنفيذية'
-    },
-    {
-      'title': 'الخامات والخدع البصرية المسرحية',
-      'description': 'توظيف مواد البناء الخفيفة (الخشب، الفوم، الأقمشة المعالجة) لخلق إيحاءات مادية خادعة.',
-      'category': 'الورش والتقنيات'
+      'title': 'الديكور التعبيري والواقعي',
+      'description': 'الفرق بين المدارس الواقعية والمجرّدة في التشكيل البصري للمسرحية.',
+      'category': 'المدارس الفنية'
     },
   ];
 
@@ -49,57 +45,73 @@ class DecorScreen extends StatelessWidget {
         itemCount: decorTopics.length,
         itemBuilder: (context, index) {
           final topic = decorTopics[index];
-          return Container(
-            margin: const EdgeInsets.only(bottom: 16),
-            decoration: BoxDecoration(
-              color: const Color(0xFF1E1E1E),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.pink.shade700.withOpacity(0.4), width: 1.5),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    textDirection: TextDirection.rtl,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.pink.shade900.withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(6),
+          return InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TopicDetailScreen(
+                    title: topic['title']!,
+                    description: topic['description']!,
+                    category: topic['category']!,
+                    themeColor: Colors.pink,
+                  ),
+                ),
+              );
+            },
+            borderRadius: BorderRadius.circular(16),
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: const Color(0xFF1E1E1E),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: Colors.pink.shade700.withOpacity(0.4), width: 1.5),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      textDirection: TextDirection.rtl,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.pink.shade900.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            topic['category']!,
+                            style: TextStyle(color: Colors.pink.shade300, fontSize: 11),
+                          ),
                         ),
-                        child: Text(
-                          topic['category']!,
-                          style: TextStyle(color: Colors.pink.shade300, fontSize: 11),
-                        ),
+                        Icon(Icons.chair_rounded, color: Colors.pink.shade400, size: 22),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      topic['title']!,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
-                      Icon(Icons.chair_rounded, color: Colors.pink.shade400, size: 22),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    topic['title']!,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                      textDirection: TextDirection.rtl,
                     ),
-                    textDirection: TextDirection.rtl,
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    topic['description']!,
-                    style: const TextStyle(
-                      color: Colors.white54,
-                      fontSize: 13,
-                      height: 1.4,
+                    const SizedBox(height: 6),
+                    Text(
+                      topic['description']!,
+                      style: const TextStyle(
+                        color: Colors.white54,
+                        fontSize: 13,
+                        height: 1.4,
+                      ),
+                      textDirection: TextDirection.rtl,
                     ),
-                    textDirection: TextDirection.rtl,
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );
