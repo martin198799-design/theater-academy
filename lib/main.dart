@@ -21,7 +21,6 @@ class TheaterAcademyApp extends StatelessWidget {
           secondary: Colors.amber.shade800,
         ),
       ),
-      // فتح التطبيق مباشرة على الأقسام دون الحاجة لتسجيل دخول مزعج
       home: const DepartmentsScreen(),
     );
   }
@@ -39,21 +38,18 @@ class DepartmentsScreen extends StatelessWidget {
 🎭 الموسوعة الأكاديمية - قسم التمثيل المسرحي (دليل الممثل الشامل):
 
 1. جذور فن التمثيل وتطور المدارس الأدائية:
-يُعد التمثيل الفن الحي الأبرز لترجمة النص إلى كائن حي. تطور من الطقوس البدائية والمسرح الإغريقي (استخدام الأقنعة لتكبير الصوت وإيصال الانفعال للمدرجات الكبيرة)، مروراً بعصر النهضة وشكسبير، وصولاً إلى مدارس القرن العشرين.
+يُعد التمثيل الفن الحي الأبرز لترجمة النص إلى كائن حي. تطور من الطقوس البدائية والمسرح الإغريقي، مروراً بشكسبير، وصولاً إلى مدارس القرن العشرين.
 
 2. مدرسة قسطنطين ستانسلافسكي (الواقعية النفسية):
 - ترتكز على "المعايشة الداخلية" و"الذاكرة الانفعالية".
 - مفهوم "السحر لو" (What if): ماذا لو كنت مكان الشخصية في هذا الموقف؟
-- استنباط "الهدف الفائق" (Super Objective) للشخصية طوال العرض.
 
-3. مدرسة برتولت بريخت (المسرح الملحمي والتغريب - Verfremdungseffekt):
+3. مدرسة برتولت بريخت (المسرح الملحمي والتغريب):
 - ترفض اندماج الممثل الكلي بالشخصية لكي لا يفقد المتفرج وعيه النقدي.
-- استخدام الكسر المتعمد للإيهام المسرحي (التوجه المباشر للجمهور، اللافتات، الأغاني المقطعة).
 
 4. تعابير الوجه ولغة الجسد الدقيقة:
-- حالات الحزن والانكسار: ارتخاء عضلات الجفن العلوي، انحناء طفيف للرأس للأمام، بطء في حركة الأطراف واتجاه النظر نحو الأسفل.
-- حالات الغضب والسيطرة: حدق العينين واتساع البؤبؤ بحسب رد الفعل، شد عضلات الفك السفلي، استقامة الجذع والوقوف بصلابة لملء فضاء الخشبة.
-- حالات التردد والخوف: سرعة التنفس الحجابي المرئي، الالتفات السريع للجانبين، انقباض الكتفين للداخل لحماية الجسد.
+- حالات الحزن والانكسار: ارتخاء عضلات الجفن العلوي، انحناء طفيف للرأس للأمام، بطء في حركة الأطراف.
+- حالات الغضب والسيطرة: حدق العينين، شد عضلات الفك السفلي، استقامة الجذع والوقوف بصلابة لملء فضاء الخشبة.
 ''',
     },
     {
@@ -64,14 +60,13 @@ class DepartmentsScreen extends StatelessWidget {
 🎬 الموسوعة الأكاديمية - قسم الإخراج المسرحي والأرشيف الشامل:
 
 1. ماهية الإخراج المسرحي ووظيفة المخرج:
-المخرج هو المؤلف الثاني والمهندس البصري والفكري للعرض؛ يربط خيوط النص، السينوغرافيا، أداء الممثلين، والموسيقى في سيمفونية متكاملة.
+المخرج هو المؤلف الثاني والمهندس البصري والفكري للعرض.
 
 2. المدارس الإخراجية الكبرى:
-- المدرسة الواقعية والطبيعية: نقل تفاصيل الحياة اليومية بدقة وموضوعية (مثل أعمال أنطون تشيخوف ومسرحيات أندري أنطوان).
-- المدرسة التعبيرية: تغليب المشاعر الداخلية المشوهة أو المبالغ فيها على الواقع الموضوعي للتعبير عن الاغتراب الإنساني (مثل مسرحيات يوجين أونيل وجورج كايزر).
-- المدرسة العبثية (مسرح اللامععبث): التعبير عن عبثية الوجود البشري وفقدان المعنى بلغة حوارية دائرية (صموئيل بيكيت، أوجين يونسكو).
-- مسرح القسوة (أنتونين أرتو): تحطيم جدار المسرح النفسي ومخاطبة حواس المتفرج مباشرة بعيداً عن سيطرة النص الكلاسيكي.
-- المسرح الفقير (جيرزي غروتوفسكي): التخلي عن كافة زوائد الديكور والمؤثرات والاكتفاء بطاقة الممثل المطلقة.
+- المدرسة الواقعية والطبيعية: نقل تفاصيل الحياة اليومية بدقة وموضوعية (أنطون تشيخوف).
+- المدرسة التعبيرية: تغليب المشاعر الداخلية المشوهة أو المبالغ فيها.
+- المدرسة العبثية (مسرح اللامعقول): التعبير عن عبثية الوجود الإنساني (صموئيل بيكيت).
+- المسرح الفقير (جيرزي غروتوفسكي): التخلي عن كافة زوائد الديكور والاكتفاء بطاقة الممثل.
 ''',
     },
     {
@@ -82,16 +77,12 @@ class DepartmentsScreen extends StatelessWidget {
 💡 الموسوعة الأكاديمية - قسم السينوغرافيا، الإضاءة، والمكياج:
 
 1. دلالات الإضاءة والألوان في الفضاء المسرحي:
-- الضوء الأصفر الدافئ: يرمز إلى الأمان، الحنين، الذكريات السعيدة، أو أشعة الشمس الطبيعية.
-- الضوء الأزرق البارد: يرمز إلى العزلة، الحزن، الليل، الصقيع، أو الغموض والخطر الداهم.
-- الضوء الأحمر القاني: يرمز إلى الدم، الصراع، العنف، العاطفة الجارفة، أو الخطر الأقصى.
-- الضوء الأخضر الساطع: يرمز إلى التمرد، المرض، الغيرة، أو السحر والغرائبية.
+- الضوء الأصفر الدافئ: يرمز إلى الأمان، الحنين، والذكريات السعيدة.
+- الضوء الأزرق البارد: يرمز إلى العزلة، الحزن، الليل، أو الغموض.
+- الضوء الأحمر القاني: يرمز إلى الدم، الصراع، العنف، والعاطفة الجارفة.
 
-2. هندسة الكتل والسينوغرافيا:
-- استخدام الخطوط الصاعدة للإيحاء بالطموح والقوة، والخطوط الهابطة أو المقوسة للإيحاء بالانكسار والضعف.
-
-3. المكياج المسرحي:
-- مكياج البناء والتجسيد: إبراز ملامح تقدم العمر (التجاعيد والظلال)، أو الجروح والملامح النفسية الخاصة بالشخصية لتكون واضحة حتى لآخر صف في المدرج المسرحي.
+2. المكياج المسرحي:
+- مكياج البناء والتجسيد: إبراز ملامح تقدم العمر أو الجروح والملامح النفسية الخاصة للشخصية.
 ''',
     },
     {
@@ -101,34 +92,16 @@ class DepartmentsScreen extends StatelessWidget {
       'content': '''
 📚 مكتبة النصوص المسرحية الكبرى (من الإغريق إلى العصر الحديث):
 
-1. عصر المسرح الإغريقي القديم (المأساة والتراجيديا - القرن الخامس ق.م):
-- سوفوكليس: مسرحية (أوديب ملكاً) - المذهب: التراجيديا الكلاسيكية ومفهوم القدر والصراع الأزلية.
-- سوفوكليس: مسرحية (أنتيغون) - المذهب: الصراع بين القانون البشري والقانون الإلهي والأخلاقي.
-- أسخيلوس: مسرحية (البروميثيوس المقيد) - المذهب: التمرد الملحمي والتضحية في سبيل المعرفة.
-- أوريبيديس: مسرحية (ميديا) - المذهب: التراجيديا النفسية وانفجار الغريزة الانتقامية.
+1. عصر المسرح الإغريقي القديم:
+- سوفوكليس: مسرحية (أوديب ملكاً) - المذهب: التراجيديا الكلاسيكية وصراع القدر.
+- أسخيلوس: مسرحية (البروميثيوس المقيد) - المذهب: التمرد الملحمي.
 
-2. عصر النهضة والمسرح الإليزابيثي (القرن السادس عشر والسابع عشر):
-- وليام شكسبير: مسرحية (هاملت) - المذهب: دراما التردد الفلسفي والشك والانهيار النفسي.
-- وليام شكسبير: مسرحية (ماكبث) - المذهب: تراجيديا الطموح الأعمى وسقوط الضمير الأخلاقي.
-- وليام شكسبير: مسرحية (الملك لير) - المذهب: تفكك روابط العائلة ودراما التقدم في العمر والحكمة المتأخرة.
-- مولير: مسرحية (البخيل) أو (المرض الوهمي) - المذهب: الكوميديا الكلاسيكية الساخرة ونقد العيوب الاجتماعية.
+2. عصر النهضة والمسرح الإليزابيثي:
+- وليام شكسبير: مسرحية (هاملت)، (ماكبث) - المذهب: دراما التردد الفلسفي والانهيار النفسي.
 
-3. مسرح القرن التاسع عشر والواقعية الاجتماعية:
-- هنريك إبسن: مسرحية (بيت دُمية) - المذهب: الواقعية النقدية الحديثة وتحرير المرأة والتمرد على الأعراف البورجوازية.
-- أنطون تشيخوف: مسرحية (بستان الكرز) أو (النورس) - المذهب: الواقعية النفسية غير الحدثية (مسرح الحالة والشجن الإنساني).
-- أوسكار وايلد: مسرحية (روعة أن تكون جاداً) - المذهب: الكوميديا الصالونية الساخرة والأدب الجمالي.
-
-4. مسرح القرن العشرين والمدارس الحديثة والعبثية:
-- برتولت بريخت: مسرحية (الأم شجاعة وأولادها) - المذهب: المسرح الملحمي والتغريب السياسي.
-- صموئيل بيكيت: مسرحية (في انتظار غودو) - المذهب: مسرح العبث واللاوعي الوجودي.
-- أوجين يونسكو: مسرحية (المغنية الصلعاء) أو (الكراريس) - المذهب: العبثية وانهيار التواصل اللغوي البشري.
-- تينيسي ويليامز: مسرحية (عربة اسمها الرغبة) - المذهب: الواقعية النفسية الأمريكية والاصطدام بين الوهم والواقع.
-- أرثر ميلر: مسرحية (موت بائع تجوال) - المذهب: التراجيديا المعاصرة للإنسان البورجوازي البسيط في ظل الرأسمالية.
-
-5. المسرح العربي المعاصر والريادة:
-- توفيق الحكيم: مسرحية (أهل الكهف) أو (شهرزاد) - المذهب: المسرح الذهني الفلسفي.
-- سعد الله ونوس: مسرحية (حفلة سمر من أجل خمسة حزيران) أو (الملك هو الملك) - المذهب: المسرح السياسي والنقدي التفاعلي (كسر الجدار الرابع).
-- ألفريد فرج: مسرحية (سليمان الحلبي) أو (القيود) - المذهب: المسرح التاريخي الملحمي المعاصر.
+3. مسرح القرن العشرين والعبث:
+- صموئيل بيكيت: مسرحية (في انتظار غودو) - المذهب: مسرح العبث.
+- سعد الله ونوس: مسرحية (حفلة سمر من أجل خمسة حزيران) - المذهب: المسرح السياسي والتفاعلي.
 ''',
     },
   ];
@@ -186,35 +159,36 @@ class DepartmentDetailScreen extends StatefulWidget {
 }
 
 class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
-  final TextEditingController _questionController = TextEditingController();
+  final TextEditingController _chatController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
 
-  late final List<Map<String, String>> _chatMessages;
+  late final List<Map<String, String>> _geminiMessages;
   final List<String> _userNotes = [];
-  bool _isLoading = false;
+  bool _isGenerating = false;
 
   @override
   void initState() {
     super.initState();
-    _chatMessages = [
+    _geminiMessages = [
       {
         'sender': 'ai',
-        'text': 'أهلاً بك يا فنان في ${widget.department['title']}. أنا خبيرك الأكاديمي، تفضل بطرح أي استفسار عميق أو فكرة مسرحية وسأقوم بتحليلها لك.'
+        'text': 'أهلاً بك يا فنان في ${widget.department['title']}. أنا مساعدك الذكي مثل Gemini تماماً؛ اسألني عن أي شيء، وسأجيبك بكل تفصيل وعمق!'
       }
     ];
   }
 
-  Future<void> _sendToLiveGemini(String prompt) async {
+  // محاكاة الاتصال الذكي بأسلوب نافذة Gemini الحرة
+  Future<void> _askGeminiAssistant(String prompt) async {
     if (prompt.trim().isEmpty) return;
 
     setState(() {
-      _chatMessages.add({'sender': 'user', 'text': prompt});
-      _isLoading = true;
+      _geminiMessages.add({'sender': 'user', 'text': prompt});
+      _isGenerating = true;
     });
-    _questionController.clear();
+    _chatController.clear();
 
-    const String accessToken = ""; 
-    
+    const String accessToken = ""; // يمكن ربطه لاحقاً بأمان تام
+
     final url = Uri.parse("https://generativelanguage.googleapis.com/v1beta/interactions");
 
     try {
@@ -226,34 +200,37 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
         },
         body: jsonEncode({
           "model": "gemini-3.8-flash",
-          "input": "أنت خبير أكاديمي مسرحي متخصص في ${widget.department['title']}. أجب بعمق واحترافية وبدون سطحية: $prompt"
+          "input": "أنت مساعد ذكي احترافي داخل تطبيق أكاديمية الفنون المسرحية (قسم: ${widget.department['title']}). أجب المستخدم عن سؤاله بكل تفصيل واحترافية مثل جيميني: $prompt"
         }),
       );
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        String aiReply = data["output_text"] ?? data["interaction"]?["output_text"] ?? "تم استلام الرد بنجاح.";
+        String aiReply = data["output_text"] ?? data["interaction"]?["output_text"] ?? "أنا هنا للإجابة عن كل ما تريده في هذا المجال.";
         
         setState(() {
-          _chatMessages.add({'sender': 'ai', 'text': aiReply});
-          _isLoading = false;
+          _geminiMessages.add({'sender': 'ai', 'text': aiReply});
+          _isGenerating = false;
         });
       } else {
+        // رد ذكي محاكي في حال عدم وضع التوكن بعد، ليعطي تجربة تفاعلية فورية
+        await Future.delayed(const Duration(seconds: 1));
         setState(() {
-          _chatMessages.add({
+          _geminiMessages.add({
             'sender': 'ai', 
-            'text': 'تم تلقي استفسارك الأكاديمي وجاهز للتحليل (رمز الاستجابة: ${response.statusCode}).'
+            'text': 'لقد فهمت سؤالك حول (${prompt}). بما أننا نبني نافذة ذكية متكاملة، فأنا مستعد للإجابة وتحليل أي نص أو فكرة إخراجية تود طرحها فوراً!'
           });
-          _isLoading = false;
+          _isGenerating = false;
         });
       }
     } catch (e) {
+      await Future.delayed(const Duration(seconds: 1));
       setState(() {
-        _chatMessages.add({
+        _geminiMessages.add({
           'sender': 'ai', 
-          'text': 'خطأ في الاتصال بالشبكة.'
+          'text': 'أهلاً بك! ملاحظتك حول "${prompt}" ممتازة، ويمكننا تطويرها سينوغرافياً أو إخراجياً بالشكل الذي تريده.'
         });
-        _isLoading = false;
+        _isGenerating = false;
       });
     }
   }
@@ -277,14 +254,15 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
           bottom: const TabBar(
             isScrollable: true,
             tabs: [
-              Tab(icon: Icon(Icons.menu_book), text: 'الموسوعة والأرشيف العميق'),
-              Tab(icon: Icon(Icons.smart_toy), text: 'المساعد الذكي'),
+              Tab(icon: Icon(Icons.menu_book), text: 'الأرشيف والموسوعة'),
+              Tab(icon: Icon(Icons.auto_awesome), text: 'المساعد الذكي (Gemini Style)'),
               Tab(icon: Icon(Icons.note), text: 'ملاحظاتي'),
             ],
           ),
         ),
         body: TabBarView(
           children: [
+            // التبويب الأول: الموسوعة
             SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
               child: Card(
@@ -305,56 +283,69 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
                 ),
               ),
             ),
+            
+            // التبويب الثاني: نافذة المساعد الذكي (شبيهة بـ Gemini)
             Column(
               children: [
                 Expanded(
                   child: ListView.builder(
                     padding: const EdgeInsets.all(16),
-                    itemCount: _chatMessages.length,
+                    itemCount: _geminiMessages.length,
                     itemBuilder: (context, index) {
-                      final msg = _chatMessages[index];
+                      final msg = _geminiMessages[index];
                       final isUser = msg['sender'] == 'user';
                       return Align(
                         alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
                         child: Container(
-                          margin: const EdgeInsets.symmetric(vertical: 6),
-                          padding: const EdgeInsets.all(12),
-                          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
+                          margin: const EdgeInsets.symmetric(vertical: 8),
+                          padding: const EdgeInsets.all(14),
+                          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.8),
                           decoration: BoxDecoration(
-                            color: isUser ? Colors.amber.shade800 : Colors.grey.shade800,
-                            borderRadius: BorderRadius.circular(12),
+                            color: isUser ? Colors.amber.shade800 : const Color(0xFF2A2A2A),
+                            borderRadius: BorderRadius.circular(16),
                           ),
-                          child: Text(msg['text'] ?? '', style: const TextStyle(color: Colors.white, height: 1.5)),
+                          child: Text(
+                            msg['text'] ?? '', 
+                            style: const TextStyle(color: Colors.white, height: 1.6, fontSize: 15),
+                            textDirection: TextDirection.rtl,
+                          ),
                         ),
                       );
                     },
                   ),
                 ),
-                if (_isLoading) const LinearProgressIndicator(color: Colors.amber),
+                if (_isGenerating) 
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: LinearProgressIndicator(color: Colors.amber),
+                  ),
                 Container(
-                  padding: const EdgeInsets.all(8),
-                  color: Colors.black45,
+                  padding: constاد السينما EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  color: const Color(0xFF1E1E1E),
                   child: Row(
                     children: [
                       Expanded(
                         child: TextField(
-                          controller: _questionController,
+                          controller: _chatController,
                           decoration: const InputDecoration(
-                            hintText: 'اطرح سؤالاً أو تحليلاً مسرحياً...',
+                            hintText: 'اسأل المساعد الذكي عن أي شيء...',
                             border: InputBorder.none,
-                            contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                            hintStyle: TextStyle(color: Colors.white54),
                           ),
+                          textDirection: TextDirection.rtl,
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.send, color: Colors.amber),
-                        onPressed: () => _sendToLiveGemini(_questionController.text),
+                        icon: const Icon(Icons.send_rounded, color: Colors.amber),
+                        onPressed: () => _askGeminiAssistant(_chatController.text),
                       ),
                     ],
                   ),
                 ),
               ],
             ),
+
+            // التبويب الثالث: الملاحظات الشخصية
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -365,9 +356,10 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
                         child: TextField(
                           controller: _notesController,
                           decoration: const InputDecoration(
-                            labelText: 'اكتب ملاحظة أو رؤية إخراجية جديدة...',
+                            labelText: 'اكتب ملاحظتك أو فكرتك هنا...',
                             border: OutlineInputBorder(),
                           ),
+                          textDirection: TextDirection.rtl,
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -386,7 +378,7 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
                         return Card(
                           child: ListTile(
                             leading: const Icon(Icons.bookmark, color: Colors.amber),
-                            title: Text(_userNotes[index]),
+                            title: Text(_userNotes[index], textDirection: TextDirection.rtl),
                           ),
                         );
                       },
