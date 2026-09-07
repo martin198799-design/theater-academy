@@ -13,56 +13,39 @@ class _TheaterAssistantScreenState extends State<TheaterAssistantScreen> {
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
-  // سجل المحادثة يبدأ برسالة ترحيبية من الأكاديمية
   final List<Map<String, String>> _messages = [
     {
       'role': 'assistant',
-      'content': 'أهلاً بك يا فنان في أكاديمية المسرح. أنا مساعدك الذكي المتخصص في شؤون التمثيل، الإخراج، النصوص، والسينوغرافيا. كيف يمكنني إفادتك اليوم؟'
+      'content': 'أهلاً بك يا فنان في أكاديمية المسرح. أنا مساعدك الذكي المتخصص في شؤون التمثيل، الإخراج، والنصوص. كيف يمكنني إفادتك اليوم؟'
     }
   ];
 
   bool _isLoading = false;
 
-  // ضع هنا مفتاح الـ API الخاص بك (مثلاً مفتاح OpenRouter أو OpenAI المدعم)
-  final String _apiKey = 'SUBSCRIBE_OR_PUT_YOUR_API_KEY_HERE';
+  // تم وضع المفتاح الخاص بك في المكان الصحيح هنا
+  final String _apiKey = 'AQ.Ab8RN6Ks2WgcUNll_Z00tHiqRQBYDmbTedEKCdUg5bQhbChAwA';
 
-  Future<void> _callRealAI(String userMessage) async {
-    if (_apiKey.contains('YOUR_API_KEY') || _apiKey.isEmpty) {
-      setState(() {
-        _messages.add({
-          'role': 'assistant',
-          'content': 'عذراً يا فنان، يرجى إدخال مفتاح الـ API الصحيح في الكود لكي أتمكن من الاتصال بالذكاء الاصطناعي الحقيقي.'
-        });
-        _isLoading = false;
-      });
-      _scrollToBottom();
-      return;
-    }
-
+  Future<void> _callGeminiAI(String userMessage) async {
     try {
-      // استخدام نقطة اتصال مرنة (مثل OpenRouter أو OpenAI API)
+      final url = Uri.parse('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$_apiKey');
+      
       final response = await http.post(
-        Uri.parse('https://api.openai.com/v1/chat/completions'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $_apiKey',
-        },
+        url,
+        headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'model': 'gpt-3.5-turbo',
-          'messages': [
+          "contents": [
             {
-              'role': 'system',
-              'content': 'أنت مساعد ذكي ومتخصص وخبير في الفنون المسرحية (التمثيل، الإخراج، كتابة النصوص، والسينوغرافيا). أجب المبتدئين والمحترفين بدقة وإبداع واحترافية باللغة العربية.'
-            },
-            ..._messages.map((m) => {'role': m['role'], 'content': m['content']}),
-          ],
-          'temperature': 0.7,
+              "parts": [
+                {"text": "أنت مساعد ذكي وخبير في الفنون المسرحية (التمثيل، الإخراج، كتابة النصوص، والسينوغرافيا). أجب المبتدئين والمحترفين بدقة وإبداع باللغة العربية.\n\nالسؤال: $userMessage"}
+              ]
+            }
+          ]
         }),
       );
 
       if (response.statusCode == 200) {
         final data = jsonDecode(utf8.decode(response.bodyBytes));
-        final aiReply = data['choices'][0]['message']['content'].trim();
+        final aiReply = data['candidates'][0]['content']['parts'][0]['text'].trim();
 
         setState(() {
           _messages.add({'role': 'assistant', 'content': aiReply});
@@ -72,7 +55,7 @@ class _TheaterAssistantScreenState extends State<TheaterAssistantScreen> {
         setState(() {
           _messages.add({
             'role': 'assistant',
-            'content': 'عذراً، حدث خطأ في الاستجابة من الخادم (رمز الخطأ: ${response.statusCode}). تحقق من رصيد المفتاح أو اتصالك.'
+            'content': 'عذراً، حدث خطأ في الاتصال (رمز الخطأ: ${response.statusCode}). تأكد من صحة المفتاح.'
           });
           _isLoading = false;
         });
@@ -81,7 +64,7 @@ class _TheaterAssistantScreenState extends State<TheaterAssistantScreen> {
       setState(() {
         _messages.add({
           'role': 'assistant',
-          'content': 'تعذر الاتصال بالخادم. تأكد من اتصالك بالإنترنت وحاول مرة أخرى.'
+          'content': 'تعذر الاتصال بالخادم. تأكد من اتصالك بالإنترنت.'
         });
         _isLoading = false;
       });
@@ -100,9 +83,7 @@ class _TheaterAssistantScreenState extends State<TheaterAssistantScreen> {
     });
 
     _scrollToBottom();
-
-    // إرسال الطلب للذكاء الاصطناعي الحقيقي
-    _callRealAI(text);
+    _callGeminiAI(text);
   }
 
   void _scrollToBottom() {
@@ -122,7 +103,7 @@ class _TheaterAssistantScreenState extends State<TheaterAssistantScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFF121212),
       appBar: AppBar(
-        title: const Text('المساعد المسرحي الذكي (AI)', style: TextStyle(color: Colors.white)),
+        title: const Text('المساعد المسرحي الذكي (Gemini)', style: TextStyle(color: Colors.white)),
         centerTitle: true,
         backgroundColor: const Color(0xFF1E1E1E),
         iconTheme: const IconThemeData(color: Colors.white),
