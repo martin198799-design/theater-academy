@@ -37,7 +37,7 @@ class MainScreen extends StatelessWidget {
                   crossAxisCount: 2,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
-                  childAspectRatio: 1.1,
+                  childAspectRatio: 1.05,
                   children: [
                     _buildAcademyCard(
                       title: 'مكتبة النصوص',
@@ -45,7 +45,7 @@ class MainScreen extends StatelessWidget {
                       icon: Icons.menu_book_rounded,
                       color: Colors.amber.shade800,
                       onTap: () {
-                        // الانتقال لشاشة مكتبة النصوص
+                        // الانتقال لقسم النصوص
                       },
                     ),
                     _buildAcademyCard(
@@ -54,7 +54,7 @@ class MainScreen extends StatelessWidget {
                       icon: Icons.movie_filter_rounded,
                       color: Colors.blue.shade700,
                       onTap: () {
-                        // الانتقال لشاشة الإخراج
+                        // الانتقال لقسم الإخراج
                       },
                     ),
                     _buildAcademyCard(
@@ -63,7 +63,16 @@ class MainScreen extends StatelessWidget {
                       icon: Icons.theater_comedy_rounded,
                       color: Colors.purple.shade700,
                       onTap: () {
-                        // الانتقال لشاشة التمثيل
+                        // الانتقال لقسم التمثيل
+                      },
+                    ),
+                    _buildAcademyCard(
+                      title: 'الديكور المسرحي',
+                      subtitle: 'التصميم والتشكيل البصري',
+                      icon: Icons.chair_rounded,
+                      color: Colors.pink.shade700,
+                      onTap: () {
+                        // الانتقال لقسم الديكور
                       },
                     ),
                     _buildAcademyCard(
@@ -72,7 +81,7 @@ class MainScreen extends StatelessWidget {
                       icon: Icons.architecture_rounded,
                       color: Colors.teal.shade700,
                       onTap: () {
-                        // الانتقال لشاشة السينوغرافيا
+                        // الانتقال لقسم السينوغرافيا
                       },
                     ),
                     _buildAcademyCard(
@@ -81,7 +90,7 @@ class MainScreen extends StatelessWidget {
                       icon: Icons.checkroom_rounded,
                       color: Colors.deepOrange.shade700,
                       onTap: () {
-                        // الانتقال لشاشة الأزياء
+                        // الانتقال لقسم الأزياء
                       },
                     ),
                     _buildAcademyCard(
@@ -90,7 +99,7 @@ class MainScreen extends StatelessWidget {
                       icon: Icons.lightbulb_rounded,
                       color: Colors.indigo.shade700,
                       onTap: () {
-                        // الانتقال لشاشة الإضاءة
+                        // الانتقال لقسم الإضاءة
                       },
                     ),
                   ],
@@ -124,13 +133,13 @@ class MainScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Icon(icon, color: color, size: 32),
+            Icon(icon, color: color, size: 30),
             const Spacer(),
             Text(
               title,
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 16,
+                fontSize: 15,
                 fontWeight: FontWeight.bold,
               ),
               textDirection: TextDirection.rtl,
@@ -142,7 +151,7 @@ class MainScreen extends StatelessWidget {
               subtitle,
               style: const TextStyle(
                 color: Colors.white54,
-                fontSize: 12,
+                fontSize: 11,
               ),
               textDirection: TextDirection.rtl,
               maxLines: 2,
