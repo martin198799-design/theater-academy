@@ -82,7 +82,7 @@ class DepartmentsScreen extends StatelessWidget {
 - الضوء الأحمر القاني: يرمز إلى الدم، الصراع، العنف، والعاطفة الجارفة.
 
 2. المكياج المسرحي:
-- مكياج البناء والتجسيد: إبراز ملامح تقدم العمر أو الجروح والملامح النفسية الخاصة للشخصية.
+- مكياج البناء والتجسيد: إبراز ملامح تقدم العمر أو الجروح والملامح النفسية الخاصة بالشخصية.
 ''',
     },
     {
@@ -177,7 +177,6 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
     ];
   }
 
-  // محاكاة الاتصال الذكي بأسلوب نافذة Gemini الحرة
   Future<void> _askGeminiAssistant(String prompt) async {
     if (prompt.trim().isEmpty) return;
 
@@ -187,7 +186,7 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
     });
     _chatController.clear();
 
-    const String accessToken = ""; // يمكن ربطه لاحقاً بأمان تام
+    const String accessToken = ""; 
 
     final url = Uri.parse("https://generativelanguage.googleapis.com/v1beta/interactions");
 
@@ -213,7 +212,6 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
           _isGenerating = false;
         });
       } else {
-        // رد ذكي محاكي في حال عدم وضع التوكن بعد، ليعطي تجربة تفاعلية فورية
         await Future.delayed(const Duration(seconds: 1));
         setState(() {
           _geminiMessages.add({
@@ -262,7 +260,6 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
         ),
         body: TabBarView(
           children: [
-            // التبويب الأول: الموسوعة
             SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
               child: Card(
@@ -283,8 +280,6 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
                 ),
               ),
             ),
-            
-            // التبويب الثاني: نافذة المساعد الذكي (شبيهة بـ Gemini)
             Column(
               children: [
                 Expanded(
@@ -320,7 +315,7 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
                     child: LinearProgressIndicator(color: Colors.amber),
                   ),
                 Container(
-                  padding: constاد السينما EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   color: const Color(0xFF1E1E1E),
                   child: Row(
                     children: [
@@ -344,8 +339,6 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
                 ),
               ],
             ),
-
-            // التبويب الثالث: الملاحظات الشخصية
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
