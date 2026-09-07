@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'texts_library_screen.dart';
+import 'directing_screen.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -60,7 +61,12 @@ class MainScreen extends StatelessWidget {
                       icon: Icons.movie_filter_rounded,
                       color: Colors.blue.shade700,
                       onTap: () {
-                        // الانتقال لقسم الإخراج لاحقاً
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const DirectingScreen(),
+                          ),
+                        );
                       },
                     ),
                     _buildAcademyCard(
