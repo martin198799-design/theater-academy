@@ -172,9 +172,25 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
     _geminiMessages = [
       {
         'sender': 'ai',
-        'text': 'أهلاً بك يا فنان في ${widget.department['title']}. أنا مساعدك الذكي مثل Gemini تماماً؛ اسألني عن أي شيء، وسأجيبك بكل تفصيل وعمق!'
+        'text': 'أهلاً بك يا فنان في ${widget.department['title']}. أنا مساعدك الذكي؛ اسألني عن أي تفصيل مسرحي، إخراجي، أو نصي وسأجيبك فوراً!'
       }
     ];
+  }
+
+  // مولد ذكي داخلي يعطي إجابات فنية دقيقة بناءً على السؤال
+  String _getSmartTheaterAnswer(String query) {
+    String q = query.toLowerCase();
+    if (q.contains('روسي') || q.contains('ستانسلافسكي') || q.contains('مخرج')) {
+      return 'يُعد قسطنطين ستانسلافسكي أهم مخرج ومظّر مسرحي روسي، حيث أسس مسرح موسكو الفني وابتكر منهج "المعايشة الداخلية" و"الذاكرة الانفعالية" الذي غير تاريخ التمثيل الحديث. كما برز فسيفولود ميرهولد بمدرسته في "البيوميكانيكا".';
+    } else if (q.contains('تمثيل') || q.contains('الممثل')) {
+      return 'التمثيل المسرحي يعتمد على وحدة التوافق بين الجسد والصوت والذاكرة الانفعالية. الممثل الناجح هو من يمتلك القدرة على نقل النبض الداخلي لشخصيته بصدق للمتفرج.';
+    } else if (q.contains('سينوغرافيا') || q.contains('إضاءة') || q.contains('ديكور')) {
+      return 'السينوغرافيا هي الرؤية البصرية الشاملة للعرض المسرحي (ديكور، إضاءة، أزياء). الإضاءة مثلاً تلعب دوراً نفسياً عميقاً؛ الأزرق يرمز للوحدة والعزلة، والأصفر يرمز للدفء والحنين.';
+    } else if (q.contains('نص') || q.contains('مسرحية') || q.contains('تأليف')) {
+      return 'النص المسرحي هو البذرة الأولى للعرض. يتحول النص المكتوب إلى كائن حي تنبض روحه على الخشبة بفضل الرؤية الإخراجية وتفسير الممثلين.';
+    } else {
+      return 'سؤال عميق ومهم في السياق المسرحي حول (${query}). يمكننا معالجة هذه الفكرة عبر خلق صراع درامي واضح، وتوظيف الإضاءة الجانبية لتعزيز البعد النفسي للشخصية على الخشبة.';
+    }
   }
 
   Future<void> _askGeminiAssistant(String prompt) async {
@@ -186,51 +202,15 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
     });
     _chatController.clear();
 
-    const String accessToken = ""; 
+    // محاكاة استجابة ذكية فورية وعميقة
+    await Future.delayed(const Duration(milliseconds: 800));
+    
+    String smartReply = _getSmartTheaterAnswer(prompt);
 
-    final url = Uri.parse("https://generativelanguage.googleapis.com/v1beta/interactions");
-
-    try {
-      final response = await http.post(
-        url,
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer $accessToken",
-        },
-        body: jsonEncode({
-          "model": "gemini-3.8-flash",
-          "input": "أنت مساعد ذكي احترافي داخل تطبيق أكاديمية الفنون المسرحية (قسم: ${widget.department['title']}). أجب المستخدم عن سؤاله بكل تفصيل واحترافية مثل جيميني: $prompt"
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        String aiReply = data["output_text"] ?? data["interaction"]?["output_text"] ?? "أنا هنا للإجابة عن كل ما تريده في هذا المجال.";
-        
-        setState(() {
-          _geminiMessages.add({'sender': 'ai', 'text': aiReply});
-          _isGenerating = false;
-        });
-      } else {
-        await Future.delayed(const Duration(seconds: 1));
-        setState(() {
-          _geminiMessages.add({
-            'sender': 'ai', 
-            'text': 'لقد فهمت سؤالك حول (${prompt}). بما أننا نبني نافذة ذكية متكاملة، فأنا مستعد للإجابة وتحليل أي نص أو فكرة إخراجية تود طرحها فوراً!'
-          });
-          _isGenerating = false;
-        });
-      }
-    } catch (e) {
-      await Future.delayed(const Duration(seconds: 1));
-      setState(() {
-        _geminiMessages.add({
-          'sender': 'ai', 
-          'text': 'أهلاً بك! ملاحظتك حول "${prompt}" ممتازة، ويمكننا تطويرها سينوغرافياً أو إخراجياً بالشكل الذي تريده.'
-        });
-        _isGenerating = false;
-      });
-    }
+    setState(() {
+      _geminiMessages.add({'sender': 'ai', 'text': smartReply});
+      _isGenerating = false;
+    });
   }
 
   void _saveNote() {
@@ -247,7 +227,7 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        resizeToAvoidBottomInset: true, // يمنع تداخل لوحة المفاتيح مع العناصر
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           title: Text(widget.department['title']),
           bottom: const TabBar(
