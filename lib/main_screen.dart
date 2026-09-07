@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'texts_library_screen.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -45,7 +46,12 @@ class MainScreen extends StatelessWidget {
                       icon: Icons.menu_book_rounded,
                       color: Colors.amber.shade800,
                       onTap: () {
-                        // الانتقال لقسم النصوص
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const TextsLibraryScreen(),
+                          ),
+                        );
                       },
                     ),
                     _buildAcademyCard(
@@ -54,7 +60,7 @@ class MainScreen extends StatelessWidget {
                       icon: Icons.movie_filter_rounded,
                       color: Colors.blue.shade700,
                       onTap: () {
-                        // الانتقال لقسم الإخراج
+                        // الانتقال لقسم الإخراج لاحقاً
                       },
                     ),
                     _buildAcademyCard(
@@ -63,7 +69,7 @@ class MainScreen extends StatelessWidget {
                       icon: Icons.theater_comedy_rounded,
                       color: Colors.purple.shade700,
                       onTap: () {
-                        // الانتقال لقسم التمثيل
+                        // الانتقال لقسم التمثيل لاحقاً
                       },
                     ),
                     _buildAcademyCard(
@@ -72,7 +78,7 @@ class MainScreen extends StatelessWidget {
                       icon: Icons.chair_rounded,
                       color: Colors.pink.shade700,
                       onTap: () {
-                        // الانتقال لقسم الديكور
+                        // الانتقال لقسم الديكور لاحقاً
                       },
                     ),
                     _buildAcademyCard(
@@ -81,7 +87,7 @@ class MainScreen extends StatelessWidget {
                       icon: Icons.architecture_rounded,
                       color: Colors.teal.shade700,
                       onTap: () {
-                        // الانتقال لقسم السينوغرافيا
+                        // الانتقال لقسم السينوغرافيا لاحقاً
                       },
                     ),
                     _buildAcademyCard(
@@ -90,7 +96,7 @@ class MainScreen extends StatelessWidget {
                       icon: Icons.checkroom_rounded,
                       color: Colors.deepOrange.shade700,
                       onTap: () {
-                        // الانتقال لقسم الأزياء
+                        // الانتقال لقسم الأزياء لاحقاً
                       },
                     ),
                     _buildAcademyCard(
@@ -99,7 +105,7 @@ class MainScreen extends StatelessWidget {
                       icon: Icons.lightbulb_rounded,
                       color: Colors.indigo.shade700,
                       onTap: () {
-                        // الانتقال لقسم الإضاءة
+                        // الانتقال لقسم الإضاءة لاحقاً
                       },
                     ),
                   ],
