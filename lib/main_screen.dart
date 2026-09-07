@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'texts_library_screen.dart';
 import 'directing_screen.dart';
 import 'acting_screen.dart';
+import 'scenography_screen.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -99,7 +100,12 @@ class MainScreen extends StatelessWidget {
                       icon: Icons.architecture_rounded,
                       color: Colors.teal.shade700,
                       onTap: () {
-                        // الانتقال لقسم السينوغرافيا لاحقاً
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ScenographyScreen(),
+                          ),
+                        );
                       },
                     ),
                     _buildAcademyCard(
