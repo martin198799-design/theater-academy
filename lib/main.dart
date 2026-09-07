@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'theater_assistant_screen.dart'; // استدعاء شاشة المساعد المسرحي
+import 'main_screen.dart';
 
 void main() {
   runApp(const TheaterAcademyApp());
@@ -11,14 +11,14 @@ class TheaterAcademyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'أكاديمية المسرح',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.amber,
         brightness: Brightness.dark,
+        scaffoldBackgroundColor: const Color(0xFF121212),
+        primarySwatch: Colors.amber,
       ),
-      // جعل شاشة المساعد المسرحي هي الشاشة الرئيسية عند تشغيل التطبيق
-      home: const TheaterAssistantScreen(),
+      home: const MainScreen(),
     );
   }
 }
