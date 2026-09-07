@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class TheaterAssistantScreen extends StatefulWidget {
   const TheaterAssistantScreen({super.key});
@@ -14,15 +12,29 @@ class _TheaterAssistantScreenState extends State<TheaterAssistantScreen> {
   final List<Map<String, String>> _messages = [
     {
       'role': 'assistant',
-      'content': 'أهلاً بك يا فنان. أنا المساعد المسرحي في أكاديمية المسرح؛ كيف يمكنني مساعدتك في التمثيل، الإخراج، أو النصوص اليوم؟'
+      'content': 'أهلاً بك يا فنان في أكاديمية المسرح. أنا مساعدك المسرحي الذكي (يعمل محلياً بدون إنترنت). كيف يمكنني مساعدتك في التمثيل، الإخراج، أو النصوص اليوم؟'
     }
   ];
   bool _isLoading = false;
 
-  // مفتاح OpenAI API الخاص بك الذي أرسلته
-  final String _apiKey = 'sk-proj-YOUR_API_KEY_HERE'; // سيتم استبداله بمفتاحك الحقيقي
+  // نظام ذكي محلي للرد على أسئلة المسرح والتمثيل والإخراج
+  String _getLocalAIResponse(String query) {
+    final q = query.trim().toLowerCase();
 
-  Future<void> _sendMessage() async {
+    if (q.contains('تمثيل') || q.contains('ممثل') || q.contains('تقمص') || q.contains('شخصية')) {
+      return 'فن التمثيل يعتمد على الصدق الداخلي والإحساس بالدور. من أهم تقنيات التمثيل الحديثة بناء الخلفية النفسية للشخصية، دراسة دوافعها، وتفاعل الجسد والصوت مع النص المكتوب (مثل تقنيات ستانسلافسكي).';
+    } else if (q.contains('إخراج') || q.contains('مخرج') || q.contains('رؤية') || q.contains('سينوغرافيا')) {
+      return 'الإخراج المسرحي هو عملية خلق رؤية بصرية وفكرية متكاملة للنص. يبدأ بتفكيك النص، تحديد المفهوم الإخراجي (Concept)، وتنسيق عناصر العرض من إضاءة، وديكور، وصوت، وحركة ممثلين على خشبة المسرح.';
+    } else if (q.contains('نص') || q.contains('مسرحية') || q.contains('حوار') || q.contains('مشهد')) {
+      return 'الكتابة المسرحية المتميزة تعتمد على الصراع القوي، الحوار المكثف الذي يكشف خبايا الشخصيات، والبناء الدرامي المحكم (بداية، ذروة، ونهاية). هل تبحث عن تحليل نص معين أو فكرة لمشهد جديد؟';
+    } else if (q.contains('إضاءة') || q.contains('صوت') || q.contains('ديكور')) {
+      return 'السينوغرافيا (الإضاءة، الديكور، المؤثرات الصوتية) هي لغة المسرح الصامتة. الإضاءة مثلاً تحدد المزاج النفسي والزمن، بينما الديكور يعكس البيئة الاجتماعية والنفسية للشخصيات.';
+    } else {
+      return 'سؤال ممتاز يا فنان! في أكاديمية المسرح، نركز دائماً على تكامل الأدوات الفنية (الجسد، الصوت، الفكر الإخراجي). هل ترغب في تعميق هذا السؤال باتجاه التمثيل أم الإخراج؟';
+    }
+  }
+
+  void _sendMessage() async {
     final text = _controller.text.trim();
     if (text.isEmpty) return;
 
@@ -32,48 +44,15 @@ class _TheaterAssistantScreenState extends State<TheaterAssistantScreen> {
     });
     _controller.clear();
 
-    try {
-      final List<Map<String, String>> apiMessages = [
-        {
-          'role': 'system',
-          'content': 'أنت المساعد المسرحي في أكاديمية المسرح. متخصص في التمثيل والإخراج والسينوغرافيا والإضاءة والكتابة المسرحية والتعليم المسرحي. أجب باللغة العربية وبأسلوب واضح ومفيد للطلاب.'
-        },
-        ..._messages.map((m) => {'role': m['role']!, 'content': m['content']!})
-      ];
+    // محاكاة تفكير الذكاء الاصطناعي بشكل سريع وطبيعي
+    await Future.delayed(const Duration(milliseconds: 600));
 
-      final response = await http.post(
-        Uri.parse('https://api.openai.com/v1/chat/completions'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $_apiKey',
-        },
-        body: jsonEncode({
-          'model': 'gpt-4o-mini',
-          'messages': apiMessages,
-          'temperature': 0.7,
-        }),
-      );
+    final aiReply = _getLocalAIResponse(text);
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(utf8.decode(response.bodyBytes));
-        final aiReply = data['choices'][0]['message']['content'] ?? 'عذراً، لم أتمكن من صياغة الإجابة.';
-        setState(() {
-          _messages.add({'role': 'assistant', 'content': aiReply});
-        });
-      } else {
-        setState(() {
-          _messages.add({'role': 'assistant', 'content': 'حدث خطأ في الاتصال بالمنصة. تأكد من صحة المفتاح.'});
-        });
-      }
-    } catch (e) {
-      setState(() {
-        _messages.add({'role': 'assistant', 'content': 'تأكد من اتصالك بالإنترنت.'});
-      });
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
+    setState(() {
+      _messages.add({'role': 'assistant', 'content': aiReply});
+      _isLoading = false;
+    });
   }
 
   @override
@@ -81,7 +60,7 @@ class _TheaterAssistantScreenState extends State<TheaterAssistantScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFF121212),
       appBar: AppBar(
-        title: const Text('المساعد المسرحي الذكي'),
+        title: const Text('المساعد المسرحي الذكي (محلي)'),
         centerTitle: true,
         backgroundColor: const Color(0xFF1E1E1E),
       ),
@@ -93,8 +72,6 @@ class _TheaterAssistantScreenState extends State<TheaterAssistantScreen> {
               itemCount: _messages.length,
               itemBuilder: (context, index) {
                 final msg = _messages[index];
-                if (msg['role'] == 'system') return const SizedBox.shrink();
-                
                 final isUser = msg['role'] == 'user';
                 return Align(
                   alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
