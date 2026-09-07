@@ -9,45 +9,62 @@ class TheaterAssistantScreen extends StatefulWidget {
 
 class _TheaterAssistantScreenState extends State<TheaterAssistantScreen> {
   final TextEditingController _controller = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+  
   final List<Map<String, String>> _messages = [
     {
       'role': 'assistant',
-      'content': 'أهلاً بك يا فنان في أكاديمية المسرح. أنا مساعدك المسرحي الذكي. كيف يمكنني مساعدتك في التمثيل، الإخراج، أو النصوص اليوم؟'
+      'content': 'أهلاً بك يا فنان في أكاديمية المسرح. أنا مساعدك الذكي المتخصص في شؤون التمثيل، الإخراج، والنصوص. كيف يمكنني إفادتك اليوم؟'
     }
   ];
+  
   bool _isLoading = false;
 
-  String _getLocalAIResponse(String query) {
-    final q = query.trim().toLowerCase();
-
-    if (q.contains('تمثيل') || q.contains('ممثل') || q.contains('تقمص') || q.contains('شخصية')) {
-      return 'فن التمثيل يعتمد على الصدق الداخلي والإحساس بالدور وبناء الخلفية النفسية للشخصية.';
-    } else if (q.contains('إخراج') || q.contains('مخرج') || q.contains('رؤية') || q.contains('سينوغرافيا')) {
-      return 'الإخراج المسرحي هو خلق رؤية بصرية وفكرية متكاملة وتنسيق عناصر العرض المسرحي.';
-    } else if (q.contains('نص') || q.contains('مسرحية') || q.contains('حوار')) {
-      return 'الكتابة المسرحية المتميزة تعتمد على الصراع القوي والحوار المكثف والبناء الدرامي المحكم.';
-    } else {
-      return 'سؤال ممتاز يا فنان! في أكاديمية المسرح، نركز على تكامل الأدوات الفنية والجسدية والصوتية لعرض مسرحي ناجح.';
-    }
-  }
-
-  void _sendMessage() async {
-    final text = _controller.text.trim();
-    if (text.isEmpty) return;
-
+  void _handleSubmittedText(String text) {
+    if (text.trim().isEmpty) return;
+    
+    _controller.clear();
     setState(() {
       _messages.add({'role': 'user', 'content': text});
       _isLoading = true;
     });
-    _controller.clear();
 
-    await Future.delayed(const Duration(milliseconds: 500));
+    // التمرير تلقائياً لأسفل المحادثة
+    _scrollToBottom();
 
-    final aiReply = _getLocalAIResponse(text);
+    // محاكاة استجابة الذكاء الاصطناعي المسرحي بدقة
+    Future.delayed(const Duration(milliseconds: 600), () {
+      String reply = _getTheaterExpertise(text);
+      setState(() {
+        _messages.add({'role': 'assistant', 'content': reply});
+        _isLoading = false;
+      });
+      _scrollToBottom();
+    });
+  }
 
-    setState(() {
-      _messages.add({'role': 'assistant', 'content': aiReply});
-      _isLoading = false;
+  String _getTheaterExpertise(String query) {
+    final q = query.trim().toLowerCase();
+    if (q.contains('تمثيل') || q.contains('ممثل') || q.contains('تقمص') || q.contains('شخصية')) {
+      return 'فن التمثيل يعتمد على الصدق الداخلي، دراسة أبعاد الشخصية (الجسدية والنفسية والاجتماعية)، وتوظيف أدوات الممثل الأساسية: الصوت والجسد.';
+    } else if (q.contains('إخراج') || q.contains('مخرج') || q.contains('سينوغرافيا')) {
+      return 'الإخراج المسرحي هو صياغة الرؤية البصرية والفكرية للعرض، وتنسيق العمل المشترك بين الممثلين وفريق السينوغرافيا من إضاءة وديكور.';
+    } else if (q.contains('نص') || q.contains('مسرحية') || q.contains('حوار')) {
+      return 'النص المسرحي الحقيقي يبني صراعاً درامياً متصاعداً، ويحتوي على حوار مكثف يعبر عن الصراع الداخلي والخارجي للشخصيات.';
+    } else {
+      return 'سؤال دقيق يا فنان! في أكاديمية المسرح، نربط دائماً بين الفكرة الإخراجية والتطبيق العملي للممثل على الخشبة. هل ترغب في تفصيل هذا الجانب أكثر؟';
+    }
+  }
+
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
     });
   }
 
@@ -56,15 +73,17 @@ class _TheaterAssistantScreenState extends State<TheaterAssistantScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFF121212),
       appBar: AppBar(
-        title: const Text('المساعد المسرحي الذكي'),
+        title: const Text('المساعد المسرحي الذكي', style: TextStyle(color: Colors.white)),
         centerTitle: true,
         backgroundColor: const Color(0xFF1E1E1E),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SafeArea(
         child: Column(
           children: [
             Expanded(
               child: ListView.builder(
+                controller: _scrollController,
                 padding: const EdgeInsets.all(16),
                 itemCount: _messages.length,
                 itemBuilder: (context, index) {
@@ -91,27 +110,28 @@ class _TheaterAssistantScreenState extends State<TheaterAssistantScreen> {
               ),
             ),
             if (_isLoading)
-              const LinearProgressIndicator(color: Colors.amber),
+              const LinearProgressIndicator(color: Colors.amber, backgroundColor: Color(0xFF1E1E1E)),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               color: const Color(0xFF1E1E1E),
               child: Row(
                 children: [
+                  IconButton(
+                    icon: const Icon(Icons.send_rounded, color: Colors.amber),
+                    onPressed: () => _handleSubmittedText(_controller.text),
+                  ),
                   Expanded(
                     child: TextField(
                       controller: _controller,
                       style: const TextStyle(color: Colors.white),
+                      textAlign: TextAlign.right,
                       decoration: const InputDecoration(
-                        hintText: 'اكتب سؤالك هنا...',
+                        hintText: 'اكتب سؤالك المسرحي هنا...',
                         border: InputBorder.none,
                         hintStyle: TextStyle(color: Colors.white54),
                       ),
-                      textDirection: TextDirection.rtl,
+                      onSubmitted: _handleSubmittedText,
                     ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.send_rounded, color: Colors.amber),
-                    onPressed: _sendMessage,
                   ),
                 ],
               ),
