@@ -3,6 +3,7 @@ import 'texts_library_screen.dart';
 import 'directing_screen.dart';
 import 'acting_screen.dart';
 import 'scenography_screen.dart';
+import 'costumes_screen.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -114,7 +115,12 @@ class MainScreen extends StatelessWidget {
                       icon: Icons.checkroom_rounded,
                       color: Colors.deepOrange.shade700,
                       onTap: () {
-                        // الانتقال لقسم الأزياء لاحقاً
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const CostumesScreen(),
+                          ),
+                        );
                       },
                     ),
                     _buildAcademyCard(
