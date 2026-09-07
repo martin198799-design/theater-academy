@@ -34,7 +34,6 @@ class _TheaterAssistantScreenState extends State<TheaterAssistantScreen> {
 
     _scrollToBottom();
 
-    // محاكاة استجابة ذكية وفورية كأنها من خبير مسرحي حقيقي
     Future.delayed(const Duration(milliseconds: 700), () {
       String reply = _generateExpertTheaterResponse(userText);
       setState(() {
@@ -49,7 +48,7 @@ class _TheaterAssistantScreenState extends State<TheaterAssistantScreen> {
     final q = query.trim().toLowerCase();
     final random = Random();
 
-    if (q.contains('إخراج') || q.contains('مخرج') || q.contains('رؤية') || q.contains('تشكيل')) {
+    if (q.contains('إخراج') || q.contains('مخرج') || q.contains('رؤية')) {
       const responses = [
         'الإخراج المسرحي هو عملية خلق عالم متكامل ينبض بالحياة على الخشبة. المخرج المبدع لا يكتفي بتحريك الممثلين، بل يصنع إقاعاً بصرياً وفكرياً يلامس وجدان المتلقي.',
         'يبدأ العمل الإخراجي بتحليل مقطعي عميق للنص، ثم بناء رؤية سينوغرافية توظف الضوء، الكتلة، والحركة لخدمة الفكرة الجوهرية للعرض.',
@@ -57,7 +56,7 @@ class _TheaterAssistantScreenState extends State<TheaterAssistantScreen> {
       ];
       return responses[random.nextInt(responses.length)];
     } 
-    else if (q.contains('تمثيل') || q.contains('ممثل') || q.contains('تقمص') || q.contains('شخصية0') || q.contains('اداء')) {
+    else if (q.contains('تمثيل') || q.contains('ممثل') || q.contains('تقمص') || q.contains('أداء')) {
       const responses = [
         'فن التمثيل يعتمد على الصدق الداخلي والقدرة على تقمص الأبعاد النفسية والاجتماعية للشخصية. أدوات الممثل الأساسية هي: الجسد المرن، الصوت المعبر، والذاكرة الانفعالية.',
         'لكي تبني شخصية مسرحية مقنعة، عليك البحث عن دوافعها الخفية، صراعاتها الداخلية، وكيف تتحول هذه الدوافع إلى أفعال ومواقف درامية على الخشبة.',
@@ -65,18 +64,18 @@ class _TheaterAssistantScreenState extends State<TheaterAssistantScreen> {
       ];
       return responses[random.nextInt(responses.length)];
     } 
-    else if (q.contains('نص') || q.contains('مسرحية') || q.contains('حوار') || q.contains('دراما') || q.contains('كاتب')) {
+    else if (q.contains('نص') || q.contains('مسرحية') || q.contains('حوار') || q.contains('دراما')) {
       const responses = [
-        'النص المسرحي الجيد يتميز بصراع درامي محتدم وحوار مقتضب ودافع يحمل في طياته أبعاداً أعمق مما تقوله الكلمات المكتوبة (ما بين السطور).',
+        'النص المسرحي الجيد يتميز بصراع درامي محتدم وحوار مقتضب ودافع يحمل في طياته أبعاداً أعمق مما تقوله الكلمات المكتوبة.',
         'البناء الدرامي الكلاسيكي يمر بمراحل متدرجة: العقدة، التصاعد، الذروة، ثم الحل. هل تعمل على تطوير مشهد درامي معين أو تحليل هيكل نص؟',
         'الكتابة للمسرح تتطلب فهماً عميقاً لطبيعة الفضاء المسرحي، فالكلمة المكتوبة يجب أن تحرّك خيال المخرج والممثل.'
       ];
       return responses[random.nextInt(responses.length)];
     } 
-    else if (q.contains('سينوغرافيا') || q.contains('إضاءة') || q.contains('ديكور') || q.contains('ازياء') || q.contains 'صوت') {
+    else if (q.contains('سينوغرافيا') || q.contains('إضاءة') || q.contains('ديكور') || q.contains('أزياء')) {
       const responses = [
         'السينوغرافيا هي لغة بصرية صامتة تكمل النص والتمثيل. الديكور والإضاءة والأزياء يجب أن تشكل وحدة عضوية تعكس روح العرض ومناخه النفسي.',
-        'الإضاءة المسرحية هي "رسم بالضوء"؛ فهي لا تقتصر على الإنارة بل تحدد الأبعاد المكانية، الزمنية، وتخلق الحالة المزاجية للمشهد.',
+        'الإضاءة المسرحية هي رسم بالضوء؛ فهي لا تقتصر على الإنارة بل تحدد الأبعاد المكانية، الزمنية، وتخلق الحالة المزاجية للمشهد.',
         'الديكور الناجح هو الديكور الوظيفي المبتكر الذي يخدم حركة الممثل ولا يشكل عبئاً أو إعاقة على الخشبة.'
       ];
       return responses[random.nextInt(responses.length)];
@@ -147,7 +146,6 @@ class _TheaterAssistantScreenState extends State<TheaterAssistantScreen> {
             if (_isLoading)
               const LinearProgressIndicator(color: Colors.amber, backgroundColor: Color(0xFF1E1E1E)),
             Container(
-              padding: constیدیح: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               color: const Color(0xFF1E1E1E),
               child: Row(
