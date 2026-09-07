@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class TheaterAssistantScreen extends StatefulWidget {
   const TheaterAssistantScreen({super.key});
@@ -10,50 +12,97 @@ class TheaterAssistantScreen extends StatefulWidget {
 class _TheaterAssistantScreenState extends State<TheaterAssistantScreen> {
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  
+
+  // سجل المحادثة يبدأ برسالة ترحيبية من الأكاديمية
   final List<Map<String, String>> _messages = [
     {
       'role': 'assistant',
-      'content': 'أهلاً بك يا فنان في أكاديمية المسرح. أنا مساعدك الذكي المتخصص في شؤون التمثيل، الإخراج، والنصوص. كيف يمكنني إفادتك اليوم؟'
+      'content': 'أهلاً بك يا فنان في أكاديمية المسرح. أنا مساعدك الذكي المتخصص في شؤون التمثيل، الإخراج، النصوص، والسينوغرافيا. كيف يمكنني إفادتك اليوم؟'
     }
   ];
-  
+
   bool _isLoading = false;
+
+  // ضع هنا مفتاح الـ API الخاص بك (مثلاً مفتاح OpenRouter أو OpenAI المدعم)
+  final String _apiKey = 'SUBSCRIBE_OR_PUT_YOUR_API_KEY_HERE';
+
+  Future<void> _callRealAI(String userMessage) async {
+    if (_apiKey.contains('YOUR_API_KEY') || _apiKey.isEmpty) {
+      setState(() {
+        _messages.add({
+          'role': 'assistant',
+          'content': 'عذراً يا فنان، يرجى إدخال مفتاح الـ API الصحيح في الكود لكي أتمكن من الاتصال بالذكاء الاصطناعي الحقيقي.'
+        });
+        _isLoading = false;
+      });
+      _scrollToBottom();
+      return;
+    }
+
+    try {
+      // استخدام نقطة اتصال مرنة (مثل OpenRouter أو OpenAI API)
+      final response = await http.post(
+        Uri.parse('https://api.openai.com/v1/chat/completions'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $_apiKey',
+        },
+        body: jsonEncode({
+          'model': 'gpt-3.5-turbo',
+          'messages': [
+            {
+              'role': 'system',
+              'content': 'أنت مساعد ذكي ومتخصص وخبير في الفنون المسرحية (التمثيل، الإخراج، كتابة النصوص، والسينوغرافيا). أجب المبتدئين والمحترفين بدقة وإبداع واحترافية باللغة العربية.'
+            },
+            ..._messages.map((m) => {'role': m['role'], 'content': m['content']}),
+          ],
+          'temperature': 0.7,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(utf8.decode(response.bodyBytes));
+        final aiReply = data['choices'][0]['message']['content'].trim();
+
+        setState(() {
+          _messages.add({'role': 'assistant', 'content': aiReply});
+          _isLoading = false;
+        });
+      } else {
+        setState(() {
+          _messages.add({
+            'role': 'assistant',
+            'content': 'عذراً، حدث خطأ في الاستجابة من الخادم (رمز الخطأ: ${response.statusCode}). تحقق من رصيد المفتاح أو اتصالك.'
+          });
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _messages.add({
+          'role': 'assistant',
+          'content': 'تعذر الاتصال بالخادم. تأكد من اتصالك بالإنترنت وحاول مرة أخرى.'
+        });
+        _isLoading = false;
+      });
+    }
+
+    _scrollToBottom();
+  }
 
   void _handleSubmittedText(String text) {
     if (text.trim().isEmpty) return;
-    
+
     _controller.clear();
     setState(() {
       _messages.add({'role': 'user', 'content': text});
       _isLoading = true;
     });
 
-    // التمرير تلقائياً لأسفل المحادثة
     _scrollToBottom();
 
-    // محاكاة استجابة الذكاء الاصطناعي المسرحي بدقة
-    Future.delayed(const Duration(milliseconds: 600), () {
-      String reply = _getTheaterExpertise(text);
-      setState(() {
-        _messages.add({'role': 'assistant', 'content': reply});
-        _isLoading = false;
-      });
-      _scrollToBottom();
-    });
-  }
-
-  String _getTheaterExpertise(String query) {
-    final q = query.trim().toLowerCase();
-    if (q.contains('تمثيل') || q.contains('ممثل') || q.contains('تقمص') || q.contains('شخصية')) {
-      return 'فن التمثيل يعتمد على الصدق الداخلي، دراسة أبعاد الشخصية (الجسدية والنفسية والاجتماعية)، وتوظيف أدوات الممثل الأساسية: الصوت والجسد.';
-    } else if (q.contains('إخراج') || q.contains('مخرج') || q.contains('سينوغرافيا')) {
-      return 'الإخراج المسرحي هو صياغة الرؤية البصرية والفكرية للعرض، وتنسيق العمل المشترك بين الممثلين وفريق السينوغرافيا من إضاءة وديكور.';
-    } else if (q.contains('نص') || q.contains('مسرحية') || q.contains('حوار')) {
-      return 'النص المسرحي الحقيقي يبني صراعاً درامياً متصاعداً، ويحتوي على حوار مكثف يعبر عن الصراع الداخلي والخارجي للشخصيات.';
-    } else {
-      return 'سؤال دقيق يا فنان! في أكاديمية المسرح، نربط دائماً بين الفكرة الإخراجية والتطبيق العملي للممثل على الخشبة. هل ترغب في تفصيل هذا الجانب أكثر؟';
-    }
+    // إرسال الطلب للذكاء الاصطناعي الحقيقي
+    _callRealAI(text);
   }
 
   void _scrollToBottom() {
@@ -73,7 +122,7 @@ class _TheaterAssistantScreenState extends State<TheaterAssistantScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFF121212),
       appBar: AppBar(
-        title: const Text('المساعد المسرحي الذكي', style: TextStyle(color: Colors.white)),
+        title: const Text('المساعد المسرحي الذكي (AI)', style: TextStyle(color: Colors.white)),
         centerTitle: true,
         backgroundColor: const Color(0xFF1E1E1E),
         iconTheme: const IconThemeData(color: Colors.white),
@@ -126,7 +175,7 @@ class _TheaterAssistantScreenState extends State<TheaterAssistantScreen> {
                       style: const TextStyle(color: Colors.white),
                       textAlign: TextAlign.right,
                       decoration: const InputDecoration(
-                        hintText: 'اكتب سؤالك المسرحي هنا...',
+                        hintText: 'اسأل المساعد الذكي عن المسرح...',
                         border: InputBorder.none,
                         hintStyle: TextStyle(color: Colors.white54),
                       ),
