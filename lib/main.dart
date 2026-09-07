@@ -247,6 +247,7 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        resizeToAvoidBottomInset: true, // يمنع تداخل لوحة المفاتيح مع العناصر
         appBar: AppBar(
           title: Text(widget.department['title']),
           bottom: const TabBar(
@@ -280,64 +281,66 @@ class _DepartmentDetailScreenState extends State<DepartmentDetailScreen> {
                 ),
               ),
             ),
-            Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: _geminiMessages.length,
-                    itemBuilder: (context, index) {
-                      final msg = _geminiMessages[index];
-                      final isUser = msg['sender'] == 'user';
-                      return Align(
-                        alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(vertical: 8),
-                          padding: const EdgeInsets.all(14),
-                          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.8),
-                          decoration: BoxDecoration(
-                            color: isUser ? Colors.amber.shade800 : const Color(0xFF2A2A2A),
-                            borderRadius: BorderRadius.circular(16),
+            SafeArea(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(16),
+                      itemCount: _geminiMessages.length,
+                      itemBuilder: (context, index) {
+                        final msg = _geminiMessages[index];
+                        final isUser = msg['sender'] == 'user';
+                        return Align(
+                          alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(vertical: 8),
+                            padding: const EdgeInsets.all(14),
+                            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.8),
+                            decoration: BoxDecoration(
+                              color: isUser ? Colors.amber.shade800 : const Color(0xFF2A2A2A),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Text(
+                              msg['text'] ?? '', 
+                              style: const TextStyle(color: Colors.white, height: 1.6, fontSize: 15),
+                              textDirection: TextDirection.rtl,
+                            ),
                           ),
-                          child: Text(
-                            msg['text'] ?? '', 
-                            style: const TextStyle(color: Colors.white, height: 1.6, fontSize: 15),
+                        );
+                      },
+                    ),
+                  ),
+                  if (_isGenerating) 
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: LinearProgressIndicator(color: Colors.amber),
+                    ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    color: const Color(0xFF1E1E1E),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _chatController,
+                            decoration: const InputDecoration(
+                              hintText: 'اسأل المساعد الذكي عن أي شيء...',
+                              border: InputBorder.none,
+                              hintStyle: TextStyle(color: Colors.white54),
+                            ),
                             textDirection: TextDirection.rtl,
                           ),
                         ),
-                      );
-                    },
-                  ),
-                ),
-                if (_isGenerating) 
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: LinearProgressIndicator(color: Colors.amber),
-                  ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  color: const Color(0xFF1E1E1E),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _chatController,
-                          decoration: const InputDecoration(
-                            hintText: 'اسأل المساعد الذكي عن أي شيء...',
-                            border: InputBorder.none,
-                            hintStyle: TextStyle(color: Colors.white54),
-                          ),
-                          textDirection: TextDirection.rtl,
+                        IconButton(
+                          icon: const Icon(Icons.send_rounded, color: Colors.amber),
+                          onPressed: () => _askGeminiAssistant(_chatController.text),
                         ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.send_rounded, color: Colors.amber),
-                        onPressed: () => _askGeminiAssistant(_chatController.text),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
