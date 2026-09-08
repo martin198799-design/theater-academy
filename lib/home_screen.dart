@@ -94,7 +94,7 @@ class HomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: const [
                 Text(
-                  'مرحباً بك في عالم الفن السابع والرابع',
+                  'أهلاً بك في رحاب الفن الرابع',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -104,7 +104,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'الموسوعة الأكاديمية الشاملة المكونة من الأقسام السبعة الكبرى للمسرح.',
+                  'الموسوعة الأكاديمية الشاملة المكونة من الأقسام السبعة الكبرى للمسرح والنصوص.',
                   style: TextStyle(
                     color: Colors.white70,
                     fontSize: 13,
