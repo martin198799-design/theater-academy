@@ -213,7 +213,6 @@ class TextsLibraryScreen extends StatelessWidget {
                     textDirection: TextDirection.rtl,
                     children: [
                       Container(
-                        padding: constضيف الحوشي التنسيقيات سياق المقال سياق فصول المسرحية هنا
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
                           color: themeColor.withOpacity(0.2),
