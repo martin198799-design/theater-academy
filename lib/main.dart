@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'main_screen.dart';
+import 'home_screen.dart';
 
 void main() {
   runApp(const TheaterAcademyApp());
@@ -11,14 +11,15 @@ class TheaterAcademyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'أكاديمية المسرح',
+      title: 'أكاديمية خشبة المسرح',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.dark,
+        primarySwatch: Colors.deepPurple,
         scaffoldBackgroundColor: const Color(0xFF121212),
-        primarySwatch: Colors.amber,
+        fontFamily: 'Cairo', // أو الخط الافتراضي
       ),
-      home: const MainScreen(),
+      home: const HomeScreen(),
     );
   }
 }
