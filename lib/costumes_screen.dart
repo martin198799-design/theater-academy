@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'topic_detail_screen.dart';
 
-class CostumesLightingScreen extends StatelessWidget {
-  const CostumesLightingScreen({super.key});
+class CostumesScreen extends StatelessWidget {
+  const CostumesScreen({super.key});
 
-  final List<Map<String, String>> costumesLightingTopics = const [
+  final List<Map<String, String>> costumesTopics = const [
     {
       'title': 'علم نفس الألوان ودلالات الأزياء المسرحية',
       'description': 'كيف تعكس الأزياء البعد الاجتماعي، النفسي، والطبقي للشخصية المسرحية.',
@@ -12,16 +12,10 @@ class CostumesLightingScreen extends StatelessWidget {
       'detailedContent': 'الأزياء المسرحية ليست مجرد ملابس نرتديها على الخشبة، بل هي لغة بصرية صامتة تعكس الحالة النفسية، والطبقة الاجتماعية، والعصر التاريخي للشخصية. يدرس مصمم الأزياء الدلالات النفسية للألوان (فالاحمر يرمز للثورة أو الخطر، والأزرق للهدوء أو العزلة، والأصفر للغيرة أو المرض) ليخلق شخصية متكاملة تتناغم مع الرؤية الإخراجية العامة للعرض.'
     },
     {
-      'title': 'دور الإضاءة المسرحية في بناء الجو الدرامي والنفسي',
-      'description': 'التحكم بالزوايا، الألوان، والشدة الضوئية لتوجيه عين المشاهد وصنع التوتر.',
-      'category': 'الإضاءة والتقنيات',
-      'detailedContent': 'الإضاءة المسرحية هي "فرشاة الرسم" التي يلون بها المخرج الفراغ المسرحي. لا تقتصر وظيفتها على إنارة الممثلين ليراهم الجمهور، بل تتعدى ذلك لتكون عنصراً درامياً فاعلاً؛ فالإضاءة الجانبية الحادة تخلق توترات وغموضاً، بينما الإضاءة الناعمة توحي بالدفء والرومانسية. كما تلعب زوايا السقوط الضوئي دوراً محورياً في إبراز ملامح الحزن أو الفرح أو الصراع الداخلي على وجه الممثل.'
-    },
-    {
-      'title': 'التكامل البصري بين الإضاءة والديكور والأزياء',
-      'description': 'خلق السمفونية البصرية الموحدة التي تخدم الفكرة الفلسفية والجمالية للعرض.',
-      'category': 'التكامل البصري',
-      'detailedContent': 'حتى ينجح العرض المسرحي بصرياً، يجب أن تنصهر عناصر الإضاءة والأزياء والديكور في وحدة عضوية متناغمة. إن أي تنافر بين لون الأزياء وخلفية الديكور أو زاوية الإضاءة يكسر الإيهاب ويشتت انتباه المتفرج. لذلك يعمل السينوغراف ومصمم الإضاءة بتنسيق تام مع المخرج لضمان أن كل ومضة ضوء وكل قطعة قماش تخدم الفكرة الكبرى للنص.'
+      'title': 'التاريخ المادي وتطور الأزياء عبر العصور',
+      'description': 'دراسة الأزياء الإغريقية، الرومانية، والإليزابيثية وطرق إسقاطها معاصراً.',
+      'category': 'تاريخ الزي',
+      'detailedContent': 'يتطلب تصميم الأزياء المسرحية فهماً عميقاً للتطور التاريخي للثياب؛ فلكل عصر لغته النسيجية الخاصة ابتداءً من التونيكا الإغريقية وصولاً إلى أزياء عصر النهضة والأزياء المعاصرة، مع قدرة مصمم الأزياء على تكييف الطابع التاريخي ليخدم المضمون المعاصر للنص.'
     },
   ];
 
@@ -31,7 +25,7 @@ class CostumesLightingScreen extends StatelessWidget {
       backgroundColor: const Color(0xFF121212),
       appBar: AppBar(
         title: const Text(
-          'الملابس والإضاءة',
+          'الأزياء المسرحية',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -40,9 +34,9 @@ class CostumesLightingScreen extends StatelessWidget {
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16.0),
-        itemCount: costumesLightingTopics.length,
+        itemCount: costumesTopics.length,
         itemBuilder: (context, index) {
-          final topic = costumesLightingTopics[index];
+          final topic = costumesTopics[index];
           return InkWell(
             onTap: () {
               Navigator.push(
@@ -53,7 +47,7 @@ class CostumesLightingScreen extends StatelessWidget {
                     description: topic['description']!,
                     category: topic['category']!,
                     detailedContent: topic['detailedContent']!,
-                    themeColor: Colors.orange,
+                    themeColor: Colors.deepOrange,
                     isPlayText: false,
                   ),
                 ),
@@ -65,7 +59,7 @@ class CostumesLightingScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: const Color(0xFF1E1E1E),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.orange.shade700.withOpacity(0.4), width: 1.5),
+                border: Border.all(color: Colors.deepOrange.shade700.withOpacity(0.4), width: 1.5),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -79,15 +73,15 @@ class CostumesLightingScreen extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                            color: Colors.orange.shade900.withOpacity(0.3),
+                            color: Colors.deepOrange.shade900.withOpacity(0.3),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
                             topic['category']!,
-                            style: TextStyle(color: Colors.orange.shade300, fontSize: 11),
+                            style: TextStyle(color: Colors.deepOrange.shade300, fontSize: 11),
                           ),
                         ),
-                        Icon(Icons.lightbulb_rounded, color: Colors.orange.shade400, size: 22),
+                        Icon(Icons.checkroom_rounded, color: Colors.deepOrange.shade400, size: 22),
                       ],
                     ),
                     const SizedBox(height: 12),
