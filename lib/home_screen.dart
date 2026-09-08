@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'play_library_screen.dart';
+import 'texts_library_screen.dart';
 import 'directing_screen.dart';
 import 'acting_screen.dart';
 import 'decor_screen.dart';
@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
         'subtitle': 'نصوص عالمية ومحلية كاملة ومترجمة بأعلى بلاغة',
         'icon': Icons.menu_book_rounded,
         'color': Colors.red,
-        'screen': const PlayLibraryScreen(),
+        'screen': const TextsLibraryScreen(),
       },
       {
         'title': 'الإخراج المسرحي',
