@@ -6,7 +6,7 @@ class TopicDetailScreen extends StatelessWidget {
   final String category;
   final String detailedContent;
   final Color themeColor;
-  final bool isPlayText; // للتمييز بين النص المسرحي والدراسة الأكاديمية
+  final bool isPlayText;
 
   const TopicDetailScreen({
     super.key,
@@ -15,7 +15,7 @@ class TopicDetailScreen extends StatelessWidget {
     required this.category,
     required this.detailedContent,
     required this.themeColor,
-    this.isPlayText = false,
+    required this.isPlayText,
   });
 
   @override
@@ -24,9 +24,8 @@ class TopicDetailScreen extends StatelessWidget {
       backgroundColor: const Color(0xFF121212),
       appBar: AppBar(
         title: Text(
-          title,
-          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
-          overflow: TextOverflow.ellipsis,
+          category,
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         backgroundColor: const Color(0xFF1E1E1E),
@@ -36,86 +35,70 @@ class TopicDetailScreen extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
-          textDirection: TextDirection.rtl,
           children: [
-            // تصنيف المحتوى
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              width: double.infinity,
+              padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: themeColor.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: themeColor.withOpacity(0.5)),
+                color: const Color(0xFF1E1E1E),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: themeColor.withOpacity(0.5), width: 1.5),
               ),
-              child: Text(
-                category,
-                style: TextStyle(color: themeColor, fontSize: 13, fontWeight: FontWeight.bold),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      color: themeColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textDirection: TextDirection.rtl,
+                    textAlign: TextAlign.right,
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    description,
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 14,
+                      height: 1.5,
+                    ),
+                    textDirection: TextDirection.rtl,
+                    textAlign: TextAlign.right,
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 16),
-            // عنوان الموضوع
-            Text(
-              title,
-              style: const TextStyle(
+            const SizedBox(height: 24),
+            const Text(
+              'النص الأكاديمي الشامل',
+              style: TextStyle(
                 color: Colors.white,
-                fontSize: 22,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
               textDirection: TextDirection.rtl,
             ),
             const SizedBox(height: 12),
-            // نبذة أو وصف تعريفي
-            Text(
-              description,
-              style: TextStyle(
-                color: Colors.white70,
-                fontSize: 14,
-                height: 1.5,
-              ),
-              textDirection: TextDirection.rtl,
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 20.0),
-              child: Divider(color: Colors.white24, thickness: 1),
-            ),
-            // العنوان الفرعي للمحتوى الموسع
-            Row(
-              textDirection: TextDirection.rtl,
-              children: [
-                Icon(
-                  isPlayText ? Icons.menu_book_rounded : Icons.article_rounded,
-                  color: Colors.amber,
-                  size: 20,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  isPlayText ? 'النص المسرحي الكامل (ترجمة عربية معتمدة):' : 'الدراسة الأكاديمية والتحليل المفصل:',
-                  style: const TextStyle(
-                    color: Colors.amber,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textDirection: TextDirection.rtl,
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            // صندوق المحتوى الرئيسي الكامل
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(18),
+              padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: const Color(0xFF1E1E1E),
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: themeColor.withOpacity(0.3), width: 1.5),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: Colors.white24, width: 1),
               ),
               child: Text(
                 detailedContent,
                 style: const TextStyle(
-                  color: Colors.white90,
+                  color: Colors.white,
                   fontSize: 15,
-                  height: 1.9, // تباعد أسطر مريح للقراءة المطولة
+                  height: 1.8,
                 ),
                 textDirection: TextDirection.rtl,
+                textAlign: TextAlign.right,
               ),
             ),
           ],
