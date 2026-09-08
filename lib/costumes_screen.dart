@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
 import 'topic_detail_screen.dart';
 
-class CostumesScreen extends StatelessWidget {
-  const CostumesScreen({super.key});
+class CostumesLightingScreen extends StatelessWidget {
+  const CostumesLightingScreen({super.key});
 
-  final List<Map<String, String>> costumesTopics = const [
+  final List<Map<String, String>> costumesLightingTopics = const [
     {
-      'title': 'دلالات الألوان وتوظيفها النفسي',
-      'description': 'كيف يعكس لون وزي الشخصية حالتها النفسية وتطورها الصراعي في العرض.',
-      'category': 'الدلالات النفسية',
-      'detailedContent': 'فلسفة الألوان في أزياء المسرح:\n• الأبعاد النفسية: توظيف الألوان الباردة أو الحارة للإيحاء بالصراع الداخلي، التوتر، أو الاستقرار.\n• التطور الدرامي: تغير درجات ألوان الزي مع تحول الشخصية وتطور الأحداث عبر فصول المسرحية.'
+      'title': 'علم نفس الألوان ودلالات الأزياء المسرحية',
+      'description': 'كيف تعكس الأزياء البعد الاجتماعي، النفسي، والطبقي للشخصية المسرحية.',
+      'category': 'الأزياء والمكياج',
+      'detailedContent': 'الأزياء المسرحية ليست مجرد ملابس نرتديها على الخشبة، بل هي لغة بصرية صامتة تعكس الحالة النفسية، والطبقة الاجتماعية، والعصر التاريخي للشخصية. يدرس مصمم الأزياء الدلالات النفسية للألوان (فالاحمر يرمز للثورة أو الخطر، والأزرق للهدوء أو العزلة، والأصفر للغيرة أو المرض) ليخلق شخصية متكاملة تتناغم مع الرؤية الإخراجية العامة للعرض.'
     },
     {
-      'title': 'تصميم الأزياء كجزء من الشخصية',
-      'description': 'التعاون بين المخرج ومصمم الأزياء لتعميق البعد الدرامي للممثل.',
-      'category': 'الأسس الإبداعية',
-      'detailedContent': 'الزي كأداة تعبيرية:\n• الهوية الاجتماعية والطبقية: كيف يُظهر التصميم البيئة والزمن والانتماء الاجتماعي للشخصية بلمظة بصرية واحدة.\n• راحة الحركة: تصميم الأزياء بما يخدم حركة الممثل الجسدية دون إعاقة الأداء.'
+      'title': 'دور الإضاءة المسرحية في بناء الجو الدرامي والنفسي',
+      'description': 'التحكم بالزوايا، الألوان، والشدة الضوئية لتوجيه عين المشاهد وصنع التوتر.',
+      'category': 'الإضاءة والتقنيات',
+      'detailedContent': 'الإضاءة المسرحية هي "فرشاة الرسم" التي يلون بها المخرج الفراغ المسرحي. لا تقتصر وظيفتها على إنارة الممثلين ليراهم الجمهور، بل تتعدى ذلك لتكون عنصراً درامياً فاعلاً؛ فالإضاءة الجانبية الحادة تخلق توترات وغموضاً، بينما الإضاءة الناعمة توحي بالدفء والرومانسية. كما تلعب زوايا السقوط الضوئي دوراً محورياً في إبراز ملامح الحزن أو الفرح أو الصراع الداخلي على وجه الممثل.'
+    },
+    {
+      'title': 'التكامل البصري بين الإضاءة والديكور والأزياء',
+      'description': 'خلق السمفونية البصرية الموحدة التي تخدم الفكرة الفلسفية والجمالية للعرض.',
+      'category': 'التكامل البصري',
+      'detailedContent': 'حتى ينجح العرض المسرحي بصرياً، يجب أن تنصهر عناصر الإضاءة والأزياء والديكور في وحدة عضوية متناغمة. إن أي تنافر بين لون الأزياء وخلفية الديكور أو زاوية الإضاءة يكسر الإيهاب ويشتت انتباه المتفرج. لذلك يعمل السينوغراف ومصمم الإضاءة بتنسيق تام مع المخرج لضمان أن كل ومضة ضوء وكل قطعة قماش تخدم الفكرة الكبرى للنص.'
     },
   ];
 
@@ -25,7 +31,7 @@ class CostumesScreen extends StatelessWidget {
       backgroundColor: const Color(0xFF121212),
       appBar: AppBar(
         title: const Text(
-          'الأزياء المسرحية',
+          'الملابس والإضاءة',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -34,9 +40,9 @@ class CostumesScreen extends StatelessWidget {
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16.0),
-        itemCount: costumesTopics.length,
+        itemCount: costumesLightingTopics.length,
         itemBuilder: (context, index) {
-          final topic = costumesTopics[index];
+          final topic = costumesLightingTopics[index];
           return InkWell(
             onTap: () {
               Navigator.push(
@@ -47,7 +53,8 @@ class CostumesScreen extends StatelessWidget {
                     description: topic['description']!,
                     category: topic['category']!,
                     detailedContent: topic['detailedContent']!,
-                    themeColor: Colors.deepOrange,
+                    themeColor: Colors.orange,
+                    isPlayText: false,
                   ),
                 ),
               );
@@ -58,7 +65,7 @@ class CostumesScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: const Color(0xFF1E1E1E),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.deepOrange.shade700.withOpacity(0.4), width: 1.5),
+                border: Border.all(color: Colors.orange.shade700.withOpacity(0.4), width: 1.5),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -72,15 +79,15 @@ class CostumesScreen extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                            color: Colors.deepOrange.shade900.withOpacity(0.3),
+                            color: Colors.orange.shade900.withOpacity(0.3),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
                             topic['category']!,
-                            style: TextStyle(color: Colors.deepOrange.shade300, fontSize: 11),
+                            style: TextStyle(color: Colors.orange.shade300, fontSize: 11),
                           ),
                         ),
-                        Icon(Icons.checkroom_rounded, color: Colors.deepOrange.shade400, size: 22),
+                        Icon(Icons.lightbulb_rounded, color: Colors.orange.shade400, size: 22),
                       ],
                     ),
                     const SizedBox(height: 12),
