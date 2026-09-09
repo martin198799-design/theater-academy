@@ -7,8 +7,7 @@ class DecorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const SectionScreenTemplate(
-      sectionKey: 'decor',
-      defaultTitle: 'قسم الديكور المسرحي',
+      sectionTitle: 'قسم الديكور المسرحي',
     );
   }
 }
