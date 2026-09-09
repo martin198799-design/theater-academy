@@ -35,33 +35,11 @@ class TextsLibraryScreen extends StatelessWidget {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     child: InkWell(
                       onTap: () {
-                        // نافذة منبثقة تفتح عند النقر لعرض تفاصيل النص كاملاً
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: Text(play.title),
-                            content: SingleChildScrollView(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'المؤلف: ${play.details}',
-                                    style: const TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold, fontSize: 16),
-                                  ),
-                                  const SizedBox(height: 12),
-                                  Text(
-                                    play.description,
-                                    style: const TextStyle(fontSize: 16, height: 1.6),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: const Text('إغلاق'),
-                              ),
-                            ],
+                        // الانتقال لصفحة قراءة النص الكامل (تأخذ الشاشة كاملة لسهولة القراءة)
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PlayReaderScreen(play: play),
                           ),
                         );
                       },
@@ -92,20 +70,13 @@ class TextsLibraryScreen extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 8),
                                   const Text(
-                                    'اضغط للقراءة الكاملة...',
-                                    style: TextStyle(fontSize: 12, color: Colors.blueAccent),
+                                    'اضغط لقراءة النص الكامل...',
+                                    style: TextStyle(fontSize: 12, color: Colors.blueAccent, fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
                             ),
-                            IconButton(
-                              icon: const Icon(Icons.picture_as_pdf, color: Colors.redAccent),
-                              onPressed: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text('جاري فتح النص الكامل لـ: ${play.title}')),
-                                );
-                              },
-                            ),
+                            const Icon(Icons.picture_as_pdf, color: Colors.redAccent, size: 36),
                           ],
                         ),
                       ),
@@ -113,6 +84,45 @@ class TextsLibraryScreen extends StatelessWidget {
                   );
                 },
               ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// شاشة قراءة النص الكامل للمسرحية
+class PlayReaderScreen extends StatelessWidget {
+  final PlayItem play;
+
+  const PlayReaderScreen({Key? key, required this.play}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(play.title),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              play.title,
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.indigoAccent),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'المؤلف: ${play.details}',
+              style: const TextStyle(fontSize: 16, color: Colors.blueAccent, fontWeight: FontWeight.bold),
+            ),
+            const Divider(height: 24, thickness: 1),
+            Text(
+              play.description,
+              style: const TextStyle(fontSize: 18, height: 1.8),
             ),
           ],
         ),
