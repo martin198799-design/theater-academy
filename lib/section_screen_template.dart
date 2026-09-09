@@ -28,7 +28,7 @@ class SectionScreenTemplate extends StatelessWidget {
           children: [
             Text(
               section?.description ?? '',
-              style: const TextStyle(fontSize: 16, color: Colors.grey, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 15, color: Colors.grey, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
             Expanded(
@@ -46,17 +46,19 @@ class SectionScreenTemplate extends StatelessWidget {
                           context: context,
                           builder: (context) => AlertDialog(
                             title: Text(study.title),
-                            // تم استخدام SingleChildScrollView لضمان قراءة كامل المحتوى مهما طال النص
-                            content: SingleChildScrollView(
-                              child: Text(
-                                study.content,
-                                style: const TextStyle(fontSize: 16, height: 1.6),
+                            content: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.85,
+                              child: SingleChildScrollView(
+                                child: Text(
+                                  study.content,
+                                  style: const TextStyle(fontSize: 16, height: 1.8),
+                                ),
                               ),
                             ),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context),
-                                child: const Text('إغلاق', style: TextStyle(fontSize: 16)),
+                                child: const Text('إغلاق', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                               ),
                             ],
                           ),
@@ -70,7 +72,7 @@ class SectionScreenTemplate extends StatelessWidget {
                           children: [
                             Text(
                               study.title,
-                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.indigo),
+                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.indigoAccent),
                             ),
                             const SizedBox(height: 8),
                             Text(
@@ -81,7 +83,7 @@ class SectionScreenTemplate extends StatelessWidget {
                             ),
                             const SizedBox(height: 8),
                             const Text(
-                              'اضغط للقراءة الكاملة...',
+                              'اضغط لقراءة الدراسة كاملة...',
                               style: TextStyle(fontSize: 12, color: Colors.blueAccent, fontWeight: FontWeight.bold),
                             ),
                           ],
