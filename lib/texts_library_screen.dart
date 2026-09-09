@@ -1,360 +1,180 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'topic_detail_screen.dart';
+'models/theater_models.dart'; // تأكد من مطابقة مسار النماذج لديك
 
 class TextsLibraryScreen extends StatelessWidget {
-  const TextsLibraryScreen({super.key});
-
-  final List<Map<String, dynamic>> playsLibrary = const [
-    {
-      'title': 'أوديب ملكاً - سوفوكليس (النص الكامل الموسع)',
-      'description': 'التراجيديا الخالدة الكاملة للقدر البشري والبحث عن الحقيقة في طيبة بكل تفاصيلها الفلسفية والدرامية.',
-      'category': 'المسرح اليوناني الكلاسيكي',
-      'themeColor': Colors.red,
-      'acts': [
-        {
-          'actTitle': 'الفصل الأول: نكبة طيبة ومقدمة العرافة',
-          'actContent': '''شخصيات الفصل:
-- أوديب (ملك طيبة)
-- كاهن زوس
-- كريون (شقيق يو كاستا)
-- جوقة الشيوخ الأطبيين
-
-(الحدث: أمام قصر أوديب في طيبة. جموع الشعب تحتشد حاملة أغصان الزيتون تضرعاً لرفع الطاعون الذي أهلك الحرث والنسل والمواشي).
-
-أوديب: 
-أيها الأبناء، يا نسل كادموس القديم، لماذا تحشدون هكذا أمام قصري بمسوح الحزن وأغصان التيسير؟ لقد أرسلت إليكم من ينبئني بأصوات البكاء والدعاء التي تملأ الشوارع، ولم أرد أن أعتمد على رسل الآخرين، فها أنذا جئت بنفسي لأسمع منكم. تكلموا، فما أنا إلا مستعد لكل عون يخلص طيبة من وبائها ومأساتها.
-
-الكاهن:
-يا أوديب، يا سيد هذه البلاد وحاكمها، أنت ترى بلسانك حجم الدمار الذي يحيط بمدينة طيبة؛ فالأرض تموت، والماشية تهلك، وأجنة النساء تجهض في الأرحام، والإله أوبولو ينشر طاعونه المدمر في كل مكان. نحن لا نراك إلهاً بين الآلهة، لكننا نلجأ إليك باعتبارك الأعظم بين البشر في قهر النكبات وحل ألغاز القدر. أنقذ مدينتك من هذا الموت الزؤام!
-
-أوديب:
-أعرف حجم الألم يا أبنائي، وكل واحد منكم يعاني وجعاً يخصه وحده، لكن وجعي يمتد ليشمل روحي وقلبي ومدينة طيبة بأسرها. لقد أرسلت أخي كريون إلى معبد دلفي العراف لاستقصاء الإرادة الإلهية ومعرفة سبب هذه اللعنة الجاثمة على صدورنا.
-
-[دخول كريون حاملاً نبوءة العراف]
-أوديب:
-ها قد أقبل كريون. أيها الصديق، ما الذي حمله إله النور من جواب؟
-
-كريون:
-(يتقدم بصوت خفيض ووجه يكسوه الوجوم والحذر)
-الجواب واضح وصريح يا أوديب.. طاعون طيبة لن يرتفع إلا إذا طردنا النجاسة المستوطنة في هذه الأرض، وتطهّرنا من دم الملك السابق لايوس المغدور. العراف يؤكد بلسان الآلهة: قاتل لايوس يعيش بيننا دون عقاب، وهو يرتع في هذه المدينة!
-
-أوديب:
-(بحدة وحماس وحس بالمسؤولية)
-سأبحث عنه بنفسي كأنني ابنه البار، وسأطارد هذا الدم حتى أطهّر طيبة من دنسه، وليكن مصير القاتل اللعنة والشتات والقصاص العادل!'''
-        },
-        {
-          'actTitle': 'الفصل الثاني: مواجهة العراف الأعمى تيسياس',
-          'actContent': '''شخصيات الفصل:
-- أوديب
-- تيسياس (الكاهن الأعمى)
-- جوقة الشيوخ
-
-(الحدث: استدعاء العراف تيسياس لمعرفة القاتل الحقيقي، ورفضه البوح في البداية خوفاً من هول الحقيقة ورهبة الصدمة).
-
-أوديب:
-أيها العراف الذي يرى بقلبه ما تعجزه الأبصار، تيسياس، إن مدينتك تذبل وتستنجد بك، فاعلن لنا اسم القاتل لكي ننقذ الموقف.
-
-تيسياس:
-(يتنهد عميقاً ويطأطأ رأسه بأسى)
-آهٍ.. ما أقسى المعرفة حين لا تعود بالخير على صاحبها! دعني أذهب إلى بيتي يا أوديب، واستر أنت مصيرك وأستر أنا مصيري، ولا تضغط عليَّ أكثر.
-
-أوديب:
-(متجهماً بغضب واستنكار)
-ما هذا الكلام يا تيسياس؟ أتحجب عن المدينة طوق نجاة وهي تحتضضر؟ أم أنك تشارك في هذه المؤامرة وتستر المجرم؟
-
-تيسياس:
-(يرفع رأسه المفكر ويواجه أوديب بنظرة ثاقبة رغم عماه الكلي)
-أنت نفسك يا أوديب.. أنت هي النجاسة التي تلوث أرض طيبة! أنت القاتل الذي تبحث عنه، وأنت تعيش في رجاسة لا تدريها مع أقرب الناس إليك!
-
-أوديب:
-(يضحك بسخرية مرة ويفقد صوابه)
-أتعيد الكلمة مرة أخرى أيها الحقير؟ أتريد أن تختبر صبري وجهدي؟ اسمع، أقسم أنك لست بعيداً عن تدبير هذه الجريمة أو التستر عليها!
-
-تيسياس:
-أنا أتحداك أن تحرس حقيقتك المرعبة؛ أنت متزوج من التي ولدتْك في أحشائها، وقد سفكت دم من أنجبك على مفترق الطرق! (ينصرف بخطى بطيئة ومدروسة تاركاً أوديب في دوامة عارمة من الشك والظنون والجنون).'''
-        },
-        {
-          'actTitle': 'الفصل الثالث: انكشاف الحقيقة والنهاية التراجيدية',
-          'actContent': '''شخصيات الفصل:
-- أوديب
-- يو كاستا (الملكة)
-- الراعي العجوز / رسول كورنثوس
-
-(الحدث: تطابق خيوط الماضي، اكتشاف الحقيقة، انتحار يو كاستا شنقاً، وسمل أوديب لعينيه ودخوله في المنفى الاختياري).
-
-يو كاستا:
-(تدخل غرفتها الداخلية شاحبة الوجه مرعوبة بعد أن أدركت الهول المفزع للقرائن والأدلة)
-يا للأقدار العمياء واللعنة التي لا ترحم! لقد ولدناه.. تزوجناه.. وأنجبنا منه كارثة اللعنة الكبرى! (تضع حداً لحياتها شنقاً بدموع الندم والانهيار).
-
-أوديب:
-(يقتحم الغرفة صارخاً بجنون ليجدها جثة هامدة معلقة)
-لا ملك لي، لا زوجة، لا أرض، لا ستر.. أيتها العينان اللتان لم تبصرا الحقيقة حين كانت واضحة ساطعة، انظرا الآن إلى الظلام الأبدي الذي استحقرتماه! (ينزع دبوسين ذهبيين حادين من ثوبها ويسمل عينيه الاثنين بعنف حتى سال الدم القاتم على وجهه). ليخرجني أحدكم بعيداً عن طيبة إلى البرية، وليلعن التاريخ أوديب البائس الذي صار ألعوبةً مظلمة في يد الآلهة!'''
-        }
-      ]
-    },
-    {
-      'title': 'أيديب في كولونوس - سوفوكليس',
-      'description': 'المرحلة الأخيرة من حياة أوديب العجوز المنفي، حيث تجليات المصالحة مع الآلهة والموت المقدس.',
-      'category': 'المسرح اليوناني',
-      'themeColor': Colors.deepOrange,
-      'acts': [
-        {
-          'actTitle': 'الفصل الأول: الوصول إلى غابة الألهة المحرمة في كولونوس',
-          'actContent': '''شخصيات الفصل:
-- أوديب (العجوز الأعمى والمنفي)
-- أنتيغوني (ابنته المخلصة ومرافقته)
-- مواطن من أهالي كولونوس / جوقة الشيوخ
-
-(الحدث: يصل أوديب مستنداً إلى عصاه وابنته أنتيغوني إلى ضواحي أثينا، وتحديداً في بستان مقدّس ترهبه العامة).
-
-أبديب:
-يا ابنتي الحبيبة أنتيغوني، أين نحن الآن؟ هل تعلمين أي أرض هذه التي وطأتها قدمانا المنفيتان؟
-
-أنتيغوني:
-أبتِ، يبدو أننا في مكان مقدس تحيط به أشجار الغار والزيتون، وهناك بيوت قريبة.. إنها أراضي كولونوس التابعة لمدينة أثينا العظيمة.
-
-مواطن كولونوسي:
-(يقترب بفزع وتحذير)
-قف مكانك أيها الغريب العجوز! أنت تقف في بستان مقدس لا يجوز بشريّ تدنيسه أو الجلوس فيه، اخرج فوراً قبل أن تحل عليك اللعنة!
-
-أوديب:
-(يرفع رأسه الأعمى بثبات متهيب)
-لا تخافوا مني أيها القوم، فأنا أوديب.. نعم، أوديب البائس، ولكني لست شريراً، وقد جئت لأجد هنا مأواي الأخير بحسب نبوءة الآلهة التي وعدتني بالسلام والراحة في هذا المكان بالذات.'''
-        },
-        {
-          'actTitle': 'الفصل الثاني: صراع الأقارب ووصول كريون وبولينيكيس',
-          'actContent': '''شخصيات الفصل:
-- أوديب
-- أنتيغوني / إيسمين
-- كريون (ملك طيبة الحالي)
-- بولينيكيس (ابن أوديب التائه)
-
-(الحدث: محاولة كريون اختطاف أوديب وإجباره على العودة لحدود طيبة لتتبارك أرضه بوجوده الملعون، ورفض أوديب القاطع).
-
-كريون:
-(محاطاً بالحرس وبنبرة خبيثة ومتعجرفة)
-يا أوديب، عد إلى طيبة، فالمدينة تحتاج لرفاتك لتحميها من حروبها، ولا يليق بك الموت في أرض غريبة ذليلاً!
-
-أوديب:
-(يصرخ بغضب ومرارة السنين)
-ابتعد عني يا خائن يا من طردتني حين كنت في محنتي! لن أعود معكم ولن أمنحكم بركات موتي، وستتقاتلون على العرش حتى يسيل دماء أبنائكم بعضكم على بعض كما تنبأت!
-
-(يدخل بولينيكيس متوسلاً أباه أن يسامحه ويقف إلى جانبه في حربه، فيلعنه أوديب ويدعو عليه بالموت على يد أخيه).'''
-        },
-        {
-          'actTitle': 'الفصل الثالث: الاختفاء الغامض والموت المقدس',
-          'actContent': '''شخصيات الفصل:
-- أوديب / أنتيغوني / إيسمين
-- الملك تيسيوس (ملك أثينا) / الرسول
-
-(الحدث: تحول أوديب من إنسان مدنس إلى قوة إلهية مباركة تحمي أثينا، واختفاؤه العجيب في ظروف غامضة لا يعلمها إلا الآلهة).
-
-الرسول:
-(يدخل مذهولاً ومرتجفاً)
-أيها الناس، لقد حدث ما يفوق العقل البشري! لقد قاد أوديب خطاه بنفسه دون عصا ولا دليل نحو المكان الخفي، ومعه تيسيوس وحده، ثم غاب في جوف الأرض بصوت سماوي ونداء خفي.. لقد مات أوديب، أو بالأحرى، صعد طاهراً إلى رحاب الآلهة ليحمي أثينا إلى الأبد!'''
-        }
-      ]
-    },
-    {
-      'title': 'هاملت - ويليام شكسبير (النص الكامل الموسع والفصول الكبرى)',
-      'description': 'التحفة الشكسبيرية الأعظم في التردد البشري، والموت، والبحث عن الحقيقة والثأر والانتقام.',
-      'category': 'المسرح الإليزابيثي / العالمي',
-      'themeColor': Colors.indigo,
-      'acts': [
-        {
-          'actTitle': 'الفصل الأول: شبح الأب وظهور الحقيقة على الأسوار',
-          'actContent': '''شخصيات الفصل:
-- هاملت (أمير الدنمارك)
-- شبح الملك الأب
-- هوراشيو / مارسيلوس
-
-(الحدث: منتصف الليل على أسوار قلعة إلسنور والرياح الباردة تعصف بالمكان، والحراس يرتجفون خوفاً).
-
-هوراشيو:
-انظر يا سمو الأمير،ها هو الشبح يعود مرة أخرى بنفس الهيئة والدرع الذي كان يرتديه أبوك الملك الراحل!
-
-هاملت:
-(يقترب بخطى ثابتة وعيناه تشتعلان بالفضول والرهبة)
-سواء أكنت ملاكاً من نعيم السماء أو روحاً من جحيم الأرض، وسواء جلبت معك نسائم البركة أو لعنات الهلاك، فسأكلمك! تكلم يا أبتِ، لماذا تتراءى لنا هكذا في ظلمات الليل؟
-
-الشبح:
-(صوته يخرج كأنه يأت من أعماق القبور)
-اسمعني يا هاملت.. أنا روح أبيك، الذي كتب عليه أن يهيم ليلاً في أتون النيران الملتهبة حتى تُغسل خطيئته الكبرى التي لم تُغتفر. لم أمت ميتة طبيعية كما زعمت الحاشية الكاذبة، بل قُتلت غيلةً وسماً جباناً على يد عمك الخائن كلاوديوس الذي اغتصب عرشي ووسادتي وتزوج أمك الخائنة! انتقم لي يا بني ولا تدع مضجع أبيك ينسى ثأره!
-
-هاملت:
-(يضع يده على رأسه صارخاً)
-يا إله السماوات! عمي الخائن! لقد شعر قلبي بهذا منذ البداية.. لأكتب ذلك على لوح عقلي، ولتحترق روحي بنيران الثأر وحدها!'''
-        },
-        {
-          'actTitle': 'الفصل الثاني: معضلة الوجود والمونولوج الخالد (أكون أو لا أكون)',
-          'actContent': '''شخصيات الفصل:
-- هاملت (منفرداً في القاعة الحجرية المظلمة)
-
-(الحدث: تأملات عميقة وفلسفية في طبيعة الوجود، الموت، ومعضلة التردد البشري بين الانتقام والصبر).
-
-هاملت:
-أكون أو لا أكون.. تلك هي المسألة الحارقة!
-أأنه لأسمى في النفس البشرية أن تحمل صروف الدهر القاسي وسهامه العاتية بصمت، أم أن تشهر سيفك في وجه بحر من الرزايا والموبقات وتضع لها حدًا قاطعاً بالتمرد والفناء؟
-أن تموت.. أن تنام لا أكثر! وأن تعلم أن النوم يضع حداً نهائياً لأوجاع القلب والآلاف من الهزات الطبيعية التي يرثها الجسد البشري.. لتلك إذن غاية تُرتجى وتُبتغى في نهاية المطاف.
-أن تموت.. أن تنام.. أن تنام! ولعلها تحلم.. آهِ هنا يكمن المحك والعقدة الصعبة؛ فماذا يمكن أن يحلم به ذلك النوم الأبدي حين نتخلص من أثقال هذا الجسد الفاني؟ ذلك هو السؤال الذي يحملنا على التريث وإطالة الأمد في عيش هذه البلوى الطويلة الممتدة.
-فهذا الضمير هو الذي يجعلنا جميعا جبناء، وهو الذي يصبغ لون العزم الحقيقي بمسحة شاحبة من التردد، فتتلاشى مشاريع كبرى وتضيع دماء الثأر في مسارب العجز!'''
-        },
-        {
-          'actTitle': 'الفصل الثالث: المأساة الكبرى ومباراة الموت في القصر',
-          'actContent': '''شخصيات الفصل:
-- هاملت / كلاوديوس (الملك) / غيرترود (الملكة) / ليرتيس / هوراشيو
-
-(الحدث: قاعة العرش الملكية مهيأة لمبارزة المبارزة المسمومة، وتكشف الخديعة وموت الجميع في ختام تراجيدي داكن).
-
-كلاوديوس:
-(يهمس بابتسامة مسمومة وهو يناول الكأس لهاملت)
-اشرب يا بني واحتفل بالنصر، فهذه الكأس لك وحدك!
-
-غيرترود:
-(تأخذ الكأس وتشرب منها بسرعة قبل أن يمنعها أحد)
-لا يا كلاوديوس، سأشرب لنخب ابني هاملت بنفسي.. (تسقط متسممة على الأرض) لقد سُمِمتُ! احذروا الخديعة!
-
-ليرتيس:
-(يطعن هاملت بسيفه المسموم غدراً، ثم يتبادلان السيفين فيصيب هاملت ليرتيس ضربة قاتلة)
-لقد نلت جزاء خيانتي.. الملك هو المدبر لكل هذه المكيدة المسمومة!
-
-هاملت:
-(يجمع قواه الأخيرة ويهجم على كلاوديوس ليطعنه بالسيف المسموم ويسقيه من نفس الكأس)
-مت أيها الخائن والقاتل الجبان! خذ جزاء غدرك وعار عرشك المسلوب! 
-(يلتفت إلى صديقه المخلص هوراشيو بضعف)
-يا هوراشيو، أنا ميت.. ائتِ بالحقيقة واشرح للناس قصتي ولا تترك اسمي غارقاً في الظظلام.. أما ما تبقي بعد ذلك.. فهو الصمت الأبدي الصمت وحده! (يسقط شهيداً للتراجيديا الخالدة).'''
-        }
-      ]
-    }
-  ];
+  const TextsLibraryScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF121212),
       appBar: AppBar(
-        title: const Text(
-          'مكتبة النصوص والفصول المسرحية',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
+        title: const Text('مكتبة النصوص والدراسات المسرحية'),
         centerTitle: true,
-        backgroundColor: const Color(0xFF1E1E1E),
-        iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16.0),
-        itemCount: playsLibrary.length,
-        itemBuilder: (context, index) {
-          final play = playsLibrary[index];
-          final Color themeColor = play['themeColor'] as Color;
-          
-          return Container(
-            margin: const EdgeInsets.only(bottom: 20),
-            decoration: BoxDecoration(
-              color: const Color(0xFF1E1E1E),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: themeColor.withOpacity(0.5), width: 1.5),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    textDirection: TextDirection.rtl,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: themeColor.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: Text(
-                          play['category']!,
-                          style: TextStyle(color: themeColor, fontSize: 11, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Icon(Icons.theater_comedy_rounded, color: themeColor, size: 24),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    play['title']!,
+      body: StreamBuilder<QuerySnapshot>(
+        // جلب الأقسام (المدارس المسرحية) مرتبة حسب الحقل order
+        stream: FirebaseFirestore.instance
+            .collection('schools')
+            .orderBy('order')
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Center(child: Text('حدث خطأ أثناء تحميل البيانات'));
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          final docs = snapshot.data!.docs;
+          if (docs.isEmpty) {
+            return const Center(
+              child: Text(
+                'لا توجد أقسام مضافة حالياً',
+                style: TextStyle(fontSize: 16, color: Colors.grey),
+              ),
+            );
+          }
+
+          return ListView.builder(
+            itemCount: docs.length,
+            itemBuilder: (context, index) {
+              final data = docs[index].data() as Map<String, dynamic>;
+              final schoolId = docs[index].id;
+              final titleAr = data['title_ar'] ?? '';
+
+              return Card(
+                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: ListTile(
+                  contentPadding: const EdgeInsets.all(16),
+                  title: Text(
+                    titleAr,
                     style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
                       fontWeight: FontWeight.bold,
+                      fontSize: 18,
                     ),
-                    textDirection: TextDirection.rtl,
                   ),
-                  const SizedBox(height: 6),
-                  Text(
-                    play['description']!,
-                    style: const TextStyle(
-                      color: Colors.white54,
-                      fontSize: 13,
-                      height: 1.4,
-                    ),
-                    textDirection: TextDirection.rtl,
+                  subtitle: const Padding(
+                    padding: EdgeInsets.only(top: 8.0),
+                    child: Text('اضغط لعرض النصوص والدراسات التابعة'),
                   ),
-                  const Divider(color: Colors.white24, height: 24),
-                  const Text(
-                    'اختر الفصل المعني للدراسة والتحليل:',
-                    style: TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.bold),
-                    textDirection: TextDirection.rtl,
-                  ),
-                  const SizedBox(height: 8),
-                  ...(play['acts'] as List).map((act) {
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => TopicDetailScreen(
-                                title: '${play['title']} - ${act['actTitle']}',
-                                description: play['description']!,
-                                category: play['category']!,
-                                detailedContent: act['actContent']!,
-                                themeColor: themeColor,
-                                isPlayText: true,
-                              ),
-                            ),
-                          );
-                        },
-                        borderRadius: BorderRadius.circular(8),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                          decoration: BoxDecoration(
-                            color: Colors.black26,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.white10),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            textDirection: TextDirection.rtl,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  act['actTitle']!,
-                                  style: const TextStyle(color: Colors.white, fontSize: 13),
-                                  textDirection: TextDirection.rtl,
-                                ),
-                              ),
-                              Icon(Icons.arrow_forward_ios_rounded, color: themeColor, size: 14),
-                            ],
-                          ),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: () {
+                    // الانتقال لشاشة تفاصيل المدرسة لعرض النصوص والدراسات بداخلها
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => SchoolDetailsScreen(
+                          schoolId: schoolId,
+                          schoolName: titleAr,
                         ),
                       ),
                     );
-                  }).toList(),
-                ],
-              ),
-            ),
+                  },
+                ),
+              );
+            },
           );
         },
+      ),
+    );
+  }
+}
+
+/// شاشة فرعية تعرض النصوص (Plays) والدراسات (Studies) الخاصة بالمدرسة المحددة
+class SchoolDetailsScreen extends StatelessWidget {
+  final String schoolId;
+  final String schoolName;
+
+  const SchoolDetailsScreen({
+    Key? key,
+    required this.schoolId,
+    required this.schoolName,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(schoolName),
+          centerTitle: true,
+          bottom: const TabBar(
+            tabs: [
+              Tab(text: 'النصوص المسرحية', icon: Icon(Icons.menu_book)),
+              Tab(text: 'الدراسات والبحوث', icon: Icon(Icons.article)),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            // تبويب النصوص المسرحية (Plays Sub-collection)
+            StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('schools')
+                  .doc(schoolId)
+                  .collection('plays')
+                  .orderBy('order')
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                final plays = snapshot.data?.docs ?? [];
+                if (plays.isEmpty) {
+                  return const Center(child: Text('لا توجد نصوص مسرحية مضافة بعد'));
+                }
+                return ListView.builder(
+                  itemCount: plays.length,
+                  itemBuilder: (context, i) {
+                    final playData = plays[i].data() as Map<String, dynamic>;
+                    return ListTile(
+                      leading: const Icon(Icons.theater_comedy),
+                      title: Text(playData['title_ar'] ?? ''),
+                      subtitle: Text(playData['pdf_url'] ?? ''),
+                      // هنا يمكنك إضافة كود فتح رابط الـ PDF لاحقاً
+                    );
+                  },
+                );
+              },
+            ),
+
+            // تبويب الدراسات (Studies Sub-collection)
+            StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('schools')
+                  .doc(schoolId)
+                  .collection('studies')
+                  .orderBy('order')
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                final studies = snapshot.data?.docs ?? [];
+                if (studies.isEmpty) {
+                  return const Center(child: Text('لا توجد دراسات مضافة بعد'));
+                }
+                return ListView.builder(
+                  itemCount: studies.length,
+                  itemBuilder: (context, i) {
+                    final studyData = studies[i].data() as Map<String, dynamic>;
+                    return ListTile(
+                      leading: const Icon(Icons.library_books),
+                      title: Text(studyData['title_ar'] ?? ''),
+                      subtitle: Text(studyData['content_or_url'] ?? ''),
+                    );
+                  },
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
