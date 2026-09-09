@@ -46,6 +46,7 @@ class SectionScreenTemplate extends StatelessWidget {
                           context: context,
                           builder: (context) => AlertDialog(
                             title: Text(study.title),
+                            // تم استخدام SingleChildScrollView لضمان قراءة كامل المحتوى مهما طال النص
                             content: SingleChildScrollView(
                               child: Text(
                                 study.content,
@@ -55,7 +56,7 @@ class SectionScreenTemplate extends StatelessWidget {
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context),
-                                child: const Text('إغلاق'),
+                                child: const Text('إغلاق', style: TextStyle(fontSize: 16)),
                               ),
                             ],
                           ),
@@ -81,7 +82,7 @@ class SectionScreenTemplate extends StatelessWidget {
                             const SizedBox(height: 8),
                             const Text(
                               'اضغط للقراءة الكاملة...',
-                              style: TextStyle(fontSize: 12, color: Colors.blueAccent),
+                              style: TextStyle(fontSize: 12, color: Colors.blueAccent, fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
