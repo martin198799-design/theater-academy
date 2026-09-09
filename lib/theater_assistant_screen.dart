@@ -1,3 +1,18 @@
+import 'package:flutter/material.dart';
+
+// --- نماذج البيانات المدمجة ---
+class PlayItem {
+  final String title;
+  final String details;
+  PlayItem({required this.title, required this.details});
+}
+
+class StudyItem {
+  final String title;
+  final String content;
+  StudyItem({required this.title, required this.content});
+}
+
 class TheaterSection {
   final String title;
   final String description;
@@ -12,21 +27,7 @@ class TheaterSection {
   });
 }
 
-class PlayItem {
-  final String title;
-  final String details;
-
-  PlayItem({required this.title, required this.details});
-}
-
-class StudyItem {
-  final String title;
-  final String content;
-
-  StudyItem({required this.title, required this.content});
-}
-
-/// بيانات الأقسام الشاملة للتطبيق
+// --- البيانات المحلية الجاهزة ---
 final Map<String, TheaterSection> theaterData = {
   'texts': TheaterSection(
     title: 'مكتبة النصوص المسرحية',
@@ -48,7 +49,7 @@ final Map<String, TheaterSection> theaterData = {
       PlayItem(title: 'الدائرة القوقازية الطباشيرية', details: 'تطبيق عملي لمسرح الملحمة عند بريشت'),
     ],
     studies: [
-      StudyItem(title: 'المسرح المللاحمي عند بريشت', content: 'دراسة في كسر الإيهام وتغريب المتفرج.'),
+      StudyItem(title: 'المسرح الملحمي عند بريشت', content: 'دراسة في كسر الإيهام وتغريب المتفرج.'),
       StudyItem(title: 'نظام ستانسلافسكي في إعداد الممثل', content: 'الذاكرة الانفعالية والصدق الداخلي للشخصية.'),
     ],
   ),
@@ -75,3 +76,126 @@ final Map<String, TheaterSection> theaterData = {
     ],
   ),
 };
+
+// --- واجهة عرض المكتبة والأقسام ---
+class TextsLibraryScreen extends StatelessWidget {
+  const TextsLibraryScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final sections = theaterData.entries.toList();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('مكتبة النصوص والدراسات المسرحية'),
+        centerTitle: true,
+      ),
+      body: ListView.builder(
+        itemCount: sections.length,
+        itemBuilder: (context, index) {
+          final entry = sections[index];
+          final sectionData = entry.value;
+
+          return Card(
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            elevation: 3,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: ListTile(
+              contentPadding: const EdgeInsets.all(16),
+              title: Text(
+                sectionData.title,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
+              subtitle: Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(sectionData.description),
+              ),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => SectionDetailsScreen(
+                      sectionTitle: sectionData.title,
+                      plays: sectionData.plays,
+                      studies: sectionData.studies,
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+// --- شاشة تفاصيل القسم (النصوص والدراسات) ---
+class SectionDetailsScreen extends StatelessWidget {
+  final String sectionTitle;
+  final List<PlayItem> plays;
+  final List<StudyItem> studies;
+
+  const SectionDetailsScreen({
+    Key? key,
+    required this.sectionTitle,
+    required this.plays,
+    required this.studies,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(sectionTitle),
+          centerTitle: true,
+          bottom: const TabBar(
+            tabs: [
+              Tab(text: 'النصوص المسرحية', icon: Icon(Icons.menu_book)),
+              Tab(text: 'الدراسات والبحوث', icon: Icon(Icons.article)),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            // تبويب النصوص
+            plays.isEmpty
+                ? const Center(child: Text('لا توجد نصوص مسرحية مضافة'))
+                : ListView.builder(
+                    itemCount: plays.length,
+                    itemBuilder: (context, i) {
+                      return ListTile(
+                        leading: const Icon(Icons.theater_comedy),
+                        title: Text(plays[i].title),
+                        subtitle: Text(plays[i].details),
+                      );
+                    },
+                  ),
+
+            // تبويب الدراسات
+            studies.isEmpty
+                ? const Center(child: Text('لا توجد دراسات مضافة بعد'))
+                : ListView.builder(
+                    itemCount: studies.length,
+                    itemBuilder: (context, i) {
+                      return ListTile(
+                        leading: const Icon(Icons.library_books),
+                        title: Text(studies[i].title),
+                        subtitle: Text(studies[i].content),
+                      );
+                    },
+                  ),
+          ],
+        ),
+      ),
+    );
+  }
+}
