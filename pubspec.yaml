@@ -1,6 +1,7 @@
-name: theater_academy
-description: A new Flutter project for Theater Academy.
+name: theater_app
+description: "A new Flutter project for theatrical arts, texts, and studies."
 publish_to: 'none'
+
 version: 1.0.0+1
 
 environment:
@@ -9,7 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  http: ^1.2.0
+  # حزم فايربيس الأساسية وقاعدة البيانات المطلوب ربطها
+  firebase_core: ^2.27.0
+  cloud_firestore: ^4.15.8
 
 dev_dependencies:
   flutter_test:
