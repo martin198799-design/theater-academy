@@ -7,8 +7,7 @@ class LightingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const SectionScreenTemplate(
-      sectionKey: 'lighting',
-      defaultTitle: 'قسم الإضاءة المسرحية',
+      sectionTitle: 'قسم الإضاءة المسرحية',
     );
   }
 }
