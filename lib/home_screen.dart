@@ -6,7 +6,6 @@ import 'lighting_screen.dart';
 import 'costumes_screen.dart';
 import 'decor_screen.dart';
 import 'scenography_screen.dart';
-import 'theater_assistant_screen.dart'; // إذا كانت شاشة المساعد أو الذكاء موجودة لديك
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
