@@ -7,8 +7,7 @@ class CostumesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const SectionScreenTemplate(
-      sectionKey: 'costumes',
-      defaultTitle: 'قسم الأزياء المسرحية',
+      sectionTitle: 'قسم الأزياء والمكياج',
     );
   }
 }
