@@ -11,8 +11,35 @@ class SectionScreenTemplate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // عرض جميع المسرحيات المدرجة في القاعدة الشاملة لضمان عدم ضياع أي عمل
-    final List<PlayItem> plays = globalTheaterPlays;
+    String titleTrimmed = sectionTitle.trim();
+
+    // فلترة ذكية ودقيقة بناءً على اسم القسم تماماً
+    List<PlayItem> plays = globalTheaterPlays.where((play) {
+      if (titleTrimmed.contains('الإخراج')) {
+        // قسم الإخراج يعرض أعمالاً درامية متنوعة (مثل تشيخوف، أو بيكيت، أو شكسبير)
+        return play.school.contains('الكلاسيكي') || play.school.contains('العبث') || play.school.contains('الملحمي');
+      } else if (titleTrimmed.contains('التمثيل')) {
+        // قسم التمثيل
+        return play.title == 'هاملت' || play.title == 'عطيل' || play.title == 'مكبث';
+      } else if (titleTrimmed.contains('السينوغرافيا') || titleTrimmed.contains('الديكور')) {
+        // قسم السينوغرافيا والديكور
+        return play.school.contains('التعبيرية') || play.school.contains('الرمزي') || play.school.contains('الكلاسيكي');
+      } else if (titleTrimmed.contains('الأزياء') || titleTrimmed.contains('المكياج')) {
+        // قسم الأزياء والمكياج
+        return play.school.contains('الكلاسيكي') || play.school.contains('الملحمي');
+      } else if (titleTrimmed.contains('الإضاءة')) {
+        // قسم الإضاءة المسرحية
+        return play.school.contains('العبث') || play.school.contains('التعبيرية') || play.school.contains('الكلاسيكي');
+      }
+      
+      // إذا كان القسم عاماً أو "مكتبة النصوص المسرحية العالمية"
+      return true;
+    }).toList();
+
+    // إذا كانت القائمة المفلترة فارغة لأي سبب، نعرض القائمة الكاملة لضمان عدم ظهور شاشة فارغة أبداً
+    if (plays.isEmpty) {
+      plays = globalTheaterPlays;
+    }
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -69,7 +96,6 @@ class SectionScreenTemplate extends StatelessWidget {
                   const SizedBox(height: 12),
                   InkWell(
                     onTap: () {
-                      // فتح النص الكامل للمسرحية
                       showDialog(
                         context: context,
                         builder: (context) => Directionality(
