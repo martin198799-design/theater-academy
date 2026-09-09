@@ -10,9 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  # حزم فايربيس الأساسية وقاعدة البيانات المطلوب ربطها
-  firebase_core: ^2.27.0
-  cloud_firestore: ^4.15.8
 
 dev_dependencies:
   flutter_test:
