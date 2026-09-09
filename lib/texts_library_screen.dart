@@ -33,32 +33,81 @@ class TextsLibraryScreen extends StatelessWidget {
                     elevation: 3,
                     margin: const EdgeInsets.symmetric(vertical: 8),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.all(16),
-                      title: Text(
-                        play.title,
-                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 6),
-                          Text(
-                            'المؤلف: ${play.details}',
-                            style: const TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.w600),
+                    child: InkWell(
+                      onTap: () {
+                        // نافذة منبثقة تفتح عند النقر لعرض تفاصيل النص كاملاً
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text(play.title),
+                            content: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'المؤلف: ${play.details}',
+                                    style: const TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold, fontSize: 16),
+                                  ),
+                                  const SizedBox(height: 12),
+                                  Text(
+                                    play.description,
+                                    style: const TextStyle(fontSize: 16, height: 1.6),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text('إغلاق'),
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 6),
-                          Text(play.description),
-                        ],
-                      ),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.picture_as_pdf, color: Colors.redAccent),
-                        onPressed: () {
-                          // هنا سيتم ربط خاصية تحميل وقراءة النص الكامل PDF
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('جاري فتح النص الكامل لـ: ${play.title}')),
-                          );
-                        },
+                        );
+                      },
+                      borderRadius: BorderRadius.circular(12),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    play.title,
+                                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    'المؤلف: ${play.details}',
+                                    style: const TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.w600),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    play.description,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(color: Colors.white70),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  const Text(
+                                    'اضغط للقراءة الكاملة...',
+                                    style: TextStyle(fontSize: 12, color: Colors.blueAccent),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.picture_as_pdf, color: Colors.redAccent),
+                              onPressed: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('جاري فتح النص الكامل لـ: ${play.title}')),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );
