@@ -1,131 +1,13 @@
-class StudyItem {
-  final String title;
-  final String content;
-
-  StudyItem({required this.title, required this.content});
-}
-
 class PlayItem {
   final String title;
-  final String details;
+  final String author;
   final String description;
+  final String fullText; // النص الكامل الممدود والغني للقراءة
 
-  PlayItem({required this.title, required this.details, required this.description});
-}
-
-class TheaterSection {
-  final String title;
-  final String description;
-  final List<StudyItem> studies;
-  final List<PlayItem> plays;
-
-  TheaterSection({
+  PlayItem({
     required this.title,
+    required this.author,
     required this.description,
-    this.studies = const [],
-    this.plays = const [],
+    required this.fullText,
   });
 }
-
-final Map<String, TheaterSection> theaterData = {
-  'acting': TheaterSection(
-    title: 'قسم فن التمثيل وإعداد الممثل',
-    description: 'منهج ستانسلافسكي، الذاكرة الانفعالية، الجسد، والصوت',
-    studies: [
-      StudyItem(
-        title: 'منهج قسطنطين ستانسلافسكي (إعداد الممثل)',
-        content: 'يعتبر منهج ستانسلافسكي حجر الزاوية في فن التمثيل الحديث. يرتكز على الصدق الداخلي، الفعل الهدف (The Objective)، والذاكرة الانفعالية، وتقمص الشخصية درامياً. يتعين على الممثل أن يعيش الشخصية بكل أبعادها النفسية والجسدية، متجاوزاً الأداء الخارجي السطحي إلى التلبس الكامل لروح الدور.',
-      ),
-      StudyItem(
-        title: 'تقنيات الجسد وإسقاط الصوت المسرحي',
-        content: 'الجسد هو أداة الممثل الأولى على الخشبة. يتناول هذا المحور تمارين المرونة، التعبير الحركي، التحكم بالرنين، مخارج الحروف، والتلوين الصوتي لملء الفضاء المسرحي بفاعلية.',
-      ),
-    ],
-  ),
-  'direction': TheaterSection(
-    title: 'قسم الإخراج المسرحي',
-    description: 'مدارس الإخراج، السينوغرافيا، الفلسفة الإخراجية، وتاريخ التأسيس',
-    studies: [
-      StudyItem(
-        title: 'المسرح الملحمي عند بريشت',
-        content: 'دراسة معمقة في كسر الإيهام (التغريب)، وتفعيل دور المتفرج ليكون ناقداً لا مستهلكاً عاطفياً لدفع المشاهد للتفكير والتحليل.',
-      ),
-      StudyItem(
-        title: 'الرؤية الإخراجية وتوظيف الدلالات',
-        content: 'كيف يترجم المخرج النص إلى دلالات لونية ومساحات بصرية تعكس الصراع الداخلي والخارجي للشخصيات والإيقاع العام للعرض.',
-      ),
-    ],
-  ),
-  'lighting': TheaterSection(
-    title: 'قسم الإضاءة المسرحية',
-    description: 'فلسفة الضوء، دلالات الألوان، وتصميم المشهد الضوئي',
-    studies: [
-      StudyItem(
-        title: 'الفلسفة الدرامية للإضاءة',
-        content: 'الضوء ليس مجرد كاشف للرؤية بل هو عنصر درامي فاعل يرسم الحالة النفسية، يحدد الزمن، ويوجّه بصر المشاهد نحو بؤرة الحدث.',
-      ),
-      StudyItem(
-        title: 'أنظمة التوزيع الضوئي والسينوغرافيا',
-        content: 'استخدام الكشافات، البقع الضوئية، زوايا السقوط، والفلترات اللونية لخلق التباين والتعبير المعماري الذي يخدم العرض المسرحي.',
-      ),
-    ],
-  ),
-  'costumes': TheaterSection(
-    title: 'قسم الأزياء المسرحية',
-    description: 'دلالات الزي، التاريخ، وعلاقته بالشخصية',
-    studies: [
-      StudyItem(
-        title: 'سيميائية الزي المسرحي',
-        content: 'كيف يعكس الزي الطبقة الاجتماعية، الحالة النفسية، والفترة التاريخية للشخصية قبل أن تنطق بكلمة واحدة.',
-      ),
-      StudyItem(
-        title: 'تاريخ الأزياء المسرحية والتطور التقني',
-        content: 'رحلة الأزياء عبر العصور الإغريقية، عصر النهضة، وصولاً إلى الأزياء المعقدة والمجردة في المسرح الحديث.',
-      ),
-    ],
-  ),
-  'decor': TheaterSection(
-    title: 'قسم الديكور المسرحي',
-    description: 'هندسة الفضاء المسرحي، الكتلة، والفراغ',
-    studies: [
-      StudyItem(
-        title: 'الوظيفة الدرامية للديكور',
-        content: 'كيف يتحول الفضاء المكاني من مجرد خلفية صامتة إلى شريك حي في الصراع الدرامي والنفسي والاجتماعي للشخصيات.',
-      ),
-      StudyItem(
-        title: 'الديكور الواقعي مقابل التجريبي',
-        content: 'دراسة المدارس الهندسية والبصرية في تشكيل الفضاء المسرحي وتوظيف المواد المختلفة لخدمة دلالات النص.',
-      ),
-    ],
-  ),
-  'scenography': TheaterSection(
-    title: 'قسم السينوغرافيا المتكاملة',
-    description: 'توحيد الفضاء البصري، الإضاءة، الديكور، والصوت',
-    studies: [
-      StudyItem(
-        title: 'مفهوم السينوغرافيا الشاملة',
-        content: 'التناغم العضوي بين كافة العناصر البصرية والسمعية لتأليف لوحة إخراجية متكاملة ومؤثرة لا يمكن فصل أجزائها.',
-      ),
-      StudyItem(
-        title: 'دور السينوغراف المعاصر',
-        content: 'قراءة النص المسرحي بعين بصريّة هندسية وفلسفية لإعادة إنتاجه برؤية إخراجية غير تقليدية تكسر المألوف.',
-      ),
-    ],
-  ),
-  'texts': TheaterSection(
-    title: 'مكتبة النصوص المسرحية العالمية',
-    description: 'أرشيف ضخم يضم عيون الدراما العالمية',
-    plays: [
-      PlayItem(
-        title: 'هاملت',
-        details: 'ويليام شكسبير',
-        description: 'تراجيديا الشكوك والتردد والانتقام في البلاط الدنماركي والصراع الأزلي بين الوجود والموت.',
-      ),
-      PlayItem(
-        title: 'عطيل',
-        details: 'ويليام شكسبير',
-        description: 'تشريح نفسي عميق للغيرة القاتلة والتلاعب بالعقول من خلال شخصية إياغو الخبيثة.',
-      ),
-    ],
-  ),
-};
