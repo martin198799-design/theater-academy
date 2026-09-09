@@ -7,8 +7,7 @@ class ScenographyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const SectionScreenTemplate(
-      sectionKey: 'scenography',
-      defaultTitle: 'قسم السينوغرافيا المتكاملة',
+      sectionTitle: 'قسم السينوغرافيا',
     );
   }
 }
