@@ -1,9 +1,44 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-'models/theater_models.dart'; // تأكد من مطابقة مسار النماذج لديك
+import 'models/theater_models.dart'; // تأكد من مطابقة مسار النماذج لديك
 
 class TextsLibraryScreen extends StatelessWidget {
   const TextsLibraryScreen({Key? key}) : super(key: key);
+
+  /// دالة لإضافة بيانات تجريبية بضغطة زر واحدة
+  Future<void> _addSampleData(BuildContext context) async {
+    try {
+      final firestore = FirebaseFirestore.instance;
+
+      // 1. إضافة مدرسة رئيسية جديدة
+      DocumentReference schoolRef = await firestore.collection('schools').add({
+        'title_ar': 'المسرح اليوناني',
+        'order': 1,
+      });
+
+      // 2. إضافة نص مسرحي فرعي داخل هذه المدرسة
+      await schoolRef.collection('plays').add({
+        'title_ar': 'أوديب ريكس',
+        'pdf_url': 'https://example.com/oedipus.pdf',
+        'order': 1,
+      });
+
+      // 3. إضافة دراسة فرعية داخل هذه المدرسة
+      await schoolRef.collection('studies').add({
+        'title_ar': 'مفهوم التراجيديا عند أرسطو',
+        'content_or_url': 'دراسة تحليلة لمفهوم التطهير في المسرح اليوناني.',
+        'order': 1,
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('تمت إضافة البيانات التجريبية بنجاح!')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('حدث خطأ: $e')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +63,21 @@ class TextsLibraryScreen extends StatelessWidget {
 
           final docs = snapshot.data!.docs;
           if (docs.isEmpty) {
-            return const Center(
-              child: Text(
-                'لا توجد أقسام مضافة حالياً',
-                style: TextStyle(fontSize: 16, color: Colors.grey),
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'لا توجد أقسام مضافة حالياً',
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton.icon(
+                    onPressed: () => _addSampleData(context),
+                    icon: const Icon(Icons.add),
+                    label: const Text('إضافة بيانات تجريبية الآن'),
+                  ),
+                ],
               ),
             );
           }
@@ -64,7 +110,6 @@ class TextsLibraryScreen extends StatelessWidget {
                   ),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: () {
-                    // الانتقال لشاشة تفاصيل المدرسة لعرض النصوص والدراسات بداخلها
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -80,6 +125,12 @@ class TextsLibraryScreen extends StatelessWidget {
             },
           );
         },
+      ),
+      // زر عائم لإضافة بيانات تجريبية في أي وقت
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => _addSampleData(context),
+        icon: const Icon(Icons.add),
+        label: const Text('إضافة بيانات تجريبية'),
       ),
     );
   }
@@ -113,7 +164,7 @@ class SchoolDetailsScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            // تبويب النصوص المسرحية (Plays Sub-collection)
+            // تبويب النصوص المسرحية
             StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
                   .collection('schools')
@@ -137,14 +188,13 @@ class SchoolDetailsScreen extends StatelessWidget {
                       leading: const Icon(Icons.theater_comedy),
                       title: Text(playData['title_ar'] ?? ''),
                       subtitle: Text(playData['pdf_url'] ?? ''),
-                      // هنا يمكنك إضافة كود فتح رابط الـ PDF لاحقاً
                     );
                   },
                 );
               },
             ),
 
-            // تبويب الدراسات (Studies Sub-collection)
+            // تبويب الدراسات والبحوث
             StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
                   .collection('schools')
