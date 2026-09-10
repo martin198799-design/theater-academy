@@ -265,7 +265,7 @@ class _ActingTechniquesScreenState extends State<ActingTechniquesScreen> {
                                 Expanded(
                                   child: Text(
                                     pillar,
-                                    style: const TextStyle(fontSize: 12.5, color: Colors.white86),
+                                    style: const TextStyle(fontSize: 12.5, color: Colors.white70),
                                   ),
                                 ),
                               ],
@@ -298,7 +298,7 @@ class _ActingTechniquesScreenState extends State<ActingTechniquesScreen> {
                                 const SizedBox(height: 8),
                                 Text(
                                   study.practicalMasterclass,
-                                  style: const TextStyle(fontSize: 12.5, fontStyle: FontStyle.italic, color: Colors.white90, height: 1.5),
+                                  style: const TextStyle(fontSize: 12.5, fontStyle: FontStyle.italic, color: Colors.white70, height: 1.5),
                                 ),
                               ],
                             ),
