@@ -1,85 +1,143 @@
 import 'package:flutter/material.dart';
 
-class LightingContent {
-  final String title;
-  final String schoolOrMethod;
-  final String comprehensiveStudy;
-  final List<String> corePillars;
-
-  LightingContent({
-    required this.title,
-    required this.schoolOrMethod,
-    required this.comprehensiveStudy,
-    required this.corePillars,
-  });
-}
-
-final List<LightingContent> lightingDepartmentData = [
-  LightingContent(
-    title: "فلسفة الإضاءة المسرحية وعلم الجمال الضوئي",
-    schoolOrMethod: "التعبير الضوئي والدراما المرئية",
-    comprehensiveStudy: "الإضاءة في المسرح ليست مجرد وسيلة للرؤية، بل هي فرشاة رسام تشكيلية تخلق الحالة النفسية والزمنية للعرض.",
-    corePillars: [
-      "توجيه بؤرة انتباه المتفرج نحو مركز الحدث.",
-      "خلق الأبعاد النفسية والرمزية عبر درجات الألوان والظلال.",
-    ],
-  ),
-];
-
 class LightingScreen extends StatelessWidget {
   const LightingScreen({Key? key}) : super(key: key);
 
+  final List<Map<String, dynamic>> lightingContent = const [
+    {
+      "title": "أولاً: السرد التاريخي لتطور الإضاءة المسرحية",
+      "items": [
+        {
+          "subtitle": "1. عصر المسرح اليوناني والروماني (ضوء الشمس الطبيعي)",
+          "text": "في بدايات المسرح الإنساني، اعتمد الإغريق بشكل كلي على ضوء الشمس الطبيعي، حيث كانت المسارح تبجيلاً للطبيعة تُبنى في الهواء الطلق على شكل مدرجات دائرية أو نصف دائرية (Theatron). كانت العروض تقام في ساعات النهار الأولى أو بعد الظهر للاستفادة القصوى من الزوايا الطبيعية لأشعة الشمس. لم تكن هناك أي أدوات تحكم ضوئي، بل كان زمن العرض وتوزيع الكتل محكوماً بحركة الشمس في السماء، مما جعل المخرجين المسرحيين الأوائل يربطون الأحداث الدرامية الكبرى بمواعيد سطوع أو غروب الشمس دلالياً."
+        },
+        {
+          "subtitle": "2. عصر مسارح القصور والشموع والمشاعل (القرون الوسطى وعصر النهضة)",
+          "text": "مع انتقال العروض إلى داخل القاعات المغلقة وقصور النبلاء في عصر النهضة الإيطالية، ظهرت الحاجة الملحة للإضاءة الاصطناعية. استخدمت الشموع المصنوعة من شمع العسل والمشاعل وزيوت الإنارة، وكانت توضع في ثريات ضخمة معلقة فوق الجمهور وعلى أطراف خشبة المسرح. واجه هذا العصر تحديات كبرى تمثلت في الدخان الكثيف الناتج عن الاحتراق، والرائحة النفاذة، فضلاً عن خطورة الحرائق المستمرة التي أدت لاحقاً إلى احتراق العديد من دور المسرح الشهيرة."
+        },
+        {
+          "subtitle": "3. ثورة مصابيح الغاز في القرن التاسع عشر",
+          "text": "شكّل إدخال إضاءة الغاز (Gaslight) في أوائل القرن التاسع عشر ثورة تقنية حقيقية في تاريخ الفن المسرحي. للمرة الأولى، أصبح بإمكان الفنيين التحكم في شدة الإضاءة (تخفيفها أو توهيجها تدريجياً) من خلال صمامات مركزية تحكم تدفق الغاز في الأنابيب الموزعة على الخشبة. هذا الابتكار أتاح للمسرح إدخال تأثيرات بصرية درامية غير مسبوقة مثل محاكاة غروب الشمس التدريجي، عواصف الرعد، وخلق أجوای الغموض النفسي داخل العرض."
+        },
+        {
+          "subtitle": "4. العصر الحديث: الإضاءة الكهربائية والكشافات الذكية",
+          "text": "مع اكتشاف الكهرباء واختراع المصباح المتوهج على يد توماس أديسون، دخل المسرح عصره الذهبي الحديث. تلاشت مخاطر الدخان والحرائق، وظهرت الكشافات المتطورة (مثل كشافات البقعة Spotlights، والفريسنل Fresnel)، وصولاً في العصر الحاضر إلى أنظمة الإضاءة الرقمية الذكية (LED) وأنظمة التحكم المحوسبة بالكامل (DMX)، مما منح مهندس الإضاءة حرية مطلقة في تشكيل الفضاء البصري بدقة تسجّل بالثانية ودرجة اللون."
+        }
+      ]
+    },
+    {
+      "title": "ثانياً: أنواع الإضاءة المسرحية بحسب طبيعة المشهد الدرامي",
+      "items": [
+        {
+          "subtitle": "1. الإضاءة الدرامية التعبيرية (Dramatic Expressive Lighting)",
+          "text": "تُستخدم في المشاهد النفسية العميقة والمواقف التراجيدية المؤثرة. تعتمد على التباين الحاد (Chiaroscuro) بين النور والظلام، حيث يضاء جزء ضئيل من وجه الممثل أو جسده بينما يغرق باقي المشهد في عتمة كاملة. تهدف هذه الإضاءة إلى عزل الشخصية عن محيطها وإبراز صراعها الداخلي ومخاوفها المخفية، وغالباً ما تُستعمل زوايا جانبية حادة ل نحت الملامح بحدة."
+        },
+        {
+          "subtitle": "2. الإضاءة الواقعية والتسجيلية (Realistic/Naturalistic Lighting)",
+          "text": "تهدف إلى محاكاة مصادر الضوء الطبيعية الموجودة في الواقع المعيش داخل النص (مثل ضوء شمعة داخل غرفة قديمة، ضوء مصباح طاولة، أو أشعة الشمس المتسسربة من نافذة في الصباح البอน). تتطلب هذه الإضاءة دراسة دقيقة لزوايا السقوط لتبدو وكأنها تنبعث من مصدر منطقي ومبرر داخل الديكور، مما يمنح المتفرج شعوراً بالألفة والواقعية."
+        },
+        {
+          "subtitle": "3. الإضاءة الرمزية والتجريدية (Symbolic Abstract Lighting)",
+          "text": "تُوظّف في المسرح التجريبي، العبثي، أو الرمزى؛ حيث يتجرد الضوء من أي وظيفة واقعية ليصبح دلالة بصرية بحتة. على سبيل المثال، قد يغرق المسرح بلون أحمر قاني بالكامل للدلالة على ساحة حرب أو خطيئة أزلية، أو استخدام بقعة ضوء بيضاء دائرية تعزل الممثل كأنه سجين داخل فكرة أبدية أو عزلة وجودية مطلقة، بغض النظر عن مكان وزمان الحدث."
+        },
+        {
+          "subtitle": "4. إضاءة التتبع والتركيز (Followspot & Key Lighting)",
+          "text": "تُخصص لتسليط الضوء حصرياً على بطل العرض أو العنصر الأهم في حركة المشهد، وتُستخدم بكثافة في المسرح الغنائي، الاستعراضات، أو لحظات المونولوج الداخلي الطويلة التي يتحدث فيها الممثل مباشرة إلى الجمهور، مما يضمن بقاء بؤرة الانتباه البصري في المكان المحدد بدقة."
+        }
+      ]
+    },
+    {
+      "title": "ثالثاً: هندسة مزج الألوان الضوئية ودلالاتها النفسية",
+      "items": [
+        {
+          "subtitle": "1. فيزياء وسيكولوجية المزج اللوني على الخشبة",
+          "text": "يعتمد مزج الألوان في الضوء (Additive Color Mixing) على تراكب أطوال موجية مختلفة، على عكس المزج في الدهانات أو الأصباغ. عندما يمتزج الضوء الأحمر مع الأخضر ينتج ضوءاً أصفر، وعندما تمتزج الألوان الأساسية الثلاثة (الأحمر، الأخضر، الأزرق - RGB) بنسب متساوية ينتج ضوء أبيض نقي. يدرس مهندس الإضاءة هذه التداخلات بحذر، لأن المزج الخاطئ يولد ألواناً باهتة تقتل الحيوية البصرية للمشهد."
+        },
+        {
+          "subtitle": "2. تقنية المزج بين لونين متضادين (الدفء والبرودة)",
+          "text": "من أبرز التقنيات الاحترافية في الإضاءة المسرحية هو المزج المزدوج بين لون ساخن (كالأصفر الكهرماني Warm Amber) ولون بارد (كالازرق الفولاذي Steel Blue) على نفس الممثل أو في فضاء المشهد. يتم تسليط الضوء الدافئ من جهة اليمين والبارد من جهة اليسار. هذا التداخل يولد نحتاً بصرياً ثلاثي الأبعاد لجسد الممثل، ويخلق توزناً درامياً بصرياً يترجم بصرياً الصراع الداخلي للشخصية (مثل الصراع بين العقل والعاطفة، أو الخير والشر)، بحيث تضيء جهة من الوجه بدفء الحياة وتغرق الجهة الأخرى ببرودة القلق والترقب."
+        },
+        {
+          "subtitle": "3. درجات التشبع وكثافة الفلترات (Gels & Saturation)",
+          "text": "التحكم في نسبة التشبع اللوني عبر الفلاتر البلاستيكية أو الرقمية يمنع تحول المسرح إلى لوحة فوضوية مزعجة للعين. يعتمد المحترفون على تدرجات الألوان الناعمة (Pastel Tones) في المشاهد الدرامية الهادئة، بينما يلجؤون إلى الألوان المشبعة الحادة فقط في ذرى الصراع واللحظات الانفعالية القسوى، لضمان استجابة نفسية واعية من الجمهور."
+        }
+      ]
+    }
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("قسم الإضاءة المسرحية"),
-        backgroundColor: Colors.black87,
-      ),
-      body: ListView.builder(
-        itemCount: lightingDepartmentData.length,
-        padding: const EdgeInsets.all(16.0),
-        itemBuilder: (context, index) {
-          final item = lightingDepartmentData[index];
-          return Card(
-            elevation: 4,
-            margin: const EdgeInsets.only(bottom: 16),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item.title,
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.amber),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    item.schoolOrMethod,
-                    style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic, color: Colors.grey[400]),
-                  ),
-                  const Divider(height: 20),
-                  Text(
-                    item.comprehensiveStudy,
-                    style: const TextStyle(fontSize: 15, height: 1.5),
-                  ),
-                  const SizedBox(height: 12),
-                  ...item.corePillars.map<Widget>((pillar) => Padding(
-                        padding: const EdgeInsets.only(bottom: 6.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text("• ", style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold)),
-                            Expanded(child: Text(pillar, style: const TextStyle(fontSize: 14))),
-                          ],
-                        ),
-                      )).toList(),
-                ],
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("فن الإضاءة المسرحية - دراسات عميقة"),
+          backgroundColor: Colors.black87,
+        ),
+        backgroundColor: const Color(0xFF121212),
+        body: ListView.builder(
+          padding: const EdgeInsets.all(16.0),
+          itemCount: lightingContent.length,
+          itemBuilder: (context, sectionIndex) {
+            final section = lightingContent[sectionIndex];
+            return Card(
+              color: const Color(0xFF1E1E1E),
+              margin: const EdgeInsets.only(bottom: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(color: Colors.amber.withOpacity(0.3)),
               ),
-            ),
-          );
-        },
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      section["title"]!,
+                      style: const TextStyle(
+                        color: Colors.amberAccent,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Divider(color: Colors.amber, height: 20),
+                    ...List.generate(
+                      (section["items"] as List).length,
+                      (itemIndex) {
+                        final item = section["items"][itemIndex];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item["subtitle"]!,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 6),
+                              Text(
+                                item["text"]!,
+                                style: const TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 14,
+                                  height: 1.5,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
