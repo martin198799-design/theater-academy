@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'texts_library_screen.dart';
 import 'directing_screen.dart';
-import 'texts_library_screen.dart'; // استيراد شاشة مكتبة النصوص
+import 'acting_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -70,9 +71,7 @@ class HomeScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                         side: BorderSide(
-                          color: (index == 0 || index == 1)
-                              ? Colors.amber.withOpacity(0.5)
-                              : Colors.transparent,
+                          color: Colors.amber.withOpacity(0.3),
                         ),
                       ),
                       child: ListTile(
@@ -102,7 +101,7 @@ class HomeScreen extends StatelessWidget {
                           size: 16,
                         ),
                         onTap: () {
-                          // توجيه العناصر إلى شاشاتها الخاصة
+                          // توجيه كل قسم إلى شاشته الخاصة
                           if (index == 0) {
                             Navigator.push(
                               context,
@@ -115,6 +114,21 @@ class HomeScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => const DirectingStudiesScreen(),
+                              ),
+                            );
+                          } else if (index == 2) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ActingScreen(),
+                              ),
+                            );
+                          } else {
+                            // رسالة مؤقتة للأقسام البقية لحين إنشائها
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text("قريباً: ${section["title"]}"),
+                                backgroundColor: Colors.grey[850],
                               ),
                             );
                           }
