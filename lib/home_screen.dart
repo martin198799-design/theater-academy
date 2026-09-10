@@ -3,21 +3,51 @@ import 'texts_library_screen.dart';
 import 'directing_screen.dart';
 import 'acting_screen.dart';
 import 'lighting_screen.dart';
-import 'scenography_screen.dart'; // تأكد من استيراد ملف السينوغرافيا
+import 'scenography_screen.dart';
+import 'decor_screen.dart'; // تأكد من استيراد ملف الديكور
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // استخدمنا مفتاح (key) مميز لكل قسم لضمان عدم حدوث أي خطأ في التوجيه
     final List<Map<String, String>> theatreSections = [
-      {"title": "1. مكتبة النصوص", "desc": "النصوص المسرحية والتراثية العميقة"},
-      {"title": "2. دراسات الإخراج المسرحي", "desc": "المدارس الإخراجية، المبادئ، والتحليلات العميقة"},
-      {"title": "3. أكاديمية التمثيل والتقنيات", "desc": "المدارس الأدائية والذاكرة الانفعالية والجسد"},
-      {"title": "4. فن الإضاءة المسرحية", "desc": "التطور التاريخي، أنواع الإضاءة، وهندسة مزج الألوان"},
-      {"title": "5. السينوغرافيا والفضاء المسرحي", "desc": "فلسفة الفضاء المعماري، دراماتورجيا الأزياء، والتشكيل البصري"}, // القسم الرابع أو الخامس حسب ترتيبك
-      {"title": "6. النقد وتحليل العروض", "desc": "مناهج القراءة النقدية والتفكيك الدرامي"},
-      {"title": "7. تاريخ المسرح العالمي والعربي", "desc": "محطات وتطورات الفن المسرحي عبر التاريخ"},
+      {
+        "id": "texts",
+        "title": "1. مكتبة النصوص",
+        "desc": "النصوص المسرحية والتراثية العميقة"
+      },
+      {
+        "id": "directing",
+        "title": "2. دراسات الإخراج المسرحي",
+        "desc": "المدارس الإخراجية، المبادئ، والتحليلات العميقة"
+      },
+      {
+        "id": "acting",
+        "title": "3. أكاديمية التمثيل والتقنيات",
+        "desc": "المدارس الأدائية والذاكرة الانفعالية والجسد"
+      },
+      {
+        "id": "lighting",
+        "title": "4. فن الإضاءة المسرحية",
+        "desc": "التطور التاريخي، أنواع الإضاءة، وهندسة مزج الألوان"
+      },
+      {
+        "id": "scenography",
+        "title": "5. السينوغرافيا",
+        "desc": "فلسفة الفضاء المعماري، دراماتورجيا الأزياء، والتشكيل البصري"
+      },
+      {
+        "id": "decor",
+        "title": "6. الديكور",
+        "desc": "هندسة الكتل، المنصات، الأساليب الواقعية والتعبيرية، وخامات الصنع"
+      },
+      {
+        "id": "criticism",
+        "title": "7. النقد وتحليل العروض",
+        "desc": "مناهج القراءة النقدية والتفكيك الدرامي"
+      },
     ];
 
     return Directionality(
@@ -54,7 +84,7 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               const Text(
-                "الأقسام الأكاديمية السبعة:",
+                "الأقسام الأكاديمية:",
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -103,17 +133,21 @@ class HomeScreen extends StatelessWidget {
                           size: 16,
                         ),
                         onTap: () {
-                          // ربط الفهارس بدقة مع الشاشات البرمجية
-                          if (index == 0) {
+                          // التوجيه بناءً على المعرّف (ID) المضمون تماماً بغض النظر عن الترتيب
+                          final String sectionId = section["id"]!;
+
+                          if (sectionId == "texts") {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => const TextsLibraryScreen()));
-                          } else if (index == 1) {
+                          } else if (sectionId == "directing") {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => const DirectingStudiesScreen()));
-                          } else if (index == 2) {
+                          } else if (sectionId == "acting") {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => const ActingScreen()));
-                          } else if (index == 3) {
+                          } else if (sectionId == "lighting") {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => const LightingScreen()));
-                          } else if (index == 4) {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const ScenographyScreen())); // توجيه القسم الخامس لشاشة السينوغرافيا
+                          } else if (sectionId == "scenography") {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const ScenographyScreen()));
+                          } else if (sectionId == "decor") {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const DecorScreen())); // فتح شاشة الديكور حصراً وبدون أي أخطاء
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
