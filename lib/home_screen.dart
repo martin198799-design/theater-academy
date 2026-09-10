@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'directing_screen.dart'; // استيراد شاشة الإخراج التي أنشأناها
+import 'directing_screen.dart';
+import 'texts_library_screen.dart'; // استيراد شاشة مكتبة النصوص
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // قائمة الأقسام السبعة الأساسية في التطبيق
     final List<Map<String, String>> theatreSections = [
       {"title": "1. مكتبة النصوص", "desc": "النصوص المسرحية والتراثية العميقة"},
       {"title": "2. دراسات الإخراج المسرحي", "desc": "المدارس الإخراجية، المبادئ، والتحليلات العميقة"},
@@ -102,8 +102,15 @@ class HomeScreen extends StatelessWidget {
                           size: 16,
                         ),
                         onTap: () {
-                          // توجيه قسم دراسات الإخراج إلى شاشته الخاصة
-                          if (index == 1) {
+                          // توجيه العناصر إلى شاشاتها الخاصة
+                          if (index == 0) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const TextsLibraryScreen(),
+                              ),
+                            );
+                          } else if (index == 1) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
