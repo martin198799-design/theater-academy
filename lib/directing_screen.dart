@@ -1,70 +1,36 @@
-import 'package:flutter/material.dart';
-import 'theater_models.dart';
-import 'topic_detail_screen.dart';
+class DirectingContent {
+  final String title;
+  final String schoolOrMethod;
+  final String comprehensiveStudy;
+  final List<String> corePillars;
 
-class DirectingScreen extends StatelessWidget {
-  const DirectingScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final List<TheaterItem> items = TheaterData.directingDept;
-
-    return Scaffold(
-      backgroundColor: const Color(0xFF121212),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF1F1F2C),
-        title: const Text("قسم الإخراج المسرحي", style: TextStyle(color: Colors.white, fontSize: 18)),
-        iconTheme: const IconThemeData(color: Colors.white),
-      ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16.0),
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          final item = items[index];
-          return Card(
-            color: const Color(0xFF1F1F2C),
-            margin: const EdgeInsets.only(bottom: 16),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TopicDetailScreen(item: item),
-                  ),
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      item.category,
-                      style: const TextStyle(color: Colors.blueAccent, fontSize: 12, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      item.title,
-                      style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      item.briefDescription,
-                      style: const TextStyle(color: Colors.white70, fontSize: 14),
-                    ),
-                    const SizedBox(height: 12),
-                    const Text(
-                      "قراءة الدراسة والتحليل الأكاديمي...",
-                      style: TextStyle(color: Colors.blueAccent, fontSize: 13, fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
+  DirectingContent({
+    required this.title,
+    required this.schoolOrMethod,
+    required this.comprehensiveStudy,
+    required this.corePillars,
+  });
 }
+
+final List<DirectingContent> directingDepartmentData = [
+  DirectingContent(
+    title: "فلسفة الرؤية الإخراجية وتطور المنهج الحديث",
+    schoolOrMethod: "من المنهج الكلاسيكي إلى التجريب المعاصر",
+    comprehensiveStudy: "يُعد المخرج المسرحي المعماري الأول للعمل الفني وربان السفينة الذي يترجم النص الأدبي إلى رؤية بصرية وحركية تنبض بالحياة على الخشب. لا يقتصر الإخراج على تنظيم حركة الممثلين، بل يمتد لبناء عالم متكامل من الدلالات الفكرية والنفسية والجمالية التي تخاطب وجدان المتلقي وتعيد إنتاج الواقع أو تجاوزه نحو آفاق فلسفية أعمق.",
+    corePillars: [
+      "تفكيك النص المسرحي واستنطاق دلالاته الخفية وما وراء الكلمات.",
+      "خلق المفهوم الإخراجي الموحد (Concept) الذي يحكم إيقاع العرض وديكوره وإضاءته.",
+      "إدارة الفضاء المسرحي وتوظيف الكتل البشرية وفق هندسة بصرية تعبيرية."
+    ],
+  ),
+  DirectingContent(
+    title: "إدارة الممثل وتوجيه البروفات",
+    schoolOrMethod: "منهجية ستانسلافسكي ومایرهولد",
+    comprehensiveStudy: "تمثل البروفات المختبر الحقيقي الذي يتولد فيه السحر المسرحي؛ فهي تبدأ من 'طاولة القراءة التحليلية' وتمر بمرحلة الارتجال وصولاً إلى التثبيت العضوي والنفسي للحركة. يقود المخرج الممثل بحرفية عالية لتفجير طاقاته الإبداعية وبناء الذاكرة الانفعالية والصدق الشعوري على الخشب.",
+    corePillars: [
+      "بناء الذاكرة الانفعالية وتوجيه طاقة الممثل بدقة واحترافية عالية.",
+      "توحيد الإيقاع الجماعي لفريق العمل وخلق كيمياء تفاعلية بين الشخصيات.",
+      "التغلب على التوتر المسرحي وتحويل قلق الوقوف على الخشب إلى طاقة أدبية خلاقة."
+    ],
+  ),
+];
