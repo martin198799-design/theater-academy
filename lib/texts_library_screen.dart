@@ -1,86 +1,129 @@
-import 'package:flutter/material.dart';
-import 'theater_models.dart';
-import 'topic_detail_screen.dart';
+class GlobalPlay {
+  final String title;
+  final String playwright;
+  final String year;
+  final String school;
+  final String description;
+  final String dialogueExcerpt;
 
-class TextsLibraryScreen extends StatelessWidget {
-  const TextsLibraryScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final List<TheaterItem> texts = TheaterData.textsLibrary;
-
-    return Scaffold(
-      backgroundColor: const Color(0xFF121212),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF1F1F2C),
-        title: const Text("مكتبة النصوص المسرحية العالمية", style: TextStyle(color: Colors.white, fontSize: 18)),
-        iconTheme: const IconThemeData(color: Colors.white),
-      ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16.0),
-        itemCount: texts.length,
-        itemBuilder: (context, index) {
-          final item = texts[index];
-          return Card(
-            color: const Color(0xFF1F1F2C),
-            margin: const EdgeInsets.only(bottom: 16),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TopicDetailScreen(item: item),
-                  ),
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Colors.blue.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Text(
-                            item.category,
-                            style: const TextStyle(color: Colors.blueAccent, fontSize: 12, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Text(
-                          item.authorOrMethod,
-                          style: const TextStyle(color: Colors.grey, fontSize: 13),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      item.title,
-                      style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      item.briefDescription,
-                      style: const TextStyle(color: Colors.white70, fontSize: 14),
-                    ),
-                    const SizedBox(height: 12),
-                    const Text(
-                      "اضغط لقراءة النص المسرحي كاملاً...",
-                      style: TextStyle(color: Colors.blueAccent, fontSize: 13, fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
+  GlobalPlay({
+    required this.title,
+    required this.playwright,
+    required this.year,
+    required this.school,
+    required this.description,
+    required this.dialogueExcerpt,
+  });
 }
+
+final List<GlobalPlay> globalPlaysDatabase = [
+  // 1. عصر النهضة والمسرح الإليزابيثي
+  GlobalPlay(
+    title: "هاملت (Hamlet)",
+    playwright: "ويليام شكسبير (William Shakespeare)",
+    year: "1601",
+    school: "المسرح الإليزابيثي / الكلاسيكي",
+    description: "تتمحور المسرحية حول الأمير هاملت الذي يزيحه عمُّه كلاوديوس عن العرش ويتزوج أمه. يظهر شبح الأب ليطالب هاملت بالانتقام، مما يدخله في صراع فلسفي ونفسي عميق حول الموت، الجدوى، والتردد الأخلاقي.",
+    dialogueExcerpt: "هاملت: أيكون أو لا يكون.. تلك هي المسألة. أيهما أكثر نبلاً في النفس أن تتحمل سياط القدر الظالم وهجماته، أو أن تثور على طوفان من المتاجر فتضع حدا لها بموت؟ أن تموت.. أن تنام.. لا أكثر.. وبنامنا هذا نضع حدا لآلام القلب والآلاف من الصدمات الطبيعية التي ورثها الجسد.",
+  ),
+  GlobalPlay(
+    title: "ماكبث (Macbeth)",
+    playwright: "ويليام شكسبير (William Shakespeare)",
+    year: "1606",
+    school: "المسرح الإليزابيثي / الدراما التاريخية التراجيدية",
+    description: "دراسة سيكولوجية عميقة لطبيعة الطموح الأعمى وتأثير الشعور بالذنب. يحرض النبيل الاسكتلندي ماكبث بتأثير نبوءة الساحرات وطموح زوجته على اغتيال الملك لتولي العرش، ليبدأ بعدها مسلسل التدهور الأخلاقي والنفسي.",
+    dialogueExcerpt: "ماكبث: أهذا خنجر أراه أمامي، ومقبضه متجه نحو يدي؟ تعالي لأقبض عليك.. لا أستطيع إمساكك، ومع ذلك أراك ماثلاً. أليست بصرتُ بك يا طيفي المرئي، أم أنك وهمٌ خلقه عقلي المعتل بالحمى؟",
+  ),
+  GlobalPlay(
+    title: "عطيل (Othello)",
+    playwright: "ويليام شكسبير (William Shakespeare)",
+    year: "1603",
+    school: "المسرح الإليزابيثي / التراجيديا الكلاسيكية",
+    description: "مأساة تتناول الغيرة القاتلة والتلاعب النفسي الممنهج. ينجح ياجو الخبيث في زرع شكوك مدمرة في قلب القائد العسكري عطيل تجاه لحيته وزوجته الوفية ديدمونة، مما يقود إلى كارثة مأساوية.",
+    dialogueExcerpt: "ياجو: احذر يا مولاي من الغيرة.. إنها الوحش ذو العيون الخضراء الذي يسخر من الطعام الذي يقتات عليه. إن زوج البخيل يعيش في سعادة غامرة وهو يعلم ما يملكه، أما المغفل الذي يشك في زوجته.. فعيشته جحيم مطبق.",
+  ),
+
+  // 2. الكلاسيكية الفرنسية (القرن السابع عشر)
+  GlobalPlay(
+    title: "المريض الوهمي (The Imaginary Invalid)",
+    playwright: "مولير (Molière)",
+    year: "1673",
+    school: "الكلاسيكية الحديثة / الكوميديا الساخرة",
+    description: "عمل مسرحي ساخر ينتقد بعنف نفاق الأطباء واستغلالهم لجهل المرضى وهوسهم بالمرض. بطل العمل (أرغون) مهووس بتخيل الأمراض وإنفاق ثروته على الأدوية الزائفة.",
+    dialogueExcerpt: "أرغون: ألا ترى يا سيد بيجون أن هؤلاء الأطباء لا يفهمون شيئاً؟ يعتقدون أن الإنسان آلة ميكانيكية بحتة، بينما الروح والنفس تضيع وسط حساباتهم الدوائية.",
+  ),
+
+  // 3. الواقعية والطبيعية (القرن التاسع عشر وأوائل العشرين)
+  GlobalPlay(
+    title: "بيت الدمية (A Doll's House)",
+    playwright: "هنريك إبسن (Henrik Ibsen)",
+    year: "1879",
+    school: "المسرح الواقعي الاجتماعي",
+    description: "ثورة في مفهوم الدراما الاجتماعية الحديثة. تتناول قصة نورا هيلمر التي تكتشف بعد سنوات من العيش كـ 'دمية' في منزل زوجها تورفالد، أنها لم تكن سوى أداة ترفيه، مما يدفعها لاتخاذ قرار مصيري بترك المنزل للبحث عن هويتها المستقلة.",
+    dialogueExcerpt: "نورا: أعتقد أنني قبل كل شيء إنسانة.. تماماً مثلما أنت إنسان.. أو على الأقل، يجب أن أُحاول أن أصير إنسانة. أعلم جيداً يا تورفالد أن أغلبية الناس ستوافقك الرأي، وأن الكتب تقول ذلك.. لكنني لم يعد بإمكانّي الاكتفاء بما يقوله الناس وما تكتبه الكتب.",
+  ),
+  GlobalPlay(
+    title: "بستان الكرز (The Cherry Orchard)",
+    playwright: "أنتون تشيخوف (Anton Chekhov)",
+    year: "1904",
+    school: "المسرح الواقعي / الانطباعي",
+    description: "ملحمة درامية تعكس أفول طبقة الإقطاعيين الروس وصعود الطبقة البرجوازية الجديدة. تتميز بأسلوب تشيخوف الفريد القائم على الحوارات المبطنة، التوتر الخفي، والحنين المؤلم للماضي.",
+    dialogueExcerpt: "غاييف: أيها البستان العظيم.. الصديق الأقدم.. المليء بالذكريات والرمزية الطاهرة.. ها هو ذا يقع تحت مطرقة المزاد العلني. لا شيء يدوم في هذا العالم، فكل شيء يزول ويمضي كالدخان.",
+  ),
+  GlobalPlay(
+    title: "آنسة جولي (Miss Julie)",
+    playwright: "أوغست ستريندبرغ (August Strindberg)",
+    year: "1888",
+    school: "المسرح الطبيعي (Naturalism)",
+    description: "صراع طبقي ونفسي ضارٍ بين الأرستقراطية المتعجرفة (جولي) وخادمها الطموح (جان). تركز المسرحية على الغرائز، الصراع على السلطة، وتأثير الوراثة والبيئة وفق المنظور الطبيعي.",
+    dialogueExcerpt: "جان: انظري إلى الكأس التي أملؤها.. إنها الفارق بين طبقتك وطبقتي. אתِ ولدتِ من سلالة متعالية، وأنا ولدت من طين الأرض، ولكن من قال إن الطين لا يبتلع القصور قريباً؟",
+  ),
+
+  // 4. التعبيرية والمسرح النفسي (أوائل القرن العشرين)
+  GlobalPlay(
+    title: "القرد كثيف الشعر (The Hairy Ape)",
+    playwright: "يوجين أونيل (Eugene O'Neill)",
+    year: "1922",
+    school: "المسرح التعبيرى الحديث",
+    description: "عمل تجريبي عميق يصور اغتراب الإنسان المعاصر في ظل الآلية والرأسمالية المتوحشة. يتابع قصة (يان)، العامل في قاع سفينة بخارية، والذي يبحث باستماتة عن مكان ينتمي إليه في عالم تحكمه الآلة والطبقات.",
+    dialogueExcerpt: "يان: أنا الصلب! أنا الآلة! أنا القوة التي تحرك هذا العالم الجشع! أنا لست بشراً.. أنا جزء من الحديد والنار الذي يدفع هذا المركب العظيم في قلب العواصف.",
+  ),
+
+  // 5. مسرح العبث واللامعقول (منتصف القرن العشرين)
+  GlobalPlay(
+    title: "في انتظار غودو (Waiting for Godot)",
+    playwright: "صموائيل بيكيت (Samuel Beckett)",
+    year: "1952",
+    school: "مسرح العبث (Theater of the Absurd)",
+    description: "رمزية وجودية عميقة حول عبثية الحياة وانتظار الخلاص الوهمي. يلتقي الصديقان فلاديمير واستراگون بجانب شجرة قاحلة في انتظار شخص مجهول يدعى (غودو) لا يأتي أبداً، وسط حوارات عبثية تعكس أزمة الإنسان الحديث.",
+    dialogueExcerpt: "فلاديمير: إذن، لا نزال ننتظر؟\nاستراگون: هكذا يبدو الأمر.\nفلاديمير: غودو لن يأتي اليوم.\nاستراگون: كيف عرفت؟\nفلاديمير: لقد أرسل صبياً ليخبرنا.. بأنه لن يأتي اليوم، بل سيفعل غداً.",
+  ),
+  GlobalPlay(
+    title: "المغنية الكلاّشة / المغنية الصلعاء (The Bald Soprano)",
+    playwright: "يوجين يونسكو (Eugène Ionesco)",
+    year: "1950",
+    school: "مسرح العبث واللاغرض",
+    description: "هجوم ساخر على تآكل اللغة الإنسانية وعقم التواصل اليومي بين البشر في المجتمعات الحديثة. تتحدث الشخصيات بجمل وتفاصيل منفصلة عن أي منطق عقلي، مبرزة التغريب اللغوي.",
+    dialogueExcerpt: "السيد سميث: انظري يا عزيزتي، الأطفال يتزايدون في الجوار، والساعة الطائرة تدق ثلاث عشرة مرة، وهذا دليل قاطع على أن الثلج يحترق في منتصف شهر آب.",
+  ),
+
+  // 6. المسرح الملحمي والتعليمي
+  GlobalPlay(
+    title: "الأم شجاعة وأبناؤها (Mother Courage and Her Children)",
+    playwright: "برتولت بريشت (Bertolt Brecht)",
+    year: "1941",
+    school: "المسرح الملحمي (Epic Theater)",
+    description: "عمل فكري استثنائي يناهز الحرب ويفضح استغلال الرأسمالية للمآسي الإنسانية. تتبع قصة (آنا فيرلنج)، التاجرة المتجولة التي تحاول الاسترزاق من حروب الثلاثين عاماً، لتفقد تباعاً جميع أبنائها بسبب التجارة بالحرب.",
+    dialogueExcerpt: "الأم شجاعة: الحرب هي التجارة الأفضل يا سادة! لماذا تفضلون السلام العاطل؟ السلام يجلب الكسل والفقر للناس، أما الحرب فتنظم التجارة وتنعش الأسواق وتأتي بالربح الوفير.. هيا اشتروا بضائعي قبل أن تغير المدافع مواقعها.",
+  ),
+
+  // 7. المسرح الوجودي
+  GlobalPlay(
+    title: "جلسة مغلقة / الأبواب المغلقة (No Exit)",
+    playwright: "جان بول سارتر (Jean-Paul Sartre)",
+    year: "1944",
+    school: "المسرح الوجودي",
+    description: "العمل الذي صيغت فيه العبارة الفلسفية الشهيرة: 'الجحيم هم الآخرون'. تتناول قصة ثلاثة شخصيات متوفاة يتم احتجازهم في غرفة واحدة إلى الأبد، ليكتشفوا أن العقاب الحقيقي ليس ناراً أو كبريتاً، بل نظرة الآخرين وتقييمهم المستمر لوجودهم.",
+    dialogueExcerpt: "غارسن: لا حاجة للشوايات والتعذيب التقليدي.. الجحيم هو الآخرون! كل شخص منا يمثل مرآة مشوهة للآخر، ولا مفر من الحقيقة التي يكشفها عنا سواه.",
+  ),
+];
