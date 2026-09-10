@@ -1,78 +1,81 @@
 import 'package:flutter/material.dart';
 
-class DeepActingStudy {
-  final String title;
-  final String category;
-  final String authorOrSchool;
-  final String subtitle;
-  final String fullStudyContent;
-  final List<String> keyPillars;
-  final String practicalMasterclass;
+class ActingScreen extends StatelessWidget {
+  const ActingScreen({Key? key}) : super(key: key);
 
-  DeepActingStudy({
-    required this.title,
-    required this.category,
-    required this.authorOrSchool,
-    required this.subtitle,
-    required this.fullStudyContent,
-    required this.keyPillars,
-    required this.practicalMasterclass,
-  });
-}
-
-final List<DeepActingStudy> deepStudiesDatabase = [
-  DeepActingStudy(
-    title: "مدرسة الاختبار الداخلي والذاكرة الانفعالية",
-    category: "الفلسفة والمدرسة",
-    authorOrSchool: "نظام قسطنطين ستانسلافسكي (Stanislavski System)",
-    subtitle: "دراسة شاملة في تحويل 'أنا' الممثل إلى 'الشخصية' عبر الصدق العضوي والنفسي.",
-    fullStudyContent: "يُعد نظام ستانسلافسكي حجر الأساس للتمثيل الحديث في المسرح والسينما. يرتكز المفهوم الجوهري على أن الممثل لا ينبغي أن يكتفي بالتقليد الخارجي للشكل أو الصوت، بل يجب عليه أن يخلق 'حياة روحية' للشخصية على خشبة المسرح. يعتمد هذا النظام على مفهوم 'الهدف الفائق' (Super-objective) و'الأفعال الجزئية'. عندما يسأل الممثل نفسه بصدق: 'ماذا لو كنت مكان الشخصية؟'، فإنه يستدعي مخزونه التجريبي والذاكرة الانفعالية لإعادة إنتاج ألم أو فرح حقيقي.",
-    keyPillars: [
-      "الهدف والهدف الفائق (Objective & Super-objective)",
-      "فعل 'ماذا لو؟' (The Magic If)",
-      "الذاكرة الانفعالية والحسية (Emotional & Sensory Memory)",
-      "الإيقاع الداخلي والانسجام مع الشركاء على الخشبة"
-    ],
-    practicalMasterclass: "اختر مشهداً صامتاً لمدة 3 دقائق. حدد الهدف الرئيس للشخصية، وامشِ في الغرفة دون أن تنطق حرفاً، وكلما واجهت عقبة تخيلية، غيّر استراتيجيتك الجسدية.",
-  ),
-  DeepActingStudy(
-    title: "المسرح الفقير والجسد المقدس",
-    category: "تقنيات الجسد",
-    authorOrSchool: "مدرسة يرزي غروتوفسكي (Grotowski's Poor Theatre)",
-    subtitle: "دراسة نقدية في الاستغناء عن الديكور والمؤثرات والاكتفاء بجسد الممثل المطلق.",
-    fullStudyContent: "يرفض غروتوفسكي المسرح الغني ليطرح 'المسرح الفقير' حيث العري التام للممثل أمام الجمهور. في هذه المدرسة، يُعتبر جسد الممثل أداة مرنة وحية قادرة على التحول المطلق. يمر الممثل بتدريبات شاقة لإزالة المعوقات الجسدية والنفسية والتخلص من التوتر العضلي، لتنبع الحركة من مركز الجسد.",
-    keyPillars: [
-      "الطريق السلبي (إزالة العوائق والعادات الجسدية)",
-      "جسد الممثل كأداة حية وشاملة (The Total Actor)",
-      "التخلي عن الديكور والمكياج لصالح التعبير العضوي",
-      "القدرة على توليد الطاقة الطقسية والتواصل المباشر مع المتفرج"
-    ],
-    practicalMasterclass: "قم بسلسلة من الحركات الحيوانية المبالغ فيها، ثم تدرج ببطء حتى تتحول تلك الطاقة الحيوانية إلى مشية بشرية طبيعية تحمل نفس التوتر.",
-  ),
-];
-
-class ActingTechniquesScreen extends StatefulWidget {
-  const ActingTechniquesScreen({Key? key}) : super(key: key);
-
-  @override
-  State<ActingTechniquesScreen> createState() => _ActingTechniquesScreenState();
-}
-
-class _ActingTechniquesScreenState extends State<ActingTechniquesScreen> {
-  String selectedCategory = "الكل";
-  String searchQuery = "";
-
-  final List<String> categories = ["الكل", "الفلسفة والمدرسة", "تقنيات الجسد"];
+  final List<Map<String, dynamic>> actingContent = const [
+    {
+      "title": "أولاً: أدوات الممثل الأساسية - الصوت والإلقاء",
+      "items": [
+        {
+          "subtitle": "1. الجهاز الصوتي وعلم الرنين الداخلي",
+          "text": "يُعد الصوت أداة التعبير الأولى للممثل المسرحي، وهو يتجاوز حدود الكلام العادي ليصبح طاقة موسيقية ونفسية قادرة على اختراق وجدان المتفرج. تتطلب صناعة الصوت المسرحي تدريباً شاقاً على التنفس الحجابي العضوي، حيث يتعلم الممثل كيف يحول الهواء الخارج من الرئتين إلى طاقة صوتية متسقة خالية من الإجهاد الحنجري. يعتمد الرنين الداخلي على توظيف تجاويف الرأس والصدر والجمجمة كمكبرات طبيعية للصوت، مما يمنح الكلمة المنطوقة عمقاً ودفئاً وثقلاً درامياً يتناسب مع فضاء المسرح الواسع، بعيداً عن الصراخ الميكانيكي الأجوف الذي يفتقر إلى الصدق الشعوري."
+        },
+        {
+          "subtitle": "2. تقنيات الإلقاء والتشريح الدلالي للنص",
+          "text": "الإلقاء المسرحي الناجح ليس مجرد قراءة سليمة لمخارج الحروف، بل هو عملية تحليل وتفكيك دلالي للبنية الخفية الكامنة خلف الكلمات. يدرس الممثل مخارج اللفظ، التنغيم الصوتي (Intonation)، الوقفات الواعية (Pauses)، والتغيرات في طبقات الصوت (Pitch) تبعاً لتحولات الصراع النفسي. يقسم الممثل الجملة المسرحية إلى وحدات إيقاعية صغرى، يزن فيها الثقل الدلالي لكل مفردة، بحيث تصبح النبرة الصوتية مرآة دقيقة لانكسارات الشخصية، ومخاوفها، وتناقضاتها الداخلية الباطنية."
+        },
+        {
+          "subtitle": "3. هندسة الإيقاع الصوتي والتحكم بالنبرات",
+          "text": "يتطلب الأداء المسرحي رفيع المستوى قدرة استثنائية على إدارة الإيقاع الصوتي بحسب ضغط الموقف الدرامي. يتنقل الممثل ببراعة بين الهمس المشحون بالطاقة، والنبرة الهادئة، والصوت العالي المضبّط درامياً. هذا التحكم الدقيق يمنع رتابة الأداء ويخلق توتراً جمالياً يشد انتباه الجمهور، ويجعل الصوت عنصراً فاعلاً في بناء الشخصية تماماً كالحركة الجسدية."
+        }
+      ]
+    },
+    {
+      "title": "ثانياً: الجسد المسرحي والتشكيل الحركي",
+      "items": [
+        {
+          "subtitle": "1. أنثروبولوجيا الجسد ومرونة التعبير الحركي",
+          "text": "الجسد هو الأيقونة البصرية الأولى على خشبة المسرح، وهو الوعاء الذي تترجم فيه الانفعالات النفسية إلى أشكال مادية ظاهرة. تتأسس تقنية الجسد المسرحي على تحرير العضلات من التشنجات اليومية والاعتيادية، والوصول إلى حالة من اليقظة العضوية الشاملة (Organic Readiness). يتعلم الممثل كيف يتعامل مع ثقله وزنه، وكيف يوزع طاقته في الفراغ المسرحي بحسب متطلبات الشخصية، سواء أكانت شخصية متكئة على العجز والضعف أو مفعمة بالثقة والقوة."
+        },
+        {
+          "subtitle": "2. فن البلوكينغ (Blocking) والتموضع المكاني",
+          "text": "التشكيل الحركي لا ينفصل عن الفضاء المحيط؛ فكل خطوة يخطوها الممثل على الخشبة ترسم خطاً هندسياً ونفسياً يعبر عن علاقته بالشخصيات الأخرى وبالصراع الدائر. يدرس الممثل كيفية بناء التكوينات المكانية، وفهم دلالة المستويات المختلفة (الوقوف، الجلوس، الاستلقاء، الارتفاع والانخفاض) وكيف تعكس هذه المستويات موازين القوى والهيمنة أو الخضوع داخل النسيج الدرامي."
+        },
+        {
+          "subtitle": "3. التعبير الصامت ولغة الإيماءة والملامح",
+          "text": "تكتسب الإيماءة الصغيرة وحركة أطراف الأصابع أو نظرة العين أهمية بالغة في المسرح الأكاديمي، حيث تصبح الكلمة الصامتة أحياناً أبلغ من ألف كلمة منطوقة. يتدرب الممثل على التحكم الدقيق في تعبيرات وجهه وعضلاته الصغرى لتوصيل الانفعالات المعقدة دون مبالغة أو افتعال مجوف."
+        }
+      ]
+    },
+    {
+      "title": "ثالثاً: التمارين التطبيقية المكثفة للحركة والصوت",
+      "items": [
+        {
+          "subtitle": "1. تمارين الإحماء الصوتي والتنفس العضوي",
+          "text": "تمرين الشهيق والزفير العميق عبر الحجاب الحاجز مع إصدار أصوات متدرجة (الميمات والتنغيمات الصاعدة والهابطة) لتوسيع نطاق الرنين الصوتي. تمارين تفكيك عضلات الفك واللسان والشفاه لضمان وضوح مخارج الحروف تحت أي ضغط انفعالي أو مسافة صوتية طويلة داخل القاعة المسرحية."
+        },
+        {
+          "subtitle": "2. تمارين الوعي المكاني والتحرر الجسدية (البيوميكانيكا الأساسية)",
+          "text": "تمارين المشي الإيقاعي البطيء والسريع في الفراغ مع تغيير مركز الثقل الجسدي (الصدر، البطن، الحوض، الرأس) لاكتشاف تأثير تغير مركز الكتلة على نفسية وحركة الشخصية. تمارين الاسترخاء العضلي التام تليها التنشيط المفاجئ للطاقة الجسدية لاختبار مدى استجابة الجسد للمثيرات المفاجئة."
+        },
+        {
+          "subtitle": "3. تمارين الذاكرة الانفعالية والتحفيز الحسي",
+          "text": "استدعاء حوادث وذكريات حسية واقعية من مخزون الممثل الشخصي (رائحة، ملمس، صوت، مشهد بصري) لربطها بالموقف الدرامي الحاضر، وتدريب الحواس الخمس على اليقظة الفورية لتغذية الأداء بأبعاد صادقة وحية."
+        }
+      ]
+    },
+    {
+      "title": "رابعاً: تقنيات وأسرار الممثل الناجح والمحترف",
+      "items": [
+        {
+          "subtitle": "1. الانضباط النفسي وإدارة الطاقة الإبداعية",
+          "text": "يمتلك الممثل المحترف القدرة على الدخول والخروج من الشخصية بوعي كامل، دون أن يفقد توازنه النفسي أو يقع في فخ الاستنزاف العصبي العشوائي. إنه يدير طاقته الداخلية بحساب دقيق لكي تظل ذروة الأداء مشتعلة حتى اللحظة الأخيرة من العرض."
+        },
+        {
+          "subtitle": "2. التفاعل العضوي والإنصات النشط لشركاء المشهد",
+          "text": "التمثيل الحقيقي هو فن رد الفعل لا مجرد إلقاء الحوار المحفوظ مسبقاً. الممثل الناجح هو الذي ينصت بكل كيانه لزميله على الخشبة، ويتفاعل بصدق مع كل تغيير دقيق في نبرة صوته أو نظراته، مما يجعل الحوار حياً ومتجدداً في كل ليلة عرض."
+        },
+        {
+          "subtitle": "3. التجديد المستمر وتغذية المخيلة الفنية",
+          "text": "القراءة الواسعة، مراقبة السلوك البشري في الواقع المعيش، دراسة الفنون التشكيلية، وتطوير الأدوات التقنية والجسدية باستمرار هي الحصن الأخير الذي يحمي الممثل من التكرار والوقوف عند حد کلاسي معين، ليظل إبداعه متقداً ومتجدداً."
+        }
+      ]
+    }
+  ];
 
   @override
   Widget build(BuildContext context) {
-    List<DeepActingStudy> filteredStudies = deepStudiesDatabase.where((study) {
-      bool matchesCategory = selectedCategory == "الكل" || study.category == selectedCategory;
-      bool matchesSearch = study.title.toLowerCase().contains(searchQuery.toLowerCase()) ||
-          study.authorOrSchool.toLowerCase().contains(searchQuery.toLowerCase());
-      return matchesCategory && matchesSearch;
-    }).toList();
-
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -80,64 +83,69 @@ class _ActingTechniquesScreenState extends State<ActingTechniquesScreen> {
           title: const Text("أكاديمية التمثيل والتقنيات"),
           backgroundColor: Colors.black87,
         ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: TextField(
-                onChanged: (value) => setState(() => searchQuery = value),
-                style: const TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  hintText: "ابحث في الدراسات والتقنيات...",
-                  hintStyle: TextStyle(color: Colors.grey[400]),
-                  prefixIcon: const Icon(Icons.search, color: Colors.amber),
-                  filled: true,
-                  fillColor: Colors.grey[900],
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
+        backgroundColor: const Color(0xFF121212),
+        body: ListView.builder(
+          padding: const EdgeInsets.all(16.0),
+          itemCount: actingContent.length,
+          itemBuilder: (context, sectionIndex) {
+            final section = actingContent[sectionIndex];
+            return Card(
+              color: const Color(0xFF1E1E1E),
+              margin: const EdgeInsets.only(bottom: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(color: Colors.amber.withOpacity(0.3)),
               ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: filteredStudies.length,
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                itemBuilder: (context, index) {
-                  final study = filteredStudies[index];
-                  return Card(
-                    elevation: 6,
-                    margin: const EdgeInsets.only(bottom: 16),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                    color: const Color(0xFF161616),
-                    child: Padding(
-                      padding: const EdgeInsets.all(18.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            study.title,
-                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.amberAccent),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            study.authorOrSchool,
-                            style: const TextStyle(fontSize: 13, color: Colors.amber, fontStyle: FontStyle.italic),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            study.fullStudyContent,
-                            style: const TextStyle(fontSize: 13.5, color: Colors.white70, height: 1.6),
-                          ),
-                        ],
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      section["title"]!,
+                      style: const TextStyle(
+                        color: Colors.amberAccent,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  );
-                },
+                    const Divider(color: Colors.amber, height: 20),
+                    ...List.generate(
+                      (section["items"] as List).length,
+                      (itemIndex) {
+                        final item = section["items"][itemIndex];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item["subtitle"]!,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 6),
+                              Text(
+                                item["text"]!,
+                                style: const TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 14,
+                                  height: 1.5,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );
