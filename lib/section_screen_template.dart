@@ -1,32 +1,22 @@
 import 'package:flutter/material.dart';
-import 'theater_models.dart';
-import 'topic_detail_screen.dart';
+import 'theater_models.dart'; // استيراد ملف النماذج والبيانات
 
-class SectionScreenTemplate extends StatelessWidget {
-  final String sectionTitle;
+class SectionDetailScreen extends StatelessWidget {
+  final String departmentTitle;
+  final List<dynamic> items; // يستقبل قائمة المحتوى الخاصة بالقسم
 
-  const SectionScreenTemplate({Key? key, required this.sectionTitle}) : super(key: key);
+  const SectionDetailScreen({
+    Key? key,
+    required this.departmentTitle,
+    required this.items,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // خريطة تربط عناوين الأقسام بمصادر البيانات الصحيحة من TheaterData
-    final Map<String, List<TheaterItem>> departmentContents = {
-      "قسم الإخراج المسرحي": TheaterData.directingDept,
-      "قسم التمثيل": TheaterData.actingDept,
-      "قسم الإضاءة المسرحية": TheaterData.lightingDept,
-      "قسم السينوغرافيا": TheaterData.scenographyDept,
-      "قسم الأزياء والمكياج": TheaterData.costumesDept,
-      "مكتبة النصوص المسرحية العالمية": TheaterData.textsLibrary,
-    };
-
-    final List<TheaterItem> items = departmentContents[sectionTitle] ?? TheaterData.textsLibrary;
-
     return Scaffold(
-      backgroundColor: const Color(0xFF121212),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF1F1F2C),
-        title: Text(sectionTitle, style: const TextStyle(color: Colors.white, fontSize: 18)),
-        iconTheme: const IconThemeData(color: Colors.white),
+        title: Text(departmentTitle),
+        backgroundColor: Colors.black87,
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16.0),
@@ -34,52 +24,50 @@ class SectionScreenTemplate extends StatelessWidget {
         itemBuilder: (context, index) {
           final item = items[index];
           return Card(
-            color: const Color(0xFF1F1F2C),
+            elevation: 4,
             margin: const EdgeInsets.only(bottom: 16),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TopicDetailScreen(item: item),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.amber,
+                    ),
                   ),
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (item.category.isNotEmpty)
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.blue.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(6),
+                  const SizedBox(height: 8),
+                  Text(
+                    item.schoolOrMethod,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontStyle: FontStyle.italic,
+                      color: Colors.grey[400],
+                    ),
+                  ),
+                  const Divider(height: 20),
+                  Text(
+                    item.comprehensiveStudy,
+                    style: const TextStyle(fontSize: 15, height: 1.5),
+                  ),
+                  const SizedBox(height: 12),
+                  ...item.corePillars.map<Widget>((pillar) => Padding(
+                        padding: const EdgeInsets.only(bottom: 6.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text("• ", style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold)),
+                            Expanded(child: Text(pillar, style: const TextStyle(fontSize: 14))),
+                          ],
                         ),
-                        child: Text(
-                          item.category,
-                          style: const TextStyle(color: Colors.blueAccent, fontSize: 12, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    if (item.category.isNotEmpty) const SizedBox(height: 10),
-                    Text(
-                      item.title,
-                      style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      item.briefDescription,
-                      style: const TextStyle(color: Colors.white70, fontSize: 14),
-                    ),
-                    const SizedBox(height: 12),
-                    const Text(
-                      "قراءة الدراسة والتحليل الأكاديمي...",
-                      style: TextStyle(color: Colors.blueAccent, fontSize: 13, fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                ),
+                      )).toList(),
+                ],
               ),
             ),
           );
