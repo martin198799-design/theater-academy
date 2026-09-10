@@ -1,85 +1,140 @@
 import 'package:flutter/material.dart';
 
-class DecorContent {
-  final String title;
-  final String schoolOrMethod;
-  final String comprehensiveStudy;
-  final List<String> corePillars;
-
-  DecorContent({
-    required this.title,
-    required this.schoolOrMethod,
-    required this.comprehensiveStudy,
-    required this.corePillars,
-  });
-}
-
-final List<DecorContent> decorDepartmentData = [
-  DecorContent(
-    title: "تصميم وتنفيذ الديكور المسرحي والكتل الفراغية",
-    schoolOrMethod: "العمارة المسرحية والتشكيل الفضائي",
-    comprehensiveStudy: "الديكور المسرحي هو البيئة المادية المحسوسة التي تتحرك ضمنها الشخصيات لتعكس الأبعاد الواقعية أو الرمزية للنص.",
-    corePillars: [
-      "توزيع الكتل الضخمة والخفيفة لتحقيق التوازن البصري.",
-      "ملاءمة الديكور لطبيعة الحركة الإخراجية وسهولة تنقل الممثلين.",
-    ],
-  ),
-];
-
 class DecorScreen extends StatelessWidget {
   const DecorScreen({Key? key}) : super(key: key);
 
+  final List<Map<String, dynamic>> decorContent = const [
+    {
+      "title": "أولاً: مفهوم الديكور والكتل المعمارية في الفضاء المسرحي",
+      "items": [
+        {
+          "subtitle": "1. التمايز الجذري بين الديكور والسينوغرافيا",
+          "text": """يُعنى الديكور (Scenery/Set Design) هندسياً وماديًا بتشكيل الكتل، الأسطح، الواجهات، والعناصر الثابتة أو المتحركة التي تصنع البيئة الفيزيائية للحدث الدرامي. وإذا كانت السينوغرافيا هي المظلة الفلسفية والبصرية الكلية التي تضم العرض بأكمله، فإن الديكور يمثل الهيكل العظمي والمادي والفراغي المباشر الذي يتحرك داخله الممثل. إنه الهندسة التطبيقية التي تترجم المكان النصي إلى واقع مجسّم وملموس يخاطب عين المتفرج ويحدد حدود الحركة والتشكيل على الخشبة."""
+        },
+        {
+          "subtitle": "2. تطور وظيفة الديكور من التزيين إلى التعبير الدرامي",
+          "text": """لم يعد الديكور المعاصر مجرد خلفية جدارية جامدة تكتفي بالإخبار عن المكان الجغرافي للقصة (كأن توحي بكون الغرفة لقصور تاريخية أو كوخ فقير)، بل تحول إلى كائن درامي حي يتفاعل مع الصراع النفسي للشخصيات. الديكور الناجح هو الذي يمارس فعلاً درامياً، حيث تتشوه الكتل وتضيق وتتداعى توازيًا مع تدهور الحالة النفسية للأبطال، أو تتسع وتتألق لتعكس لحظات الانفراج والذروة الدرامية."""
+        }
+      ]
+    },
+    {
+      "title": "ثانياً: الأنواع الهندسية والأساليب الفنية للديكور المسرحي",
+      "items": [
+        {
+          "subtitle": "1. الديكور الواقعي والتسجيلي (Realism & Naturalism)",
+          "text": """يسعى هذا النوع إلى محاكاة الواقع المعيش بأدق تفاصيله الفيزيائية والمادية؛ كاستخدام الأبواب والنوافذ الحقيقية، الأثاث الثقيل، والدعائم التي تطابق الحقبة التاريخية بدقة متناهية (مثل مسرحيات أنطون تشيخوف). يهدف هذا الأسلوب إلى إقناع المتفرج بالوهم الواقعي وخلق بيئة مألوفة تدعم الصراع الاجتماعي والنفسي للشخصيات ضمن أبعادها اليومية."""
+        },
+        {
+          "subtitle": "2. الديكور التعبيري والتجريدي (Expressionism & Abstraction)",
+          "text": """يتخلى الديكور التعبيري عن النقل الحرفي للواقع، ليعمد إلى تشويه أو تضخيم الأشكال والكتل بهدف التعبير عن الدواخل النفسية المحتقنة والكوابيس والاضطرابات العقلية. نرى الجدران مائلة، الزوايا حادة، والألوان صارخة، مما يعكس رؤية ذاتية ومشوهة للعالم كما يراه البطل المأزوم، تماماً كما تتجلى في مسرحيات المسرح التعبيري الألماني الأوائل."""
+        },
+        {
+          "subtitle": "3. الديكور البنائى والتكعيبي (Constructivism)",
+          "text": """ظهر هذا الاسلوب مع رواد المسرح السوفيتي (مثل مايرهولد)، حيث يرفض الديكور الزخرفي تماماً ويستبدله بهياكل هندسية براغماتية وعملية (منصات، سلالم، جسور حديدية، عجلات دوارة). صُممت هذه الإنشاءات لتكون آلات حية يختبرها الممثل بأجساده ويؤدي عليها حركات أكروباتية واستعراضية بحتة، تخدم العرض الميكانيكي والملحمي وتلغي الوهم الواقعي لصالح الوظيفة الأدائية البحتة."""
+        }
+      ]
+    },
+    {
+      "title": "ثالثاً: الخامات والمواد الإنشائية في صناعة الكتل المسرحية",
+      "items": [
+        {
+          "subtitle": "1. الخامات التقليدية وتقنيات التشكيل السريع",
+          "text": """يعتمد مهندس الديكور على مواد خفيفة الوزن ومتينة وسهلة التشكيل والتفكيك نظراً لطبيعة العروض المسرحية المتنقلة؛ وتأتي الخشب المعاكس (Plywood)، القماش القرمزي (Muslin)، والجبس الرغوي في مقدمة هذه المواد. يتم بناء الإطارات الخشبية وتغطيتها بالأقمشة ثم رسمها ومعالجتها كيميائياً لتشحيط المظهر الحجري أو المعدني أو الخشبي العتيق بخدع بصرية مذهلة."""
+        },
+        {
+          "subtitle": "2. الخامات المعاصرة والبدائل الصناعية المتطورة",
+          "text": """في المسرح الحديث، أُدخلت مواد مستحدثة مثل البوليسترين المضغوط (فوم البناء)، الألواح البلاستيكية المفرغة، الشاشات الشفافة (Scrim)، والمعادن الخفيفة. تتيح هذه المواد للمهندس نحت أشكال معقدة وعضوية هائلة الحجم دون أن تشكل عبئاً ثقيلاً على آليات الخشبة أو طواقم الحركة (Stagehands) أثناء عمليات التغيير السريع بين الفصول."""
+        }
+      ]
+    },
+    {
+      "title": "رابعاً: ميكانيكا الحركة وتغيير الكتل على الخشبة",
+      "items": [
+        {
+          "subtitle": "1. المنصات الدوارة والمتحركة (Wagons & Turntables)",
+          "text": """تعتمد هندسة الديكور الحديثة على تقنيات الحركة الميكانيكية للكتل لتسليم المشاهد بسلاسة ودون انقطاع في إيقاع العرض. تُستخدم المسارح الدوارة (Turntables) لإظهار زوايا مختلفة لبيت أو مدينة عبر تدوير الكتلة ببطء، بينما تُستخدم العربات المتحركة المزودة بعجلات صامتة (Wagons) لسحب وإدخال كتل معمارية ضخمة من خلف الكواليس في أجزاء من الثانية."""
+        },
+        {
+          "subtitle": "2. الأنظمة المعلقة وتوظيف الفراغ الرأسي",
+          "text": """لا تقتصر كتل الديكور على الأرضية وحدها، بل تمتد لتشمل الفراغ الرأسي عبر قطع ديكورية معلقة بسلاسل ورافعة (Fly System). إن إسقاط كتل ضخمة من الأعلى أو سحبها تدريجياً نحو السقف يمنح المخرج أبعاداً سينمائية تعبيرية، ويخلق إحساساً بالتحول الدائم وعدم الاستقرار المكاني."""
+        }
+      ]
+    }
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("قسم الديكور المسرحي"),
-        backgroundColor: Colors.black87,
-      ),
-      body: ListView.builder(
-        itemCount: decorDepartmentData.length,
-        padding: const EdgeInsets.all(16.0),
-        itemBuilder: (context, index) {
-          final item = decorDepartmentData[index];
-          return Card(
-            elevation: 4,
-            margin: const EdgeInsets.only(bottom: 16),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item.title,
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.amber),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    item.schoolOrMethod,
-                    style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic, color: Colors.grey[400]),
-                  ),
-                  const Divider(height: 20),
-                  Text(
-                    item.comprehensiveStudy,
-                    style: const TextStyle(fontSize: 15, height: 1.5),
-                  ),
-                  const SizedBox(height: 12),
-                  ...item.corePillars.map<Widget>((pillar) => Padding(
-                        padding: const EdgeInsets.only(bottom: 6.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text("• ", style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold)),
-                            Expanded(child: Text(pillar, style: const TextStyle(fontSize: 14))),
-                          ],
-                        ),
-                      )).toList(),
-                ],
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("الديكور"), // تم جعله مختصراً تماماً
+          backgroundColor: Colors.black87,
+        ),
+        backgroundColor: const Color(0xFF121212),
+        body: ListView.builder(
+          padding: const EdgeInsets.all(16.0),
+          itemCount: decorContent.length,
+          itemBuilder: (context, sectionIndex) {
+            final section = decorContent[sectionIndex];
+            return Card(
+              color: const Color(0xFF1E1E1E),
+              margin: const EdgeInsets.only(bottom: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(color: Colors.amber.withOpacity(0.3)),
               ),
-            ),
-          );
-        },
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      section["title"]!,
+                      style: const TextStyle(
+                        color: Colors.amberAccent,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Divider(color: Colors.amber, height: 20),
+                    ...List.generate(
+                      (section["items"] as List).length,
+                      (itemIndex) {
+                        final item = section["items"][itemIndex];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item["subtitle"]!,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 6),
+                              Text(
+                                item["text"]!,
+                                style: const TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 14,
+                                  height: 1.5,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
