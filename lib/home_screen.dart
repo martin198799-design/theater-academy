@@ -5,7 +5,7 @@ import 'acting_screen.dart';
 import 'lighting_screen.dart';
 import 'scenography_screen.dart';
 import 'decor_screen.dart';
-import 'costumes_screen.dart'; // استيراد ملف قسم الأزياء الجديد
+import 'costumes_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -20,17 +20,17 @@ class HomeScreen extends StatelessWidget {
       },
       {
         "id": "directing",
-        "title": "2. دراسات الإخراج المسرحي",
+        "title": "2. الإخراج المسرحي",
         "desc": "المدارس الإخراجية، المبادئ، والتحليلات العميقة"
       },
       {
         "id": "acting",
-        "title": "3. أكاديمية التمثيل والتقنيات",
+        "title": "3. التمثيل",
         "desc": "المدارس الأدائية والذاكرة الانفعالية والجسد"
       },
       {
         "id": "lighting",
-        "title": "4. فن الإضاءة المسرحية",
+        "title": "4. الإضاءة المسرحية",
         "desc": "التطور التاريخي، أنواع الإضاءة، وهندسة مزج الألوان"
       },
       {
@@ -54,7 +54,7 @@ class HomeScreen extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("خشبة المسرح - الرئيسية"),
+          title: const Text("خشبة المسرح"),
           backgroundColor: Colors.black87,
         ),
         backgroundColor: const Color(0xFF121212),
@@ -148,7 +148,7 @@ class HomeScreen extends StatelessWidget {
                           } else if (sectionId == "decor") {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => const DecorScreen()));
                           } else if (sectionId == "costumes") {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const CostumesScreen())); // فتح شاشة الأزياء بنجاح
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const CostumesScreen()));
                           }
                         },
                       ),
