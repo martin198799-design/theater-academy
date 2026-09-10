@@ -1,135 +1,134 @@
 import 'package:flutter/material.dart';
-import 'texts_library_screen.dart';
-import 'directing_screen.dart';
-import 'acting_screen.dart';
-import 'lighting_screen.dart';
-import 'scenography_screen.dart'; // تأكد من استيراد ملف السينوغرافيا
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class ScenographyScreen extends StatelessWidget {
+  const ScenographyScreen({Key? key}) : super(key: key);
+
+  final List<Map<String, dynamic>> scenographyContent = const [
+    {
+      "title": "أولاً: الجذور التاريخية وتطور مفاهيم السينوغرافيا الحديثة",
+      "items": [
+        {
+          "subtitle": "1. من التزيين الفيكتوري إلى العرض الكلي (Gesamtkunstwerk)",
+          "text": """مرّ مفهوم السينوغرافيا عبر التاريخ بتحولات جذرية؛ ففي العصور القديمة والكلاسيكية، كان التصميم البصري يُختزل في رسم الخلفيات المسرحية الثابتة (Scenae Frons) بهدف محاكاة المكان الواقعي للحدث بشكل حرفي. ومع مطلع القرن العشرين، ونتيجة لثورة المخرجين الكبار مثل أدولف أبيا (Adolphe Appia) وغوردون كراغ (Gordon Craig)، تحررت السينوغرافيا من تقليد الواقع المباشر لتصبح نظاماً تعبيرياً وسيميائياً متكاملاً. نادى أبيا بإلغاء الخلفيات المرسومة ذات الأبعاد الوهمية، واستبدالها بكتل فراغية ثلاثية الأبعاد تتفاعل عضوياً مع أجساد الممثلين وإضاءة المسرح، معلناً بذلك ولادة مفهوم السينوغرافيا الحديثة كفعل درامي بصري متكامل."""
+        },
+        {
+          "subtitle": "2. ثورة المسرح التجريبي وبصريات ما بعد الحداثة",
+          "text": """في النصف الثاني من القرن العشرين، ومع ظهور مسرح العبث، والمسرح الملحمي عند برتولت بريشت، ومسرح القسوة عند أنتونين أرتو، تجاوزت السينوغرافيا الحدود التقليدية للفضاء المسرحي. لم يعد الفضاء مجرد غرفة مغلقة أو قصر ملكي، بل أصبح فضاءً مفهوماً ودلالياً ينبض بالرموز الميتافيزيقية. تخلت السينوغرافيا المعاصرة عن الديكورات الضخمة واتجهت نحو الاقتصاد البصري، وتوظيف المواد الخام الأولية (كالحديد، التراب، الحجارة، والمياه) لخلق مناخات نفسية صادقة تؤثر في لاوعي المتفرج مباشرة."""
+        }
+      ]
+    },
+    {
+      "title": "ثانياً: فلسفة الفضاء المسرحي وعلاقته بالمتفرج",
+      "items": [
+        {
+          "subtitle": "1. أنواع الفضاءات المسرحية وهندسة التلقي",
+          "text": """يتحدد الخطاب السينوغرافي بناءً على طبيعة المعمار المسرحي والعلاقة المكانية الرابطة بين الممثل والجمهور. يتجلى ذلك بوضوح في:
+- مسرح العلبة الإيطالية (Proscenium Theatre): حيث يفصل الجدار الرابع الوهمي الجمهور عن منصة العرض، مما يكرس النظرة التطلعية والتأملية.
+- مسرح الساحة أو المسرح الدائري (Arena/In-the-Round): الذي يحيط فيه الجمهور بالخشبة من كل الجهات، مما يلغي تماماً أي جدار رابع ويفرض على السينوغراف تصميماً بصرياً مكشوفاً من كافة الزوايا.
+- المسرح المفتوح أو الفضاءات الحرة (Found Spaces): كالورش المهجورة والمصانع القديمة، حيث تكتسب السينوغرافيا طابعاً واقعياً تقشفياً يستثمر عراقة وذاكرة المكان الأصلي."""
+        },
+        {
+          "subtitle": "2. سيميائية الفراغ وتوزيع الكتل الحيوية",
+          "text": """يُعنى الفضاء السينوغرافي بدراسة المسافات والتكوينات الهندسية بين الكتل والممثلين (Proxemics). الفراغ على خشبة المسرح ليس عدماً، بل هو طاقة كامنة تشحن بالتوتر الدرامي بحسب طريقة توزع العناصر فيه. الفضاء الضيق والمزدحم يوحي بالاختناق النفسي والقمع، بينما الفضاء الواسع المفتوح بلا حدود يعكس الاغتراب الوجودي وضياع الإنسان وسط الكون الواسع."""
+        }
+      ]
+    },
+    {
+      "title": "ثالثاً: دراماتورجيا الأزياء والمكياج السينوغرافي",
+      "items": [
+        {
+          "subtitle": "1. الأزياء بوصفها سينوغرافيا متحركة",
+          "text": """الزي المسرحي ليس مجرد ملابس ترتديها الشخصية لمجرد الستر أو محاكاة الحقبة الزمنية، بل هو سينوغرافيا حية ومتحركة تمشي على قدمين. يدرس السينوغراف قصات الأزياء، أوزانها، ونوعية أقمشتها لتخدم طبيعة حركة الممثل وتكشف عن تحولاته النفسية والطبقية. فالزي الممزق يعكس التآكل الروحي، بينما الزي الثقيل المحكم يترجم صلابة السلطة وقسوة المؤسسة."""
+        },
+        {
+          "subtitle": "2. المكياج وقناع الشخصية النفسي",
+          "text": """يتجاوز المكياج المسرحي مفهوم التجميل العادي ليكون أداة درامية بحتة تبرز ملامح الصراع الداخلي تحت تأثير الإضاءة القوية وعلى مسافات بعيدة عن الجمهور. يعمل السينوغراف على نحت الوجه عبر تقنيات الظل والنور لترسيخ السمات النفسية (كالشر، الطمع، المرض، أو التقدم في السن) بصرياً."""
+        }
+      ]
+    },
+    {
+      "title": "رابعاً: تكامل العناصر السينوغرافية ووحدة الإيقاع البصري",
+      "items": [
+        {
+          "subtitle": "1. سيمفونية التناغم بين الكتلة، اللون، والضوء",
+          "text": """السينوغرافيا الناجحة هي التي تذيب الحدود الفاصلة بين الديكور، الإضاءة، الأزياء، والموسيقى، لتظهر ككتلة عضوية متسقة واحدة. إن أي تضارب بين لون الأزياء وخلفية الفضاء أو زوايا الإضاءة يكسر إيقاع العمل ويشتت انتباه المتفرج. يتطلب العمل السينوغرافي المحترف تنسيقاً فائق الدقة بين رؤية المخرج والمهندس لضمان أن كل عنصر بصري يؤدي وظيفته الدرامية والجمالية على أكمل وجه."""
+        }
+      ]
+    }
+  ];
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, String>> theatreSections = [
-      {"title": "1. مكتبة النصوص", "desc": "النصوص المسرحية والتراثية العميقة"},
-      {"title": "2. دراسات الإخراج المسرحي", "desc": "المدارس الإخراجية، المبادئ، والتحليلات العميقة"},
-      {"title": "3. أكاديمية التمثيل والتقنيات", "desc": "المدارس الأدائية والذاكرة الانفعالية والجسد"},
-      {"title": "4. فن الإضاءة المسرحية", "desc": "التطور التاريخي، أنواع الإضاءة، وهندسة مزج الألوان"},
-      {"title": "5. السينوغرافيا والفضاء المسرحي", "desc": "فلسفة الفضاء المعماري، دراماتورجيا الأزياء، والتشكيل البصري"}, // القسم الرابع أو الخامس حسب ترتيبك
-      {"title": "6. النقد وتحليل العروض", "desc": "مناهج القراءة النقدية والتفكيك الدرامي"},
-      {"title": "7. تاريخ المسرح العالمي والعربي", "desc": "محطات وتطورات الفن المسرحي عبر التاريخ"},
-    ];
-
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("خشبة المسرح - الرئيسية"),
+          title: const Text("السينوغرافيا والفضاء المسرحي"),
           backgroundColor: Colors.black87,
         ),
         backgroundColor: const Color(0xFF121212),
-        body: Padding(
+        body: ListView.builder(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Center(
-                child: Icon(
-                  Icons.theater_comedy,
-                  size: 60,
-                  color: Colors.amber,
-                ),
+          itemCount: scenographyContent.length,
+          itemBuilder: (context, sectionIndex) {
+            final section = scenographyContent[sectionIndex];
+            return Card(
+              color: const Color(0xFF1E1E1E),
+              margin: const EdgeInsets.only(bottom: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(color: Colors.amber.withOpacity(0.3)),
               ),
-              const SizedBox(height: 12),
-              const Center(
-                child: Text(
-                  "أكاديمية الفنون والعلوم المسرحية",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                "الأقسام الأكاديمية السبعة:",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.amberAccent,
-                ),
-              ),
-              const SizedBox(height: 10),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: theatreSections.length,
-                  itemBuilder: (context, index) {
-                    final section = theatreSections[index];
-                    return Card(
-                      color: const Color(0xFF1E1E1E),
-                      margin: const EdgeInsets.only(bottom: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        side: BorderSide(
-                          color: Colors.amber.withOpacity(0.3),
-                        ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      section["title"]!,
+                      style: const TextStyle(
+                        color: Colors.amberAccent,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8),
-                        title: Text(
-                          section["title"]!,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        subtitle: Padding(
-                          padding: const EdgeInsets.only(top: 4.0),
-                          child: Text(
-                            section["desc"]!,
-                            style: const TextStyle(
-                              color: Colors.white60,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ),
-                        trailing: const Icon(
-                          Icons.arrow_forward_ios,
-                          color: Colors.amber,
-                          size: 16,
-                        ),
-                        onTap: () {
-                          // ربط الفهارس بدقة مع الشاشات البرمجية
-                          if (index == 0) {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const TextsLibraryScreen()));
-                          } else if (index == 1) {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const DirectingStudiesScreen()));
-                          } else if (index == 2) {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const ActingScreen()));
-                          } else if (index == 3) {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const LightingScreen()));
-                          } else if (index == 4) {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const ScenographyScreen())); // توجيه القسم الخامس لشاشة السينوغرافيا
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text("قريباً: ${section["title"]}"),
-                                backgroundColor: Colors.grey[850],
+                    ),
+                    const Divider(color: Colors.amber, height: 20),
+                    ...List.generate(
+                      (section["items"] as List).length,
+                      (itemIndex) {
+                        final item = section["items"][itemIndex];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item["subtitle"]!,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            );
-                          }
-                        },
-                      ),
-                    );
-                  },
+                              const SizedBox(height: 6),
+                              Text(
+                                item["text"]!,
+                                style: const TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 14,
+                                  height: 1.5,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
