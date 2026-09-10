@@ -1,85 +1,134 @@
 import 'package:flutter/material.dart';
 
-class CostumeContent {
-  final String title;
-  final String schoolOrMethod;
-  final String comprehensiveStudy;
-  final List<String> corePillars;
-
-  CostumeContent({
-    required this.title,
-    required this.schoolOrMethod,
-    required this.comprehensiveStudy,
-    required this.corePillars,
-  });
-}
-
-final List<CostumeContent> costumeDepartmentData = [
-  CostumeContent(
-    title: "دراماتورجيا الأزياء وعلم الدلالة البصرية",
-    schoolOrMethod: "الأزياء التاريخية والمعاصرة",
-    comprehensiveStudy: "الزي المسرحي ليس مجرد ملابس يرتديها الممثل، بل هو لغة صامتة تروي تاريخ الشخصية وحالتها النفسية والاجتماعية.",
-    corePillars: [
-      "التعبير النفسي للشخصية عبر لغة القماش والقصات.",
-      "التوافق اللوني والزمني مع الحقبة الدرامية.",
-    ],
-  ),
-];
-
 class CostumesScreen extends StatelessWidget {
   const CostumesScreen({Key? key}) : super(key: key);
 
+  final List<Map<String, dynamic>> costumesContent = const [
+    {
+      "title": "أولاً: تاريخ الأزياء المسرحية (سرد تاريخي عميق ومفصل)",
+      "items": [
+        {
+          "subtitle": "1. الجذور المقدسة والطقوس الأولى (المسرح اليوناني والروماني)",
+          "text": """نشأت الأزياء المسرحية في جذورها الأولى من رحم الطقوس الدينية والأساطير. في المسرح اليوناني القديم، لم تكن الملابس مجرد زينة، بل كانت أدوات تضخيم وتجريد تخدم العروض الملحمية والتراجيدية الكبرى. ارتدى الممثلون التراجيديون أثواباً طويلة ومزخرفة تعرف بـ (Chiton)، واعتمدوا على أحذية ذات نعال سميكة وعالية تُسمى (Cothurnus) لزيادة طول الممثل ومنحه هيبة بصرية تناسب الآلهة والملوك على المدرجات الواسعة. كما ارتبطت الأقنعة (Masks) بالأزياء ارتباطاً وثيقاً، حيث صُممت بملامح مبالغ فيها وفتحات فم واسعة لتضخيم الصوت ونقل الانفعالات الأساسية (كالغضب، الحزن، أو الفرح) إلى المتفرج الجالس في الصفوف الأخيرة. أما في المسرح الروماني، فقد مال الميل العام نحو الواقعية الفخمة والألوان الصارخة التي تعكس الطبقات الاجتماعية، مع الاهتمام بالأزياء العسكرية والتوغايات الرومانية بدقة أكبر."""
+        },
+        {
+          "subtitle": "2. رمزية العصور الوسطى وعصر النهضة (الزي الطبقي والديني)",
+          "text": """في العصور الوسطى، هيمنت المسرحيات الدينية ومسرحيات المعجزات (Mystery and Miracle Plays)، وكانت الأزياء تُستمد غالباً من ملابس الكنيسة ورجال الدين أو الأزياء المعاصرة للمجتمع الإقطاعي، مع تمييز الشخصيات المقدسة (كالأنبياء والملائكة) بأردية بيضاء مطرزة بالخيوط الذهبية، بينما تُميز شخصيات الأشرار أو الشياطين بملابس ذات ألوان داكنة وقبيحة الشكل. ومع بزوغ فجر عصر النهضة، شهدت الأزياء المسرحية نقلة نوعية كبرى؛ إذ أصبحت أكثر ثراءً وتفصيلاً متأثرة بملابس بلاط الملوك والأمراء. ظهرت الأقمشة الثقيلة كالقطيفة والمخمل والحرير الطبيعي، وبدأت تظهر ملامح الوعي بالحقبات التاريخية، رغم بقاء طابع الأزياء محكوماً بجماليات تلك المرحلة المعاصرة لعروض شكسپير ومسرح الـ (Commedia dell'arte) الإيطالي الذي أفرز أزياء نمطية وشخصيات كاريكاتورية ثابتة كـ (أرلكين وبولشينيل)."""
+        },
+        {
+          "subtitle": "3. التأسيس العلمي والواقعي الحديث (القرنان التاسع عشر والعشرين)",
+          "text": """مع ظهور المذهبين الواقعي والطبيعي في النصف الثاني من القرن التاسع عشر (مع رواد مثل دوق ساكس مايننغن وإبسن وتشيخوف)، رفض المسرح الزياء الفلكلورية المعتادة أو الملابس المزيفة الرخيصة، ونادت الحركة المسرحية بـ "الأمانة التاريخية والأركيولوجية المطلقة". أُجريت أبحاث دقيقة حول طراز كل حقبة، ونوعية الأقمشة، وطريقة الخياطة لتطابق العصر تماماً. وفي القرن العشرين، ومع ثورة الحداثة والمدارس التجريبية (التعبيرية، التكعيبية، والملحمية)، تحرر الزي تماماً من قيود النقل الحرفي للواقع، ليصبح رمزاً تجريدياً، تعبيرياً، وميكانيكياً يعكس اغتراب الإنسان المعاصر وتصدعاته النفسية تحت تأثير التقنيات الحديثة والإضاءة المتقدمة."""
+        }
+      ]
+    },
+    {
+      "title": "ثانياً: كيف يختار المخرج الأزياء؟ (آلية الاختيار والتوجيه الإخراجي المفصل)",
+      "items": [
+        {
+          "subtitle": "1. القراءة الدراماتورجية وتحليل الشخصية (Character Analysis)",
+          "text": """لا يبدأ اختيار المخرج للأزياء بشكل عشوائي أو جمالي بحت، بل ينطلق من قراءة تحليلية عميقة لخلفية الشخصية الدرامية ضمن النص. يحدد المخرج مع مصمم الأزياء الأبعاد الثلاثة للشخصية:
+- البعد البيولوجي والاجتماعي: (العمر، الجنس، الطبقة الاجتماعية، والبيئة الاقتصادية).
+- البعد النفسي: (الاضطرابات الداخلية، الثقة بالنفس، القلق، أو جنون العظمة).
+فعلى سبيل المثال، إذا كانت الشخصية تعيش قمعاً داخلياً، سيوجه المخرج المصمم لاختيار أزياء ضيقة، مقيدة، وألوان باهتة تعكس هذا الاختناق، بينما تمنح الشخصيات المتمردة أزياءً حرة وخطوطاً قاطعة."""
+        },
+        {
+          "subtitle": "2. بناء الرؤية الإخراجية الموحدة (The Director's Concept)",
+          "text": """يُعد المخرج هو المايسترو الذي يضمن انسجام الأزياء مع المنظومة البصرية الكلية للعرض (الديكور، الإضاءة، وحركة الممثلين). يحدد المخرج الإطار الأسلوبي العام للعرض؛ هل هو عرض واقعي تاريخي؟ أم مسرح ملحمي تجريدي؟ أم عرض سريالي رمزي؟ بناءً على هذه الرؤية، يتفق المخرج مع المصمم على ما إذا كان سيتم الالتزام بملابس حقبة زمنية قديمة (كالملابس الفيكتورية مثلاً) أو إسقاطها على العصر الحديث (Modern Dress Production) لإبراز دلالة معاصرة للنص الكلاسيكي (مثل إلباس شخصيات شكسبير ملابس عسكرية حديثة أو بدلات رسمية للشركات الكبرى)."""
+        },
+        {
+          "subtitle": "3. توظيف سيميائية الألوان وديناميكية الحركة (Color Dramaturgy & Movement)",
+          "text": """يولي المخرج عناية فائقة لـ "توزيع اللوحة اللونية" على خشبة المسرح (Color Composition). يدرس المخرج كيف ستبدو أزياء الشخصيات عندما تقف بجانب بعضها البعض أو عندما تتحرك أمام الديكور وتحت تأثير الإضاءة. يتم اختيار الألوان لتعزيز الصراع الدرامي (كخلق تباين بصري حاد بين البطل والخصم). كما يختبر المخرج الأزياء بنفسه أثناء البروفات للتأكد من أنها لا تعيق حركة الممثل، بل تخدمها وتمنحه الوقفة والإيماءة الجسدية الصحيحة التي تعمق الصراع النفسي المطلوب."""
+        }
+      ]
+    },
+    {
+      "title": "ثالثاً: دراماتورجيا الخامات وتكامل العرض المسرحي",
+      "items": [
+        {
+          "subtitle": "1. تفاعل الخامات النسيجية مع الإضاءة والديكور",
+          "text": """يدرس المصمم والمخرج نوعية الأقمشة بدقة؛ فالأقمشة اللامعة قد تعكس الإضاءة بشكل مزعج، بينما الأقمشة غير اللامعة (Matte) تمتص الضوء وتمنح عمقاً درامياً للشخصيات التراجيدية. كما يجب أن ينسجم ملمس القماش ولونه مع كتل الديكور لئلا تذوب الشخصية بصرياً وسط الخلفية، بل تظل بارزة وعضوية الفعالية في قلب الحدث."""
+        },
+        {
+          "subtitle": "2. آليات التغيير السريع والحلول التقنية",
+          "text": """من ضمن الاعتبارات الإخراجية والتقنية الهامة؛ تصميم أزياء تسمح للممثل بالتغيير السريع خلف الكواليس بين المشاهد عبر استخدام السحابات المخفية والأشرطة اللاصقة، لضمان عدم انكسار إيقاع العرض المسرحي وسلاسة تدفق الأحداث."""
+        }
+      ]
+    }
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("قسم الأزياء المسرحية"),
-        backgroundColor: Colors.black87,
-      ),
-      body: ListView.builder(
-        itemCount: costumeDepartmentData.length,
-        padding: const EdgeInsets.all(16.0),
-        itemBuilder: (context, index) {
-          final item = costumeDepartmentData[index];
-          return Card(
-            elevation: 4,
-            margin: const EdgeInsets.only(bottom: 16),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item.title,
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.amber),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    item.schoolOrMethod,
-                    style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic, color: Colors.grey[400]),
-                  ),
-                  const Divider(height: 20),
-                  Text(
-                    item.comprehensiveStudy,
-                    style: const TextStyle(fontSize: 15, height: 1.5),
-                  ),
-                  const SizedBox(height: 12),
-                  ...item.corePillars.map<Widget>((pillar) => Padding(
-                        padding: const EdgeInsets.only(bottom: 6.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text("• ", style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold)),
-                            Expanded(child: Text(pillar, style: const TextStyle(fontSize: 14))),
-                          ],
-                        ),
-                      )).toList(),
-                ],
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("قسم الأزياء"),
+          backgroundColor: Colors.black87,
+        ),
+        backgroundColor: const Color(0xFF121212),
+        body: ListView.builder(
+          padding: const EdgeInsets.all(16.0),
+          itemCount: costumesContent.length,
+          itemBuilder: (context, sectionIndex) {
+            final section = costumesContent[sectionIndex];
+            return Card(
+              color: const Color(0xFF1E1E1E),
+              margin: const EdgeInsets.only(bottom: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(color: Colors.amber.withOpacity(0.3)),
               ),
-            ),
-          );
-        },
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      section["title"]!,
+                      style: const TextStyle(
+                        color: Colors.amberAccent,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Divider(color: Colors.amber, height: 20),
+                    ...List.generate(
+                      (section["items"] as List).length,
+                      (itemIndex) {
+                        final item = section["items"][itemIndex];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item["subtitle"]!,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 6),
+                              Text(
+                                item["text"]!,
+                                style: const TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 14,
+                                  height: 1.5,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
