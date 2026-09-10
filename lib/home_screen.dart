@@ -4,14 +4,14 @@ import 'directing_screen.dart';
 import 'acting_screen.dart';
 import 'lighting_screen.dart';
 import 'scenography_screen.dart';
-import 'decor_screen.dart'; // تأكد من استيراد ملف الديكور
+import 'decor_screen.dart';
+import 'costumes_screen.dart'; // استيراد ملف قسم الأزياء الجديد
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // استخدمنا مفتاح (key) مميز لكل قسم لضمان عدم حدوث أي خطأ في التوجيه
     final List<Map<String, String>> theatreSections = [
       {
         "id": "texts",
@@ -44,9 +44,9 @@ class HomeScreen extends StatelessWidget {
         "desc": "هندسة الكتل، المنصات، الأساليب الواقعية والتعبيرية، وخامات الصنع"
       },
       {
-        "id": "criticism",
-        "title": "7. النقد وتحليل العروض",
-        "desc": "مناهج القراءة النقدية والتفكيك الدرامي"
+        "id": "costumes",
+        "title": "7. قسم الأزياء",
+        "desc": "فلسفة الزي، السرد التاريخي، وآلية الاختيار الإخراجي"
       },
     ];
 
@@ -133,7 +133,6 @@ class HomeScreen extends StatelessWidget {
                           size: 16,
                         ),
                         onTap: () {
-                          // التوجيه بناءً على المعرّف (ID) المضمون تماماً بغض النظر عن الترتيب
                           final String sectionId = section["id"]!;
 
                           if (sectionId == "texts") {
@@ -147,14 +146,9 @@ class HomeScreen extends StatelessWidget {
                           } else if (sectionId == "scenography") {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => const ScenographyScreen()));
                           } else if (sectionId == "decor") {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const DecorScreen())); // فتح شاشة الديكور حصراً وبدون أي أخطاء
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text("قريباً: ${section["title"]}"),
-                                backgroundColor: Colors.grey[850],
-                              ),
-                            );
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const DecorScreen()));
+                          } else if (sectionId == "costumes") {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const CostumesScreen())); // فتح شاشة الأزياء بنجاح
                           }
                         },
                       ),
