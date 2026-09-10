@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class DecorContent {
   final String title;
   final String schoolOrMethod;
@@ -14,23 +16,71 @@ class DecorContent {
 
 final List<DecorContent> decorDepartmentData = [
   DecorContent(
-    title: "هندسة الفضاء المسرحي وبناء بيئة العرض",
-    schoolOrMethod: "فلسفة الديكور والتشكيل المكاني",
-    comprehensiveStudy: "الديكور المسرحي هو التصميم المعماري والتكييف المادي للخشبة الذي يجسد بيئة الأحداث ويعكس البُعد الزمني والمكاني والنفسي للعمل. إنه ليس مجرد خلفية صامتة، بل فضاء ديناميكي يتفاعل مع الحركة والصراع الدرامي.",
+    title: "تصميم وتنفيذ الديكور المسرحي والكتل الفراغية",
+    schoolOrMethod: "العمارة المسرحية والتشكيل الفضائي",
+    comprehensiveStudy: "الديكور المسرحي هو البيئة المادية المحسوسة التي تتحرك ضمنها الشخصيات لتعكس الأبعاد الواقعية أو الرمزية للنص.",
     corePillars: [
-      "تصميم الكتل البنائية والمفردات التشكيلية التي تخدم طبيعة الصراع الدرامي.",
-      "مراعاة النسب المعمارية وهندسة الرؤية البصرية لجميع مقاعد المتفرجين.",
-      "التكامل الوظيفي بين عناصر الديكور وحركة الممثلين وتدفق الأحداث."
-    ],
-  ),
-  DecorContent(
-    title: "التصميم الطرازى والتحولات التشكيلية",
-    schoolOrMethod: "من الكلاسيكية إلى المدارس المعاصرة",
-    comprehensiveStudy: "دراسة تطور أساليب تصميم الديكور عبر التاريخ الفني، من التناظر والواقعية المفرطة في المدارس الكلاسيكية والطبيعية، إلى التجريد والاختزال الرمزي في المدارس الحديثة والعبثية التي توظف الإيحاء بدلاً من التجسيد الحرفي.",
-    corePillars: [
-      "توظيف المادة والخامة (الخشب، الحديد، الأقمشة، العناصر الصناعية) دلالياً.",
-      "تصميم الديكور المتحرك والقطع المتغيرة لخدمة الإيقاع السريع للحبكة.",
-      "التناغم الفكري والجمالي بين رؤية مصمم الديكور ورؤية المخرج العامة."
+      "توزيع الكتل الضخمة والخفيفة لتحقيق التوازن البصري.",
+      "ملاءمة الديكور لطبيعة الحركة الإخراجية وسهولة تنقل الممثلين.",
     ],
   ),
 ];
+
+class DecorScreen extends StatelessWidget {
+  const DecorScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("قسم الديكور المسرحي"),
+        backgroundColor: Colors.black87,
+      ),
+      body: ListView.builder(
+        itemCount: decorDepartmentData.length,
+        padding: const EdgeInsets.all(16.0),
+        itemBuilder: (context, index) {
+          final item = decorDepartmentData[index];
+          return Card(
+            elevation: 4,
+            margin: const EdgeInsets.only(bottom: 16),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.title,
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.amber),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    item.schoolOrMethod,
+                    style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic, color: Colors.grey[400]),
+                  ),
+                  const Divider(height: 20),
+                  Text(
+                    item.comprehensiveStudy,
+                    style: const TextStyle(fontSize: 15, height: 1.5),
+                  ),
+                  const SizedBox(height: 12),
+                  ...item.corePillars.map<Widget>((pillar) => Padding(
+                        padding: const EdgeInsets.only(bottom: 6.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text("• ", style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold)),
+                            Expanded(child: Text(pillar, style: const TextStyle(fontSize: 14))),
+                          ],
+                        ),
+                      )).toList(),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
