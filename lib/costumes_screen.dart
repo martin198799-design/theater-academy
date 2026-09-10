@@ -1,13 +1,36 @@
-import 'package:flutter/material.dart';
-import 'section_screen_template.dart';
+class CostumeContent {
+  final String title;
+  final String schoolOrMethod;
+  final String comprehensiveStudy;
+  final List<String> corePillars;
 
-class CostumesScreen extends StatelessWidget {
-  const CostumesScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const SectionScreenTemplate(
-      sectionTitle: 'قسم الأزياء والمكياج',
-    );
-  }
+  CostumeContent({
+    required this.title,
+    required this.schoolOrMethod,
+    required this.comprehensiveStudy,
+    required this.corePillars,
+  });
 }
+
+final List<CostumeContent> costumeDepartmentData = [
+  CostumeContent(
+    title: "دراماتورجيا الأزياء وعلم الدلالة البصرية",
+    schoolOrMethod: "فلسفة الأزياء التاريخية والمعاصرة",
+    comprehensiveStudy: "الأزياء المسرحية ليست مجرد ملابس ترتديها الشخصية، بل هي ترجمة بصرية واضحة لطبيعتها النفسية، مكانتها الاجتماعية، وعصرها التاريخي. يعبر التصميم الناجح عن صراع الشخصية وتحولاتها العميقة قبل أن ينطق الممثل بكلمة واحدة.",
+    corePillars: [
+      "تظهير الأبعاد الاجتماعية والطبقية والنفسية للشخصية عبر لغة القماش والقصات.",
+      "الانسجام اللوني والجمالي بين الأزياء وبين الديكور والإضاءة المحيطة.",
+      "مراعاة الجانب الوظيفي والحركي لتسهيل أداء الممثل بحرية على الخشب."
+    ],
+  ),
+  CostumeContent(
+    title: "المكياج المسرحي وبناء الهوية السطحية",
+    schoolOrMethod: "فن التحويل والتعبير السيكولوجي",
+    comprehensiveStudy: "يعمل المكياج المسرحي كأداة مكملة للأزياء والتمثيل، حيث يبرز التعبيرات الدقيقة للوجه تحت إضاءة المسرح القوية، أو يعكس التحولات العمرية والمرضية والنفسية للشخصية عبر مراحل العرض المختلفة.",
+    corePillars: [
+      "تقنيات الإبراز والإخفاء (التجسيم الضوئي) لملامح وجه الممثل أمام الجمهور.",
+      "محاكاة المؤثرات الخاصة والتغيرات الزمنية والعضوية (الجروح، العجز، السمات الخاصة).",
+      "الالتزام بالطابع الأسلوبي للعمل (سواء كان واقعياً، تعبيرياً، أو رمزياً)."
+    ],
+  ),
+];
