@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'texts_library_screen.dart';
 import 'directing_screen.dart';
 import 'acting_screen.dart';
-import 'lighting_screen.dart'; // تأكد من استيراد ملف الإضاءة
+import 'lighting_screen.dart';
+import 'scenography_screen.dart'; // تأكد من استيراد ملف السينوغرافيا
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -13,9 +14,9 @@ class HomeScreen extends StatelessWidget {
       {"title": "1. مكتبة النصوص", "desc": "النصوص المسرحية والتراثية العميقة"},
       {"title": "2. دراسات الإخراج المسرحي", "desc": "المدارس الإخراجية، المبادئ، والتحليلات العميقة"},
       {"title": "3. أكاديمية التمثيل والتقنيات", "desc": "المدارس الأدائية والذاكرة الانفعالية والجسد"},
-      {"title": "4. فن الإضاءة المسرحية", "desc": "التطور التاريخي، أنواع الإضاءة، وهندسة مزج الألوان"}, // تم التحديث هنا
-      {"title": "5. النقد وتحليل العروض", "desc": "مناهج القراءة النقدية والتفكيك الدرامي"},
-      {"title": "6. الدراماتورجيا وبناء النص", "desc": "تشريح البنية الدرامية وتطوير الحكاية"},
+      {"title": "4. فن الإضاءة المسرحية", "desc": "التطور التاريخي، أنواع الإضاءة، وهندسة مزج الألوان"},
+      {"title": "5. السينوغرافيا والفضاء المسرحي", "desc": "فلسفة الفضاء المعماري، دراماتورجيا الأزياء، والتشكيل البصري"}, // القسم الرابع أو الخامس حسب ترتيبك
+      {"title": "6. النقد وتحليل العروض", "desc": "مناهج القراءة النقدية والتفكيك الدرامي"},
       {"title": "7. تاريخ المسرح العالمي والعربي", "desc": "محطات وتطورات الفن المسرحي عبر التاريخ"},
     ];
 
@@ -102,7 +103,7 @@ class HomeScreen extends StatelessWidget {
                           size: 16,
                         ),
                         onTap: () {
-                          // توجيه صحيح حسب الفهرس (Index)
+                          // ربط الفهارس بدقة مع الشاشات البرمجية
                           if (index == 0) {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => const TextsLibraryScreen()));
                           } else if (index == 1) {
@@ -110,7 +111,9 @@ class HomeScreen extends StatelessWidget {
                           } else if (index == 2) {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => const ActingScreen()));
                           } else if (index == 3) {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const LightingScreen())); // توجيه القسم الرابع لشاشة الإضاءة
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const LightingScreen()));
+                          } else if (index == 4) {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const ScenographyScreen())); // توجيه القسم الخامس لشاشة السينوغرافيا
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
