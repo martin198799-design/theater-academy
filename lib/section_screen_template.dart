@@ -11,35 +11,8 @@ class SectionScreenTemplate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String titleTrimmed = sectionTitle.trim();
-
-    // فلترة ذكية ودقيقة بناءً على اسم القسم تماماً
-    List<PlayItem> plays = globalTheaterPlays.where((play) {
-      if (titleTrimmed.contains('الإخراج')) {
-        // قسم الإخراج يعرض أعمالاً درامية متنوعة (مثل تشيخوف، أو بيكيت، أو شكسبير)
-        return play.school.contains('الكلاسيكي') || play.school.contains('العبث') || play.school.contains('الملحمي');
-      } else if (titleTrimmed.contains('التمثيل')) {
-        // قسم التمثيل
-        return play.title == 'هاملت' || play.title == 'عطيل' || play.title == 'مكبث';
-      } else if (titleTrimmed.contains('السينوغرافيا') || titleTrimmed.contains('الديكور')) {
-        // قسم السينوغرافيا والديكور
-        return play.school.contains('التعبيرية') || play.school.contains('الرمزي') || play.school.contains('الكلاسيكي');
-      } else if (titleTrimmed.contains('الأزياء') || titleTrimmed.contains('المكياج')) {
-        // قسم الأزياء والمكياج
-        return play.school.contains('الكلاسيكي') || play.school.contains('الملحمي');
-      } else if (titleTrimmed.contains('الإضاءة')) {
-        // قسم الإضاءة المسرحية
-        return play.school.contains('العبث') || play.school.contains('التعبيرية') || play.school.contains('الكلاسيكي');
-      }
-      
-      // إذا كان القسم عاماً أو "مكتبة النصوص المسرحية العالمية"
-      return true;
-    }).toList();
-
-    // إذا كانت القائمة المفلترة فارغة لأي سبب، نعرض القائمة الكاملة لضمان عدم ظهور شاشة فارغة أبداً
-    if (plays.isEmpty) {
-      plays = globalTheaterPlays;
-    }
+    // جلب المحتوى الخاص بهذا القسم بدقة، أو عرض النصوص كخيار افتراضي
+    final List<SpecializedContent> items = departmentContents[sectionTitle] ?? departmentContents['مكتبة النصوص المسرحية العالمية']!;
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -55,9 +28,9 @@ class SectionScreenTemplate extends StatelessWidget {
         ),
         body: ListView.builder(
           padding: const EdgeInsets.all(16),
-          itemCount: plays.length,
+          itemCount: items.length,
           itemBuilder: (context, index) {
-            final play = plays[index];
+            final item = items[index];
             return Container(
               margin: const EdgeInsets.only(bottom: 16),
               padding: const EdgeInsets.all(16),
@@ -69,17 +42,35 @@ class SectionScreenTemplate extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    play.title,
-                    style: const TextStyle(
-                      color: Colors.blueAccent,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          item.title,
+                          style: const TextStyle(
+                            color: Colors.blueAccent,
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: Colors.blueAccent.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          item.category,
+                          style: const TextStyle(color: Colors.blueAccent, fontSize: 11),
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'المؤلف: ${play.author} | التصنيف: ${play.school}',
+                    'المتخصص / المنهج: ${item.authorOrSpecialist}',
                     style: const TextStyle(
                       color: Colors.white70,
                       fontSize: 13,
@@ -87,7 +78,7 @@ class SectionScreenTemplate extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    play.description,
+                    item.summary,
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 14,
@@ -102,11 +93,11 @@ class SectionScreenTemplate extends StatelessWidget {
                           textDirection: TextDirection.rtl,
                           child: AlertDialog(
                             backgroundColor: const Color(0xFF1E1E24),
-                            title: Text(play.title, style: const TextStyle(color: Colors.white)),
+                            title: Text(item.title, style: const TextStyle(color: Colors.white)),
                             content: SingleChildScrollView(
                               child: Text(
-                                play.fullText,
-                                style: const TextStyle(color: Colors.white70, height: 1.5),
+                                item.detailedContent,
+                                style: const TextStyle(color: Colors.white70, height: 1.6),
                               ),
                             ),
                             actions: [
@@ -119,9 +110,9 @@ class SectionScreenTemplate extends StatelessWidget {
                         ),
                       );
                     },
-                    child: const Text(
-                      'اضغط لقراءة النص المسرحي كاملاً...',
-                      style: TextStyle(
+                    child: Text(
+                      item.category == 'نص مسرحي' ? 'اضغط لقراءة النص كاملاً...' : 'قراءة الدراسة والتحليل الأكاديمي...',
+                      style: const TextStyle(
                         color: Colors.blueAccent,
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
