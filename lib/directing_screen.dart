@@ -2,19 +2,18 @@ import 'package:flutter/material.dart';
 import 'theater_models.dart';
 import 'topic_detail_screen.dart';
 
-class DepartmentScreen extends StatelessWidget {
-  final String departmentTitle;
-  final List<TheaterItem> items;
-
-  const DepartmentScreen({Key? key, required this.departmentTitle, required this.items}) : super(key: key);
+class DirectingScreen extends StatelessWidget {
+  const DirectingScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final List<TheaterItem> items = TheaterData.directingDept;
+
     return Scaffold(
       backgroundColor: const Color(0xFF121212),
       appBar: AppBar(
         backgroundColor: const Color(0xFF1F1F2C),
-        title: Text(departmentTitle, style: const TextStyle(color: Colors.white, fontSize: 18)),
+        title: const Text("قسم الإخراج المسرحي", style: TextStyle(color: Colors.white, fontSize: 18)),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: ListView.builder(
