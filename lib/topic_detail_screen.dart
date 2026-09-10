@@ -1,105 +1,45 @@
 import 'package:flutter/material.dart';
+import 'theater_models.dart';
 
 class TopicDetailScreen extends StatelessWidget {
-  final String title;
-  final String description;
-  final String category;
-  final String detailedContent;
-  final Color themeColor;
-  final bool isPlayText;
+  final TheaterItem item;
 
-  const TopicDetailScreen({
-    super.key,
-    required this.title,
-    required this.description,
-    required this.category,
-    required this.detailedContent,
-    required this.themeColor,
-    required this.isPlayText,
-  });
+  const TopicDetailScreen({Key? key, required this.item}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF121212),
       appBar: AppBar(
-        title: Text(
-          category,
-          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-        backgroundColor: const Color(0xFF1E1E1E),
+        backgroundColor: const Color(0xFF1F1F2C),
+        title: Text(item.title, style: const TextStyle(fontSize: 18, color: Colors.white)),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: const Color(0xFF1E1E1E),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: themeColor.withOpacity(0.5), width: 1.5),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      color: themeColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textDirection: TextDirection.rtl,
-                    textAlign: TextAlign.right,
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    description,
-                    style: const TextStyle(
-                      color: Colors.white70,
-                      fontSize: 14,
-                      height: 1.5,
-                    ),
-                    textDirection: TextDirection.rtl,
-                    textAlign: TextAlign.right,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              'النص الأكاديمي الشامل',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-              textDirection: TextDirection.rtl,
-            ),
-            const SizedBox(height: 12),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: const Color(0xFF1E1E1E),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.white24, width: 1),
+                color: Colors.blue.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
-                detailedContent,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                  height: 1.8,
-                ),
-                textDirection: TextDirection.rtl,
-                textAlign: TextAlign.right,
+                item.category,
+                style: const TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold),
               ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              "المؤلف / المنهج: ${item.authorOrMethod}",
+              style: const TextStyle(color: Colors.grey, fontSize: 16),
+            ),
+            const Divider(color: Colors.grey, height: 30),
+            Text(
+              item.fullContent,
+              style: const TextStyle(color: Colors.white, fontSize: 16, height: 1.8),
             ),
           ],
         ),
