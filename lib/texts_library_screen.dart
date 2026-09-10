@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-// نموذج البيانات
+// 1. نموذج البيانات
 class GlobalPlay {
   final String title;
   final String playwright;
@@ -19,20 +19,35 @@ class GlobalPlay {
   });
 }
 
-// قائمة البيانات
+// 2. قائمة البيانات الأكاديمية
 final List<GlobalPlay> globalPlaysDatabase = [
   GlobalPlay(
     title: "هاملت (Hamlet)",
-    playwright: "ويليام شكسبير",
+    playwright: "ويليام شكسبير (William Shakespeare)",
     year: "1601",
     school: "المسرح الإليزابيثي",
     description: "الأمير هاملت في صراع فلسفي ونفسي حول الموت والتردد الأخلاقي.",
     dialogueExcerpt: "أيكون أو لا يكون.. تلك هي المسألة.",
   ),
-  // ... باقي المسرحيات ...
+  GlobalPlay(
+    title: "بيت الدمية (A Doll's House)",
+    playwright: "هنريك إبسن (Henrik Ibsen)",
+    year: "1879",
+    school: "المسرح الواقعي الاجتماعي",
+    description: "نورا هيلمر تكتشف أنها تعيش كدمية وتتخذ قرارها بالاستقلال.",
+    dialogueExcerpt: "أعتقد أنني قبل كل شيء إنسانة.. تماماً مثلما أنت إنسان.",
+  ),
+  GlobalPlay(
+    title: "في انتظار غودو (Waiting for Godot)",
+    playwright: "صموائيل بيكيت (Samuel Beckett)",
+    year: "1952",
+    school: "مسرح العبث",
+    description: "الصديقان فلاديمير واستراگون ينتظران غودو بلا هدى.",
+    dialogueExcerpt: "فلاديمير: إذن، لا نزال ننتظر؟ - استراگون: هكذا يبدو الأمر.",
+  ),
 ];
 
-// اسم الكلاس المطابق تماماً لما يتم استدعاؤه في home_screen.dart
+// 3. شاشة العرض (التي يناديها home_screen)
 class TextsLibraryScreen extends StatelessWidget {
   const TextsLibraryScreen({Key? key}) : super(key: key);
 
