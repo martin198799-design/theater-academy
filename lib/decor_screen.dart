@@ -1,13 +1,36 @@
-import 'package:flutter/material.dart';
-import 'section_screen_template.dart';
+class DecorContent {
+  final String title;
+  final String schoolOrMethod;
+  final String comprehensiveStudy;
+  final List<String> corePillars;
 
-class DecorScreen extends StatelessWidget {
-  const DecorScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const SectionScreenTemplate(
-      sectionTitle: 'قسم الديكور المسرحي',
-    );
-  }
+  DecorContent({
+    required this.title,
+    required this.schoolOrMethod,
+    required this.comprehensiveStudy,
+    required this.corePillars,
+  });
 }
+
+final List<DecorContent> decorDepartmentData = [
+  DecorContent(
+    title: "هندسة الفضاء المسرحي وبناء بيئة العرض",
+    schoolOrMethod: "فلسفة الديكور والتشكيل المكاني",
+    comprehensiveStudy: "الديكور المسرحي هو التصميم المعماري والتكييف المادي للخشبة الذي يجسد بيئة الأحداث ويعكس البُعد الزمني والمكاني والنفسي للعمل. إنه ليس مجرد خلفية صامتة، بل فضاء ديناميكي يتفاعل مع الحركة والصراع الدرامي.",
+    corePillars: [
+      "تصميم الكتل البنائية والمفردات التشكيلية التي تخدم طبيعة الصراع الدرامي.",
+      "مراعاة النسب المعمارية وهندسة الرؤية البصرية لجميع مقاعد المتفرجين.",
+      "التكامل الوظيفي بين عناصر الديكور وحركة الممثلين وتدفق الأحداث."
+    ],
+  ),
+  DecorContent(
+    title: "التصميم الطرازى والتحولات التشكيلية",
+    schoolOrMethod: "من الكلاسيكية إلى المدارس المعاصرة",
+    comprehensiveStudy: "دراسة تطور أساليب تصميم الديكور عبر التاريخ الفني، من التناظر والواقعية المفرطة في المدارس الكلاسيكية والطبيعية، إلى التجريد والاختزال الرمزي في المدارس الحديثة والعبثية التي توظف الإيحاء بدلاً من التجسيد الحرفي.",
+    corePillars: [
+      "توظيف المادة والخامة (الخشب، الحديد، الأقمشة، العناصر الصناعية) دلالياً.",
+      "تصميم الديكور المتحرك والقطع المتغيرة لخدمة الإيقاع السريع للحبكة.",
+      "التناغم الفكري والجمالي بين رؤية مصمم الديكور ورؤية المخرج العامة."
+    ],
+  ),
+];
