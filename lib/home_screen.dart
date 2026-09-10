@@ -73,7 +73,7 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 12),
               const Center(
                 child: Text(
-                  "أكاديمية الفنون والعلوم المسرحية",
+                  "خشبة المسرح",
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
