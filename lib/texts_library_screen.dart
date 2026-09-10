@@ -1,138 +1,123 @@
 import 'package:flutter/material.dart';
-import 'theater_models.dart'; // استدعاء البيانات المركزية
+import 'theater_models.dart';
 
 class TextsLibraryScreen extends StatelessWidget {
   const TextsLibraryScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // جلب النصوص المسرحية من القائمة المتخصصة المعتمدة في النظام الجديد
+    final plays = departmentContents['مكتبة النصوص المسرحية العالمية'] ?? [];
+
     return Directionality(
-      textDirection: TextDirection.rtl, // ضمان اتجاه اليمين لليسار لكل الشاشة
+      textDirection: TextDirection.rtl,
       child: Scaffold(
+        backgroundColor: const Color(0xFF121214),
         appBar: AppBar(
-          title: const Text('مكتبة النصوص المسرحية العالمية'),
-          centerTitle: true,
+          backgroundColor: const Color(0xFF1E1E24),
+          title: const Text(
+            'مكتبة النصوص المسرحية العالمية',
+            style: TextStyle(color: Colors.white, fontSize: 18),
+          ),
+          iconTheme: const IconThemeData(color: Colors.white),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'أرشيف أكاديمي شامل يضم عيون الدراما العالمية والمدارس الكبرى بالنصوص الكاملة',
-                style: TextStyle(fontSize: 14, color: Colors.grey, fontWeight: FontWeight.bold),
+        body: ListView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: plays.length,
+          itemBuilder: (context, index) {
+            final play = plays[index];
+            return Container(
+              margin: const EdgeInsets.only(bottom: 16),
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: const Color(0xFF1E1E24),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.white10),
               ),
-              const SizedBox(height: 12),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: globalTheaterPlays.length,
-                  itemBuilder: (context, index) {
-                    final play = globalTheaterPlays[index];
-                    return Card(
-                      elevation: 3,
-                      margin: const EdgeInsets.symmetric(vertical: 8),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      child: InkWell(
-                        onTap: () {
-                          // فتح نافذة القراءة الكاملة للنص المسرحي
-                          showDialog(
-                            context: context,
-                            builder: (context) => Directionality(
-                              textDirection: TextDirection.rtl,
-                              child: AlertDialog(
-                                title: Text(play.title),
-                                content: SizedBox(
-                                  width: MediaQuery.of(context).size.width * 0.9,
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'المؤلف: ${play.author} | المدرسة: ${play.school}',
-                                          style: const TextStyle(
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.indigoAccent,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 16),
-                                        Text(
-                                          play.fullText,
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                            height: 1.8,
-                                          ),
-                                          textAlign: TextAlign.right, // إصلاح اصطفاف النص وعلامات الترقيم بدقة
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    child: const Text('إغلاق', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                                  ),
-                                ],
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          play.title,
+                          style: const TextStyle(
+                            color: Colors.blueAccent,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: Colors.blueAccent.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          play.category,
+                          style: const TextStyle(color: Colors.blueAccent, fontSize: 11),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'المؤلف: ${play.authorOrSpecialist}',
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 13,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    play.summary,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  InkWell(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => Directionality(
+                          textDirection: TextDirection.rtl,
+                          child: AlertDialog(
+                            backgroundColor: const Color(0xFF1E1E24),
+                            title: Text(play.title, style: const TextStyle(color: Colors.white)),
+                            content: SingleChildScrollView(
+                              child: Text(
+                                play.detailedContent,
+                                style: const TextStyle(color: Colors.white70, height: 1.6),
                               ),
                             ),
-                          );
-                        },
-                        borderRadius: BorderRadius.circular(12),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      play.title,
-                                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.indigoAccent),
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                    decoration: BoxDecoration(
-                                      color: Colors.indigo.withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
-                                    child: Text(
-                                      play.school,
-                                      style: const TextStyle(fontSize: 11, color: Colors.indigo, fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                'المؤلف: ${play.author}',
-                                style: const TextStyle(fontSize: 13, color: Colors.blueGrey),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                play.description,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(fontSize: 14, color: Colors.white70),
-                              ),
-                              const SizedBox(height: 8),
-                              const Text(
-                                'اضغط لقراءة النص المسرحي كاملاً...',
-                                style: TextStyle(fontSize: 12, color: Colors.blueAccent, fontWeight: FontWeight.bold),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text('إغلاق', style: TextStyle(color: Colors.blueAccent)),
                               ),
                             ],
                           ),
                         ),
+                      );
+                    },
+                    child: const Text(
+                      'اضغط لقراءة النص المسرحي كاملاً...',
+                      style: TextStyle(
+                        color: Colors.blueAccent,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
