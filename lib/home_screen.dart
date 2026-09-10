@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'texts_library_screen.dart';
 import 'directing_screen.dart';
 import 'acting_screen.dart';
+import 'lighting_screen.dart'; // تأكد من استيراد ملف الإضاءة
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class HomeScreen extends StatelessWidget {
       {"title": "1. مكتبة النصوص", "desc": "النصوص المسرحية والتراثية العميقة"},
       {"title": "2. دراسات الإخراج المسرحي", "desc": "المدارس الإخراجية، المبادئ، والتحليلات العميقة"},
       {"title": "3. أكاديمية التمثيل والتقنيات", "desc": "المدارس الأدائية والذاكرة الانفعالية والجسد"},
-      {"title": "4. السينوغرافيا والفضاء المسرحي", "desc": "الإضاءة، الديكور، والكتل البصرية"},
+      {"title": "4. فن الإضاءة المسرحية", "desc": "التطور التاريخي، أنواع الإضاءة، وهندسة مزج الألوان"}, // تم التحديث هنا
       {"title": "5. النقد وتحليل العروض", "desc": "مناهج القراءة النقدية والتفكيك الدرامي"},
       {"title": "6. الدراماتورجيا وبناء النص", "desc": "تشريح البنية الدرامية وتطوير الحكاية"},
       {"title": "7. تاريخ المسرح العالمي والعربي", "desc": "محطات وتطورات الفن المسرحي عبر التاريخ"},
@@ -101,30 +102,16 @@ class HomeScreen extends StatelessWidget {
                           size: 16,
                         ),
                         onTap: () {
-                          // توجيه كل قسم إلى شاشته الخاصة
+                          // توجيه صحيح حسب الفهرس (Index)
                           if (index == 0) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const TextsLibraryScreen(),
-                              ),
-                            );
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const TextsLibraryScreen()));
                           } else if (index == 1) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const DirectingStudiesScreen(),
-                              ),
-                            );
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const DirectingStudiesScreen()));
                           } else if (index == 2) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ActingScreen(),
-                              ),
-                            );
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const ActingScreen()));
+                          } else if (index == 3) {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const LightingScreen())); // توجيه القسم الرابع لشاشة الإضاءة
                           } else {
-                            // رسالة مؤقتة للأقسام البقية لحين إنشائها
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text("قريباً: ${section["title"]}"),
