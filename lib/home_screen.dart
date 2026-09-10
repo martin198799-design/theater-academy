@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'acting_techniques_screen.dart'; // استيراد ملف شاشة أبحاث وتقنيات التمثيل
+import 'acting_techniques_screen.dart'; // استيراد شاشة التقنيات
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -34,19 +34,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 10),
-                const Text(
-                  "استكشف أعمق الدراسات المسرحية، مدارس التمثيل، وتقنيات الجسد والصوت الاحترافية.",
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.white70,
-                    height: 1.5,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
                 const SizedBox(height: 40),
-                
-                // زر الانتقال الصحيح إلى أكاديمية التمثيل
                 SizedBox(
                   width: double.infinity,
                   height: 50,
