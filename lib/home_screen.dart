@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'directing_screen.dart'; // استيراد شاشة الإخراج التي أنشأناها
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -69,9 +70,7 @@ class HomeScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                         side: BorderSide(
-                          color: index == 0 || index == 1
-                              .colors[index]
-                              .withOpacity(0.3)
+                          color: (index == 0 || index == 1)
                               ? Colors.amber.withOpacity(0.5)
                               : Colors.transparent,
                         ),
@@ -103,7 +102,15 @@ class HomeScreen extends StatelessWidget {
                           size: 16,
                         ),
                         onTap: () {
-                          // هنا سيتم توجيه كل قسم لشاشته الخاصة لاحقاً
+                          // توجيه قسم دراسات الإخراج إلى شاشته الخاصة
+                          if (index == 1) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const DirectingStudiesScreen(),
+                              ),
+                            );
+                          }
                         },
                       ),
                     );
