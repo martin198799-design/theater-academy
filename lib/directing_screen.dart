@@ -1,97 +1,172 @@
 import 'package:flutter/material.dart';
 
-// نموذج البيانات الخاص بالقسم
-class DirectingContent {
-  final String title;
-  final String schoolOrMethod;
-  final String comprehensiveStudy;
-  final List<String> corePillars;
+class DirectingStudiesScreen extends StatelessWidget {
+  const DirectingStudiesScreen({Key? key}) : super(key: key);
 
-  DirectingContent({
-    required this.title,
-    required this.schoolOrMethod,
-    required this.comprehensiveStudy,
-    required this.corePillars,
-  });
-}
-
-// قائمة البيانات
-final List<DirectingContent> directingDepartmentData = [
-  DirectingContent(
-    title: "فلسفة الرؤية الإخراجية وتطور المنهج الحديث",
-    schoolOrMethod: "من المنهج الكلاسيكي إلى التجريب المعاصر",
-    comprehensiveStudy: "يُعد المخرج المسرحي المعماري الأول للعمل الفني وربان السفينة الذي يترجم النص الأدبي إلى رؤية بصرية وحركية تنبض بالحياة على الخشب.",
-    corePillars: [
-      "تفكيك النص المسرحي واستنطاق دلالاته الخفية.",
-      "خلق المفهوم الإخراجي الموحد (Concept) الذي يحكم إيقاع العرض.",
-    ],
-  ),
-  DirectingContent(
-    title: "إدارة الممثل وتوجيه البروفات",
-    schoolOrMethod: "منهجية ستانسلافسكي ومایرهولد",
-    comprehensiveStudy: "تمثل البروفات المختبر الحقيقي الذي يتولد فيه السحر المسرحي.",
-    corePillars: [
-      "بناء الذاكرة الانفعالية وتوجيه طاقة الممثل بدقة.",
-      "توحيد الإيقاع الجماعي لفريق العمل.",
-    ],
-  ),
-];
-
-// واجهة عرض الشاشة
-class DirectingScreen extends StatelessWidget {
-  const DirectingScreen({Key? key}) : super(key: key);
+  final List<Map<String, dynamic>> directingContent = const [
+    {
+      "title": "أولاً: مبادئ الإخراج المسرحي",
+      "items": [
+        {
+          "subtitle": "1. الرؤية الإخراجية والتوحيد الفني",
+          "text": "تمثل الرؤية الإخراجية المنظور الفكري والجمالي والفلسفي الشامل الذي يستلهمه المخرج من قراءته العميقة للنص المسرحي، لتحويله من مدونة مكتوبة وصامتة على الورق إلى كينونة حية ونابضة على خشبة المسرح. لا تقف الرؤية عند حدود النقل الحرفي أو التجسيد السطحي للأحداث، بل تتجاوز ذلك لتفكيك الأنساق الدلالية الكامنة في النص وإعادة تركيبها في قالب معاصر يخاطب وعي المتفرج. وفي قلب هذه العملية يبرز مبدأ 'التوحيد الفني' بوصفه الركيزة العضوية التي تمنع تشتت العرض؛ حيث يتولى المخرج صهر كافة العناصر الإنتاجية (التمثيل، الإضاءة، السينوغرافيا، الموسيقى، الإيقاع، والكتل الحركية) في بوتقة واحدة متجانسة ومتسقة إيقاعياً وفكرياً، بحيث لا يعلو عنصر على آخر بشكل عبثي، بل يخدم كل عنصر المعنى الكلي ويساهم في دفع الصراع الدرامي نحو ذروته."
+        },
+        {
+          "subtitle": "2. التكوين البصري والتشكيل الفراغي",
+          "text": "يعتمد الإخراج المسرحي الاحترافي على استغلال الفضاء المسرحي بوصفه لوحة تشكيلية حية تُشحن بالدلالات الرمزية والنفسية. يتعامل المخرج مع الكتل البشرية (الممثلين) عناصرَ مرئية متحركة تتفاعل مع الديكور والثابت والمتحرك في الفراغ. يقوم التكوين البصري على قواعد دقيقة تشمل:\n• التوازن: توزيع الثقل البصري للكتل على الخشبة بشكل يمنع الشعور بالانكسار.\n• التباين: إبراز الاختلافات الحادة بين الشخصيات والمواقف.\n• العمق البصري: توظيف طبقات الخشبة المختلفة لخلق مستويات درامية.\n• خطوط البصر الناظمة: توجيه عين المتفرج تلقائياً نحو بؤرة الصراع."
+        },
+        {
+          "subtitle": "3. الإيقاع والزمن المسرحي",
+          "text": "يُعد الإيقاع الروح الخفية والنابضة التي تمنح العرض المسرحي حيويته وتماسكه. لا يُقاس الزمن المسرحي بالدقائق الواقعية، بل بالزمن الدرامي الداخلي الذي يخضع لضغط الصراع وتناميه. يتكون الإيقاع من:\n• السرعة (Tempo): معدل تدفق الأحداث وانتقال المشاهد.\n• الإيقاع الداخلي (Rhythm): نوعية التوتر والنبض العاطفي والنفسي الكامن تحت الحوار، والتنويع بين الصخب والصمت."
+        },
+        {
+          "subtitle": "4. التشكيل الحركي والتوزيع الموقعي (Blocking)",
+          "text": "تُعد حركة الممثلين على الخشبة وتوزعهم المكاني ترجمة بصرية مباشرة للصراع الخفي والعلاقات الديناميكية المتغيرة بين الشخصيات. لا توجد حركة عشوائية أو مجانية، فكل خطوة أو التفاتة تحمل دلالة نفسية أو صراعية مرسومة بدقة هندسية."
+        }
+      ]
+    },
+    {
+      "title": "ثانياً: أهم الدراسات والأطروحات في الإخراج المسرحي",
+      "items": [
+        {
+          "subtitle": "1. دراسات المنهج النفسي والواقعي (ستانسلافسكي ونيماير)",
+          "text": "المرتكز الأكاديمي: تشريح الدوافع الباطنية الكامنة وراء السلوك الظاهري، وتأسيس مفاهيم 'ما تحت النص' (Subtext) التي تفترض أن الكلمة المنطوقة ليست سوى قمة جبل الجليد.\nالآلية الإخراجية: تفكيك النص إلى وحدات جزئية (Beats)، وبناء خط الأفعال المتصل، والوصول إلى 'الهدف الفائق' (Super-objective) للعرض ككل."
+        },
+        {
+          "subtitle": "2. دراسات المسرح الملحمي والجدلي (برتولت بريشت)",
+          "text": "المرتكز الأكاديمي: الثورة على التخدير العاطفي والتطهير الأرسطي، وتحويل خشبة المسرح إلى منبر عقلي ونقدي يدرس الشروط الاجتماعية والسياسية.\nالآلية الإخراجية: البنية الفلسفية القائمة على اللوحات المستقلة، كسر الإيهام (الجدار الرابع)، وإظهار التقنيات والعناصر الفنية علانية."
+        },
+        {
+          "subtitle": "3. دراسات المسرح الفقير والأنثروبولوجي (غروتوفسكي وبروك)",
+          "text": "المرتكز الأكاديمي: التخلص الجذري من كافة الزوائد والزخارف السينوغرافية المعقدة، والتركيز المطلق على طاقة جسد الممثل وصوته كمركز للكون المسرحي.\nالآلية الإخراجية: دراسة أنثروبولوجيا الجسد والطقس المسرحي الخالص في فراغ خالٍ من المشتتات."
+        },
+        {
+          "subtitle": "4. دراسات المسرح الطقسي والتأصيلي",
+          "text": "التنقيب في الجذور التراثية، الأساطير المؤسسة، والطقوس الشعبية والدينية الجماعية، وإعادة صياغتها في أطر إخراجية معاصرة تفكك النص الكلاسيكي وتعيد بناءه دلالياً."
+        }
+      ]
+    },
+    {
+      "title": "ثالثاً: تقنيات وأدوات المخرج الناجح",
+      "items": [
+        {
+          "subtitle": "1. القراءة التشريحية والتفكيكية للنص",
+          "text": "قدرة استثنائية على الغوص تحت السطور، وتفكيك البنية المعمارية للحبكة، واكتشاف المساحات البيضاء التي تتيح للمخرج خلق تأويلات بصرية وفكرية غير تقليدية."
+        },
+        {
+          "subtitle": "2. إدارة الممثل وقيادة الطاقة الإبداعية",
+          "text": "امتلاك لغة تخاطب مشتركة، واعية، ومرنة مع الممثلين، والقدرة الفائقة على توجيه طاقاتهم واستخراج أداء عضوي صادق بعيداً عن الاستعراض المجوف."
+        },
+        {
+          "subtitle": "3. التفكير السينوغرافي التكاملي",
+          "text": "الإلمام العميق بلغة الألوان، وتوظيف الإضاءة كدراما صامتة لا مجرد إنارة تقنية، وفهم دلالة الكتل والفراغ لإنتاج فضاء بصري ناطق."
+        },
+        {
+          "subtitle": "4. الضبط الإداري والقيادي (إيقاع البروفات)",
+          "text": "إدارة زمن البروفات بكفاءة هندسية عالية، وخلق مناخ من الانضباط الخلاق والحرية الواعية بين طاقم العمل."
+        }
+      ]
+    },
+    {
+      "title": "رابعاً: أهم المخرجين المؤثرين في تاريخ المسرح",
+      "items": [
+        {
+          "subtitle": "1. قسطنطين ستانسلافسكي",
+          "text": "الأب المؤسس للمسرح النفسي الحديث ومطور منهج العمل الداخلي للممثل؛ أسس قواعد تحليل البنية النفسية للشخصية."
+        },
+        {
+          "subtitle": "2. برتولت بريشت",
+          "text": "رائد المسرح الملحمي ومبتكر فلسفة التغريب والنقد الاجتماعي والسياسي على الخشبة."
+        },
+        {
+          "subtitle": "3. يرزي غروتوفسكي",
+          "text": "مجدد المسرح الفقير ومكتشف طاقات الجسد الإنساني والأنثروبولوجيا الأدائية."
+        },
+        {
+          "subtitle": "4. فسيفولود ميرهولد",
+          "text": "مبتكر مسرح 'البيوميكانيكا' والتشكيل الحركي الهندسي المتقدم."
+        },
+        {
+          "subtitle": "5. بيتر بروك",
+          "text": "رائد المسرح التجريبي العالمي وباحث الفراغ المسرحي والطقس الإنساني الخالص."
+        }
+      ]
+    }
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("قسم الإخراج المسرحي"),
-        backgroundColor: Colors.black87,
-      ),
-      body: ListView.builder(
-        itemCount: directingDepartmentData.length,
-        padding: const EdgeInsets.all(16.0),
-        itemBuilder: (context, index) {
-          final item = directingDepartmentData[index];
-          return Card(
-            elevation: 4,
-            margin: const EdgeInsets.only(bottom: 16),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item.title,
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.amber),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    item.schoolOrMethod,
-                    style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic, color: Colors.grey[400]),
-                  ),
-                  const Divider(height: 20),
-                  Text(
-                    item.comprehensiveStudy,
-                    style: const TextStyle(fontSize: 15, height: 1.5),
-                  ),
-                  const SizedBox(height: 12),
-                  ...item.corePillars.map<Widget>((pillar) => Padding(
-                        padding: const EdgeInsets.only(bottom: 6.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text("• ", style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold)),
-                            Expanded(child: Text(pillar, style: const TextStyle(fontSize: 14))),
-                          ],
-                        ),
-                      )).toList(),
-                ],
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("دراسات الإخراج المسرحي"),
+          backgroundColor: Colors.black87,
+        ),
+        backgroundColor: const Color(0xFF121212),
+        body: ListView.builder(
+          padding: const EdgeInsets.all(16.0),
+          itemCount: directingContent.length,
+          itemBuilder: (context, sectionIndex) {
+            final section = directingContent[sectionIndex];
+            return Card(
+              color: const Color(0xFF1E1E1E),
+              margin: const EdgeInsets.only(bottom: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(color: Colors.amber.withOpacity(0.3)),
               ),
-            ),
-          );
-        },
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      section["title"]!,
+                      style: const TextStyle(
+                        color: Colors.amberAccent,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Divider(color: Colors.amber, height: 20),
+                    ...List.generate(
+                      (section["items"] as List).length,
+                      (itemIndex) {
+                        final item = section["items"][itemIndex];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item["subtitle"]!,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 6),
+                              Text(
+                                item["text"]!,
+                                style: const TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 14,
+                                  height: 1.5,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
