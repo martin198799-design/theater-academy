@@ -6,7 +6,7 @@ import 'lighting_screen.dart';
 import 'scenography_screen.dart';
 import 'decor_screen.dart';
 import 'costumes_screen.dart';
-import 'gallery_screen.dart'; // تم إضافة ملف القسم الثامن بأمان
+import 'gallery_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -53,7 +53,7 @@ class HomeScreen extends StatelessWidget {
         "id": "gallery",
         "title": "8. المعرض والأرشيف السمعي البصري",
         "desc": "المشاعر المسرحية، كواليس الديكور، الإضاءة، والفيديوهات"
-      }, // القسم الثامن الجديد المكمل
+      },
     ];
 
     return Scaffold(
@@ -97,11 +97,10 @@ class HomeScreen extends StatelessWidget {
               ),
               trailing: const Icon(Icons.arrow_forward_ios, color: Color(0xFFD4AF37), size: 18),
               onTap: () {
-                // التوجيه الآمن لكل قسم حسب معرفه (id)
                 if (section["id"] == "texts") {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const TextsLibraryScreen()));
                 } else if (section["id"] == "directing") {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const DirectingScreen()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const DirectingStudiesScreen()));
                 } else if (section["id"] == "acting") {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const ActingScreen()));
                 } else if (section["id"] == "lighting") {
@@ -113,7 +112,6 @@ class HomeScreen extends StatelessWidget {
                 } else if (section["id"] == "costumes") {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const CostumesScreen()));
                 } else if (section["id"] == "gallery") {
-                  // فتح القسم الثامن الجديد بكل سلاسة وأمان
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const GalleryScreen()));
                 }
               },
