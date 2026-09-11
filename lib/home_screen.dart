@@ -6,6 +6,7 @@ import 'lighting_screen.dart';
 import 'scenography_screen.dart';
 import 'decor_screen.dart';
 import 'costumes_screen.dart';
+import 'makeup_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -41,12 +42,17 @@ class HomeScreen extends StatelessWidget {
       {
         "id": "decor",
         "title": "6. الديكور والكتل",
-        "desc": "تصميم الكتل الفراغية وتوظيف الديكور درامياً"
+        "desc": "تصميم الكتل الفراغية وتوظيف الديكور في البناء الدرامي"
       },
       {
         "id": "costumes",
-        "title": "7. الأزياء والماكياج",
-        "desc": "دلالات الأزياء وتشكيل الماكياج النفسي للشخصيات"
+        "title": "7. الأزياء",
+        "desc": "دلالات الأزياء وتشكيل الهيئة الخارجية للشخصيات"
+      },
+      {
+        "id": "makeup",
+        "title": "8. مكياج المسرح",
+        "desc": "هندسة التجسيد البصري والنفسي وتقنيات الظل والضوء"
       },
     ];
 
@@ -105,6 +111,8 @@ class HomeScreen extends StatelessWidget {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const DecorScreen()));
                 } else if (section["id"] == "costumes") {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const CostumesScreen()));
+                } else if (section["id"] == "makeup") {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const MakeupScreen()));
                 }
               },
             ),
