@@ -31,7 +31,6 @@ class GalleryScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             
-            // القسم الأول: مشغلات الفيديو التفاعلية للتجارب المسرحية
             const Text(
               "أولاً: مقاطع الفيديو والتجارب الإخراجية الحية",
               style: TextStyle(
@@ -42,17 +41,14 @@ class GalleryScreen extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             
-            // بطاقة فيديو تفاعلية تجريبية أولى
-            _buildVideoPlayerCard(
+            _buildVideoCard(
               context,
               "مشهد تجريبي: مأساة الحزن والنجوى",
               "توظيف إضاءة الأزرق الخافت مع عزف الناي الحزين على الخشبة.",
               Icons.play_circle_fill,
             ),
-            const SizedBox(height: 12),
-            
-            // بطاقة فيديو تفاعلية تجريبية ثانية
-            _buildVideoPlayerCard(
+            const SizedBox(height: 10),
+            _buildVideoCard(
               context,
               "كواليس تحضير الديكور والكتل البابلية",
               "توثيق مرئي لعملية بناء الفضاء المسرحي وتوزيع الإضاءة الفراغية.",
@@ -60,7 +56,6 @@ class GalleryScreen extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
-            // القسم الثاني: أرشيف المشاعر والأداء الحركي
             const Text(
               "ثانياً: أرشيف المشاعر والأداء التعبيري",
               style: TextStyle(
@@ -71,26 +66,21 @@ class GalleryScreen extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             
-            SizedBox(
-              height: 210,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  _buildEmotionCard("الحزن والنجوى", Icons.water_drop, "إضاءة زرقاء خافتة\n+ نغمات الناي والعود الحزينة."),
-                  _buildEmotionCard("السعادة والنشوة", Icons.sentiment_very_satisfied, "إضاءة ذهبية ساطعة\n+ حركة جسدية حماسية منفتحة."),
-                  _buildEmotionCard("العصبية والصراع", Icons.flash_on, "إضاءة حمراء حادة\n+ قبضة يد مشدودة توحي بالانفجار."),
-                  _buildEmotionCard("الانكسار والتلاشي", Icons.nightlight_round, "إنارة باهتة على حافة المسرح\n+ ظل طويل ومنحني للبطل."),
-                ],
-              ),
-            ),
+            // تحويل البطاقات إلى عمود متكامل وواضح لتجنب اختفاء النصوص
+            _buildVerticalEmotionCard("الحزن والنجوى", Icons.water_drop, "إضاءة زرقاء خافتة + نغمات الناي والعود الحزينة للتعبير عن مأساة الشخصية."),
+            const SizedBox(height: 10),
+            _buildVerticalEmotionCard("السعادة والنشوة", Icons.sentiment_very_satisfied, "إضاءة ذهبية ساطعة + حركة جسدية حماسية منفتحة تعكس لحظات التحرر."),
+            const SizedBox(height: 10),
+            _buildVerticalEmotionCard("العصبية والصراع", Icons.flash_on, "إضاءة حمراء حادة + قبضة يد مشدودة توحي بذروة التوتر واصطدام الإرادات."),
+            const SizedBox(height: 10),
+            _buildVerticalEmotionCard("الانكسار والتلاشي", Icons.nightlight_round, "إنارة باهتة على حافة المسرح + ظل طويل ومنحني لسقوط البطل داخلياً."),
           ],
         ),
       ),
     );
   }
 
-  // ودجت مشغل الفيديو التجريبي التفاعلي
-  Widget _buildVideoPlayerCard(BuildContext context, String title, String subtitle, IconData icon) {
+  Widget _buildVideoCard(BuildContext context, String title, String subtitle, IconData icon) {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
@@ -101,21 +91,21 @@ class GalleryScreen extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: const Color(0xFF4A120E),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(icon, size: 36, color: const Color(0xFFD4AF37)),
+            child: Icon(icon, size: 30, color: const Color(0xFFD4AF37)),
           ),
-          const SizedBox(width: 14),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   title,
-                  style: const TextStyle(color: Color(0xFFF3E5AB), fontWeight: FontWeight.bold, fontSize: 14),
+                  style: const TextStyle(color: Color(0xFFF3E5AB), fontWeight: FontWeight.bold, fontSize: 13),
                   textDirection: TextDirection.rtl,
                 ),
                 const SizedBox(height: 4),
@@ -127,55 +117,42 @@ class GalleryScreen extends StatelessWidget {
               ],
             ),
           ),
-          IconButton(
-            icon: const Icon(Icons.arrow_forward_ios, color: Color(0xFFD4AF37), size: 16),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("جاري تشغيل المعاينة المرئية للمشهد المسرحي...", textDirection: TextDirection.rtl),
-                  backgroundColor: Color(0xFF4A120E),
-                  duration: Duration(seconds: 2),
-                ),
-              );
-            },
-          ),
         ],
       ),
     );
   }
 
-  // ودجت بطاقة المشاعر الأفقية
-  Widget _buildEmotionCard(String title, IconData icon, String desc) {
+  Widget _buildVerticalEmotionCard(String title, IconData icon, String desc) {
     return Container(
-      width: 190,
-      margin: const EdgeInsets.only(right: 14),
-      padding: const EdgeInsets.all(12),
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: const Color(0xFF2C0B08),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: const Color(0xFFD4AF37).withOpacity(0.4)),
       ),
-      child: Column(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Icon(icon, size: 22, color: const Color(0xFFD4AF37)),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
+          Icon(icon, size: 24, color: const Color(0xFFD4AF37)),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
                   title,
-                  style: const TextStyle(color: Color(0xFFF3E5AB), fontWeight: FontWeight.bold, fontSize: 13),
+                  style: const TextStyle(color: Color(0xFFF3E5AB), fontWeight: FontWeight.bold, fontSize: 14),
                   textDirection: TextDirection.rtl,
                 ),
-              ),
-            ],
-          ),
-          const Divider(color: Color(0xFFD4AF37), height: 16),
-          Text(
-            desc,
-            style: const TextStyle(color: Colors.white70, fontSize: 11, height: 1.4),
-            textDirection: TextDirection.rtl,
+                const SizedBox(height: 6),
+                Text(
+                  desc,
+                  style: const TextStyle(color: Colors.white70, fontSize: 12, height: 1.4),
+                  textDirection: TextDirection.rtl,
+                ),
+              ],
+            ),
           ),
         ],
       ),
