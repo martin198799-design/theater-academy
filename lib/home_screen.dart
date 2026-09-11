@@ -41,7 +41,7 @@ class HomeScreen extends StatelessWidget {
       },
       {
         "id": "decor",
-        "title": "6. الديكور والكتل",
+        "title": "6. الديكور", // تم ضبط العنوان بدقة
         "desc": "تصميم الكتل الفراغية وتوظيف الديكور في البناء الدرامي"
       },
       {
