@@ -11,7 +11,7 @@ class GalleryScreen extends StatelessWidget {
         backgroundColor: const Color(0xFF4A120E),
         title: const Text(
           "المعرض والأرشيف السمعي البصري",
-          style: TextStyle(color: Color(0xFFF3E5AB), fontSize: 20, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Color(0xFFF3E5AB), fontSize: 18, fontWeight: FontWeight.bold),
         ),
         iconTheme: const IconThemeData(color: Color(0xFFD4AF37)),
         centerTitle: true,
@@ -21,7 +21,6 @@ class GalleryScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // العنوان التوضيحي
             const Text(
               "أرشيف التوثيق البصري والمشاعري المسرحي",
               style: TextStyle(
@@ -31,8 +30,7 @@ class GalleryScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-
-            // 1. قسم المشاعر المسرحية العميق
+            
             const Text(
               "أولاً: أرشيف المشاعر والأداء المسرحي",
               style: TextStyle(
@@ -42,8 +40,9 @@ class GalleryScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
+            
             SizedBox(
-              height: 230,
+              height: 240,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
@@ -76,7 +75,6 @@ class GalleryScreen extends StatelessWidget {
             ),
             const SizedBox(height: 30),
 
-            // 2. قسم كواليس الديكور والتقنيات
             const Text(
               "ثانياً: كواليس الديكور والكتل الهندسية",
               style: TextStyle(
@@ -86,13 +84,14 @@ class GalleryScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
+            
             GridView.count(
               crossAxisCount: 2,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
-              childAspectRatio: 1.25,
+              childAspectRatio: 1.15,
               children: [
                 _buildGridItem("ديكورات بابلية وتاريخية", "توظيف العمارة الرمزية", Icons.account_balance),
                 _buildGridItem("توزيع إضاءة Spotlights", "هندسة الظل والضوء والعمق", Icons.lightbulb),
@@ -108,7 +107,7 @@ class GalleryScreen extends StatelessWidget {
 
   Widget _buildDetailedArtCard(String title, String desc, IconData icon, String footer) {
     return Container(
-      width: 190,
+      width: 200,
       margin: const EdgeInsets.only(right: 14),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
@@ -121,12 +120,13 @@ class GalleryScreen extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(icon, size: 28, color: const Color(0xFFD4AF37)),
+              Icon(icon, size: 24, color: const Color(0xFFD4AF37)),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   title,
-                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
+                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                  textDirection: TextDirection.rtl,
                 ),
               ),
             ],
@@ -135,11 +135,13 @@ class GalleryScreen extends StatelessWidget {
           Text(
             desc,
             style: const TextStyle(color: Colors.white70, fontSize: 12),
+            textDirection: TextDirection.rtl,
           ),
           const Spacer(),
           Text(
             footer,
             style: const TextStyle(color: Color(0xFFF3E5AB), fontSize: 11, fontStyle: FontStyle.italic),
+            textDirection: TextDirection.rtl,
           ),
         ],
       ),
@@ -148,7 +150,7 @@ class GalleryScreen extends StatelessWidget {
 
   Widget _buildGridItem(String title, String subtitle, IconData icon) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: const Color(0xFF2C0B08),
         borderRadius: BorderRadius.circular(12),
@@ -157,18 +159,20 @@ class GalleryScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 32, color: const Color(0xFFF3E5AB)),
-          const SizedBox(height: 8),
+          Icon(icon, size: 28, color: const Color(0xFFF3E5AB)),
+          const SizedBox(height: 6),
           Text(
             title,
-            style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
+            style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
+            textDirection: TextDirection.rtl,
           ),
           const SizedBox(height: 4),
           Text(
             subtitle,
-            style: const TextStyle(color: Colors.white60, fontSize: 11),
+            style: const TextStyle(color: Colors.white60, fontSize: 10),
             textAlign: TextAlign.center,
+            textDirection: TextDirection.rtl,
           ),
         ],
       ),
