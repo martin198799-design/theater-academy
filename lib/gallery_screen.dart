@@ -22,7 +22,7 @@ class GalleryScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              "أرشيف التوثيق البصري والمشاعري المسرحي",
+              "أرشيف التوثيق البصري، المرئي والمشاعري المسرحي",
               style: TextStyle(
                 color: Color(0xFFD4AF37),
                 fontSize: 15,
@@ -31,8 +31,9 @@ class GalleryScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             
+            // القسم الأول: مشغلات الفيديو التفاعلية للتجارب المسرحية
             const Text(
-              "أولاً: أرشيف المشاعر والأداء المسرحي",
+              "أولاً: مقاطع الفيديو والتجارب الإخراجية الحية",
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -41,77 +42,46 @@ class GalleryScreen extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             
-            // بطاقات المشاعر الأفقية مع محتوى غني وواضح
+            // بطاقة فيديو تفاعلية تجريبية أولى
+            _buildVideoPlayerCard(
+              context,
+              "مشهد تجريبي: مأساة الحزن والنجوى",
+              "توظيف إضاءة الأزرق الخافت مع عزف الناي الحزين على الخشبة.",
+              Icons.play_circle_fill,
+            ),
+            const SizedBox(height: 12),
+            
+            // بطاقة فيديو تفاعلية تجريبية ثانية
+            _buildVideoPlayerCard(
+              context,
+              "كواليس تحضير الديكور والكتل البابلية",
+              "توثيق مرئي لعملية بناء الفضاء المسرحي وتوزيع الإضاءة الفراغية.",
+              Icons.video_collection,
+            ),
+            const SizedBox(height: 24),
+
+            // القسم الثاني: أرشيف المشاعر والأداء الحركي
+            const Text(
+              "ثانياً: أرشيف المشاعر والأداء التعبيري",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFF3E5AB),
+              ),
+            ),
+            const SizedBox(height: 12),
+            
             SizedBox(
-              height: 220,
+              height: 210,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
-                  _buildRichCard(
-                    "الحزن والنجوى",
-                    Icons.water_drop,
-                    "• الإضاءة: زرقاء خافتة.\n• الصوت: نغمات الناي والعود الحزينة.\n• التعبير: تعبير عن مأساة الشخصية وعمقها الداخلي."
-                  ),
-                  _buildRichCard(
-                    "السعادة والنشوة",
-                    Icons.sentiment_very_satisfied,
-                    "• الإضاءة: ذهبية ساطعة.\n• الحركة: حركة جسدية حماسية منفتحة.\n• التعبير: انعكاس لحظات التحرر والانتصار."
-                  ),
-                  _buildRichCard(
-                    "العصبية والصراع",
-                    Icons.flash_on,
-                    "• الإضاءة: حمراء حادة.\n• الحركة: قبضة يد مشدودة.\n• التعبير: ذروة التوتر الدرامي واصطدام الإرادات."
-                  ),
-                  _buildRichCard(
-                    "الانكسار والتلاشي",
-                    Icons.nightlight_round,
-                    "• الإضاءة: إنارة باهتة على الحافة.\n• الشكل: ظل طويل ومنحني.\n• التعبير: سقوط الدراما الداخلية للبطل."
-                  ),
+                  _buildEmotionCard("الحزن والنجوى", Icons.water_drop, "إضاءة زرقاء خافتة\n+ نغمات الناي والعود الحزينة."),
+                  _buildEmotionCard("السعادة والنشوة", Icons.sentiment_very_satisfied, "إضاءة ذهبية ساطعة\n+ حركة جسدية حماسية منفتحة."),
+                  _buildEmotionCard("العصبية والصراع", Icons.flash_on, "إضاءة حمراء حادة\n+ قبضة يد مشدودة توحي بالانفجار."),
+                  _buildEmotionCard("الانكسار والتلاشي", Icons.nightlight_round, "إنارة باهتة على حافة المسرح\n+ ظل طويل ومنحني للبطل."),
                 ],
               ),
-            ),
-            const SizedBox(height: 30),
-
-            const Text(
-              "ثانياً: كواليس الديكور والكتل الهندسية",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFFF3E5AB),
-              ),
-            ),
-            const SizedBox(height: 12),
-            
-            // شبكة الكواليس بمحتوى تفصيلي كامل
-            GridView.count(
-              crossAxisCount: 2,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
-              childAspectRatio: 0.95,
-              children: [
-                _buildGridCard(
-                  "ديكورات بابلية",
-                  Icons.account_balance,
-                  "توظيف العمارة الرمزية والتاريخية لخلق عمق بصري درامي مستوحى من حضارة بابل."
-                ),
-                _buildGridCard(
-                  "توزيع Spotlights",
-                  Icons.lightbulb,
-                  "هندسة الظل والضوء لتوجيه عين المتفرج نحو بؤرة الصراع الأساسية على الخشبة."
-                ),
-                _buildGridCard(
-                  "المخططات الهندسية",
-                  Icons.architecture,
-                  "تخطيط الفضاء المسرحي (Blueprints) بدقة لتوزيع الممثلين والكتل بكفاءة."
-                ),
-                _buildGridCard(
-                  "الأرشيف المرئي",
-                  Icons.video_library,
-                  "توثيق مقاطع الفيديو، التدريبات الحية، والتجارب الإخراجية والأدائية السابقة."
-                ),
-              ],
             ),
           ],
         ),
@@ -119,74 +89,95 @@ class GalleryScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildRichCard(String title, IconData icon, String content) {
+  // ودجت مشغل الفيديو التجريبي التفاعلي
+  Widget _buildVideoPlayerCard(BuildContext context, String title, String subtitle, IconData icon) {
     return Container(
-      width: 220,
-      margin: const EdgeInsets.only(right: 14),
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: const Color(0xFF2C0B08),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: const Color(0xFFD4AF37).withOpacity(0.5)),
       ),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: const Color(0xFF4A120E),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(icon, size: 36, color: const Color(0xFFD4AF37)),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(icon, size: 22, color: const Color(0xFFD4AF37)),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    title,
-                    style: const TextStyle(color: Color(0xFFF3E5AB), fontWeight: FontWeight.bold, fontSize: 13),
-                    textDirection: TextDirection.rtl,
-                  ),
+                Text(
+                  title,
+                  style: const TextStyle(color: Color(0xFFF3E5AB), fontWeight: FontWeight.bold, fontSize: 14),
+                  textDirection: TextDirection.rtl,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  style: const TextStyle(color: Colors.white70, fontSize: 11, height: 1.3),
+                  textDirection: TextDirection.rtl,
                 ),
               ],
             ),
-            const Divider(color: Color(0xFFD4AF37), height: 16),
-            Text(
-              content,
-              style: const TextStyle(color: Colors.white70, fontSize: 11, height: 1.4),
-              textDirection: TextDirection.rtl,
-            ),
-          ],
-        ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.arrow_forward_ios, color: Color(0xFFD4AF37), size: 16),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("جاري تشغيل المعاينة المرئية للمشهد المسرحي...", textDirection: TextDirection.rtl),
+                  backgroundColor: Color(0xFF4A120E),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildGridCard(String title, IconData icon, String description) {
+  // ودجت بطاقة المشاعر الأفقية
+  Widget _buildEmotionCard(String title, IconData icon, String desc) {
     return Container(
+      width: 190,
+      margin: const EdgeInsets.only(right: 14),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: const Color(0xFF2C0B08),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: const Color(0xFFD4AF37).withOpacity(0.4)),
       ),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 26, color: const Color(0xFFF3E5AB)),
-            const SizedBox(height: 8),
-            Text(
-              title,
-              style: const TextStyle(color: Color(0xFFF3E5AB), fontSize: 13, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-              textDirection: TextDirection.rtl,
-            ),
-            const SizedBox(height: 6),
-            Text(
-              description,
-              style: const TextStyle(color: Colors.white70, fontSize: 11, height: 1.3),
-              textAlign: TextAlign.center,
-              textDirection: TextDirection.rtl,
-            ),
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(icon, size: 22, color: const Color(0xFFD4AF37)),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  title,
+                  style: const TextStyle(color: Color(0xFFF3E5AB), fontWeight: FontWeight.bold, fontSize: 13),
+                  textDirection: TextDirection.rtl,
+                ),
+              ),
+            ],
+          ),
+          const Divider(color: Color(0xFFD4AF37), height: 16),
+          Text(
+            desc,
+            style: const TextStyle(color: Colors.white70, fontSize: 11, height: 1.4),
+            textDirection: TextDirection.rtl,
+          ),
+        ],
       ),
     );
   }
