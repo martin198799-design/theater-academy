@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'home_screen.dart';
+import 'welcome_screen.dart'; // استدعاء شاشة الترحيب التي أنشأناها
 
 void main() {
   runApp(const TheaterAcademyApp());
@@ -17,9 +17,9 @@ class TheaterAcademyApp extends StatelessWidget {
         brightness: Brightness.dark,
         primarySwatch: Colors.deepPurple,
         scaffoldBackgroundColor: const Color(0xFF121212),
-        fontFamily: 'Cairo', // أو الخط الافتراضي
+        fontFamily: 'Cairo',
       ),
-      home: const HomeScreen(),
+      home: WelcomeScreen(), // جعل شاشة الترحيب هي أول واجهة تظهر
     );
   }
 }
