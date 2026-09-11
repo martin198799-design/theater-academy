@@ -6,7 +6,6 @@ import 'lighting_screen.dart';
 import 'scenography_screen.dart';
 import 'decor_screen.dart';
 import 'costumes_screen.dart';
-import 'gallery_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -48,11 +47,6 @@ class HomeScreen extends StatelessWidget {
         "id": "costumes",
         "title": "7. الأزياء والماكياج",
         "desc": "دلالات الأزياء وتشكيل الماكياج النفسي للشخصيات"
-      },
-      {
-        "id": "gallery",
-        "title": "8. المعرض والأرشيف السمعي البصري",
-        "desc": "المشاعر المسرحية، كواليس الديكور، الإضاءة، والفيديوهات"
       },
     ];
 
@@ -111,8 +105,6 @@ class HomeScreen extends StatelessWidget {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const DecorScreen()));
                 } else if (section["id"] == "costumes") {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const CostumesScreen()));
-                } else if (section["id"] == "gallery") {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const GalleryScreen()));
                 }
               },
             ),
