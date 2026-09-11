@@ -11,46 +11,78 @@ class GalleryScreen extends StatelessWidget {
         backgroundColor: const Color(0xFF4A120E),
         title: const Text(
           "المعرض والأرشيف السمعي البصري",
-          style: TextStyle(color: Color(0xFFF3E5AB), fontSize: 20),
+          style: TextStyle(color: Color(0xFFF3E5AB), fontSize: 20, fontWeight: FontWeight.bold),
         ),
         iconTheme: const IconThemeData(color: Color(0xFFD4AF37)),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // قسم المشاعر المسرحية
+            // العنوان التوضيحي
             const Text(
-              "أولاً: المشاعر والأداء المسرحي",
+              "أرشيف التوثيق البصري والمشاعري المسرحي",
+              style: TextStyle(
+                color: Color(0xFFD4AF37),
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // 1. قسم المشاعر المسرحية العميق
+            const Text(
+              "أولاً: أرشيف المشاعر والأداء المسرحي",
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFFD4AF37),
+                color: Color(0xFFF3E5AB),
               ),
             ),
             const SizedBox(height: 12),
             SizedBox(
-              height: 220,
+              height: 230,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
-                  _buildArtCard("أداء حزين", "إضاءة زرقاء خافتة ودمعة مسرحية", Icons.water_drop),
-                  _buildArtCard("أداء سعيد", "إضاءة ذهبية وابتسامة حماسية", Icons.sentiment_very_satisfied),
-                  _buildArtCard("أداء عصبي", "إضاءة حمراء وقبضة مشدودة", Icons.flash_on),
-                  _buildArtCard("أداء منكسر", "إنارة باهتة على حافة المسرح", Icons.nightlight_round),
+                  _buildDetailedArtCard(
+                    "الحزن والنجوى",
+                    "إضاءة زرقاء خافتة مع نغمات الناي والعود الحزينة.",
+                    Icons.water_drop,
+                    "تعبير عن مأساة الشخصية وعمقها الداخلي."
+                  ),
+                  _buildDetailedArtCard(
+                    "السعادة والنشوة",
+                    "إضاءة ذهبية ساطعة وحركة جسدية حماسية منفتحة.",
+                    Icons.sentiment_very_satisfied,
+                    "انعكاس لحظات التحرر والانتصار المؤقت."
+                  ),
+                  _buildDetailedArtCard(
+                    "العصبية والصراع",
+                    "إضاءة حمراء حادة وقبضة يد مشدودة توحي بالانفجار.",
+                    Icons.flash_on,
+                    "ذروة التوتر الدرامي واصطدام الإرادات."
+                  ),
+                  _buildDetailedArtCard(
+                    "الانكسار والتلاشي",
+                    "إنارة باهتة على حافة المسرح وظل طويل ومنحني.",
+                    Icons.nightlight_round,
+                    "سقوط الدراما الداخلية وانكسار البطل."
+                  ),
                 ],
               ),
             ),
             const SizedBox(height: 30),
 
-            // قسم كواليس الديكور والإضاءة
+            // 2. قسم كواليس الديكور والتقنيات
             const Text(
-              "ثانياً: كواليس الديكور والإضاءة",
+              "ثانياً: كواليس الديكور والكتل الهندسية",
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFFD4AF37),
+                color: Color(0xFFF3E5AB),
               ),
             ),
             const SizedBox(height: 12),
@@ -60,12 +92,12 @@ class GalleryScreen extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
-              childAspectRatio: 1.3,
+              childAspectRatio: 1.25,
               children: [
-                _buildGridItem("ديكورات بابلية", Icons.account_balance),
-                _buildGridItem("إضاءة Spotlights", Icons.lightbulb),
-                _buildGridItem("تخطيط هندسي (Blueprint)", Icons.architecture),
-                _buildGridItem("مشاهد مرئية وفيديوهات", Icons.video_library),
+                _buildGridItem("ديكورات بابلية وتاريخية", "توظيف العمارة الرمزية", Icons.account_balance),
+                _buildGridItem("توزيع إضاءة Spotlights", "هندسة الظل والضوء والعمق", Icons.lightbulb),
+                _buildGridItem("المخططات الهندسية (Blueprints)", "تخطيط الفضاء المسرحي بدقة", Icons.architecture),
+                _buildGridItem("الأرشيف السمعي والمرئي", "مقاطع فيديو وتجارب إخراجية", Icons.video_library),
               ],
             ),
           ],
@@ -74,38 +106,47 @@ class GalleryScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildArtCard(String title, String subtitle, IconData icon) {
+  Widget _buildDetailedArtCard(String title, String desc, IconData icon, String footer) {
     return Container(
-      width: 160,
-      margin: const EdgeInsets.only(right: 12),
-      padding: const EdgeInsets.all(12),
+      width: 190,
+      margin: const EdgeInsets.only(right: 14),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: const Color(0xFF2C0B08),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: const Color(0xFFD4AF37).withOpacity(0.4)),
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 48, color: const Color(0xFFD4AF37)),
-          const SizedBox(height: 15),
-          Text(
-            title,
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
-            textAlign: TextAlign.center,
+          Row(
+            children: [
+              Icon(icon, size: 28, color: const Color(0xFFD4AF37)),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  title,
+                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
           Text(
-            subtitle,
-            style: const TextStyle(color: Colors.white60, fontSize: 12),
-            textAlign: TextAlign.center,
+            desc,
+            style: const TextStyle(color: Colors.white70, fontSize: 12),
+          ),
+          const Spacer(),
+          Text(
+            footer,
+            style: const TextStyle(color: Color(0xFFF3E5AB), fontSize: 11, fontStyle: FontStyle.italic),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildGridItem(String title, IconData icon) {
+  Widget _buildGridItem(String title, String subtitle, IconData icon) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -116,11 +157,17 @@ class GalleryScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 36, color: const Color(0xFFF3E5AB)),
-          const SizedBox(height: 10),
+          Icon(icon, size: 32, color: const Color(0xFFF3E5AB)),
+          const SizedBox(height: 8),
           Text(
             title,
-            style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+            style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 4),
+          Text(
+            subtitle,
+            style: const TextStyle(color: Colors.white60, fontSize: 11),
             textAlign: TextAlign.center,
           ),
         ],
