@@ -41,34 +41,31 @@ class GalleryScreen extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             
+            // بطاقات المشاعر الأفقية مع محتوى غني وواضح
             SizedBox(
-              height: 240,
+              height: 220,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
-                  _buildDetailedArtCard(
+                  _buildRichCard(
                     "الحزن والنجوى",
-                    "إضاءة زرقاء خافتة مع نغمات الناي والعود الحزينة.",
                     Icons.water_drop,
-                    "تعبير عن مأساة الشخصية وعمقها الداخلي."
+                    "• الإضاءة: زرقاء خافتة.\n• الصوت: نغمات الناي والعود الحزينة.\n• التعبير: تعبير عن مأساة الشخصية وعمقها الداخلي."
                   ),
-                  _buildDetailedArtCard(
+                  _buildRichCard(
                     "السعادة والنشوة",
-                    "إضاءة ذهبية ساطعة وحركة جسدية حماسية منفتحة.",
                     Icons.sentiment_very_satisfied,
-                    "انعكاس لحظات التحرر والانتصار المؤقت."
+                    "• الإضاءة: ذهبية ساطعة.\n• الحركة: حركة جسدية حماسية منفتحة.\n• التعبير: انعكاس لحظات التحرر والانتصار."
                   ),
-                  _buildDetailedArtCard(
+                  _buildRichCard(
                     "العصبية والصراع",
-                    "إضاءة حمراء حادة وقبضة يد مشدودة توحي بالانفجار.",
                     Icons.flash_on,
-                    "ذروة التوتر الدرامي واصطدام الإرادات."
+                    "• الإضاءة: حمراء حادة.\n• الحركة: قبضة يد مشدودة.\n• التعبير: ذروة التوتر الدرامي واصطدام الإرادات."
                   ),
-                  _buildDetailedArtCard(
+                  _buildRichCard(
                     "الانكسار والتلاشي",
-                    "إنارة باهتة على حافة المسرح وظل طويل ومنحني.",
                     Icons.nightlight_round,
-                    "سقوط الدراما الداخلية وانكسار البطل."
+                    "• الإضاءة: إنارة باهتة على الحافة.\n• الشكل: ظل طويل ومنحني.\n• التعبير: سقوط الدراما الداخلية للبطل."
                   ),
                 ],
               ),
@@ -85,18 +82,35 @@ class GalleryScreen extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             
+            // شبكة الكواليس بمحتوى تفصيلي كامل
             GridView.count(
               crossAxisCount: 2,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
-              childAspectRatio: 1.15,
+              childAspectRatio: 0.95,
               children: [
-                _buildGridItem("ديكورات بابلية وتاريخية", "توظيف العمارة الرمزية", Icons.account_balance),
-                _buildGridItem("توزيع إضاءة Spotlights", "هندسة الظل والضوء والعمق", Icons.lightbulb),
-                _buildGridItem("المخططات الهندسية (Blueprints)", "تخطيط الفضاء المسرحي بدقة", Icons.architecture),
-                _buildGridItem("الأرشيف السمعي والمرئي", "مقاطع فيديو وتجارب إخراجية", Icons.video_library),
+                _buildGridCard(
+                  "ديكورات بابلية",
+                  Icons.account_balance,
+                  "توظيف العمارة الرمزية والتاريخية لخلق عمق بصري درامي مستوحى من حضارة بابل."
+                ),
+                _buildGridCard(
+                  "توزيع Spotlights",
+                  Icons.lightbulb,
+                  "هندسة الظل والضوء لتوجيه عين المتفرج نحو بؤرة الصراع الأساسية على الخشبة."
+                ),
+                _buildGridCard(
+                  "المخططات الهندسية",
+                  Icons.architecture,
+                  "تخطيط الفضاء المسرحي (Blueprints) بدقة لتوزيع الممثلين والكتل بكفاءة."
+                ),
+                _buildGridCard(
+                  "الأرشيف المرئي",
+                  Icons.video_library,
+                  "توثيق مقاطع الفيديو، التدريبات الحية، والتجارب الإخراجية والأدائية السابقة."
+                ),
               ],
             ),
           ],
@@ -105,76 +119,74 @@ class GalleryScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailedArtCard(String title, String desc, IconData icon, String footer) {
+  Widget _buildRichCard(String title, IconData icon, String content) {
     return Container(
-      width: 200,
+      width: 220,
       margin: const EdgeInsets.only(right: 14),
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: const Color(0xFF2C0B08),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFD4AF37).withOpacity(0.5)),
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(icon, size: 22, color: const Color(0xFFD4AF37)),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: const TextStyle(color: Color(0xFFF3E5AB), fontWeight: FontWeight.bold, fontSize: 13),
+                    textDirection: TextDirection.rtl,
+                  ),
+                ),
+              ],
+            ),
+            const Divider(color: Color(0xFFD4AF37), height: 16),
+            Text(
+              content,
+              style: const TextStyle(color: Colors.white70, fontSize: 11, height: 1.4),
+              textDirection: TextDirection.rtl,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGridCard(String title, IconData icon, String description) {
+    return Container(
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: const Color(0xFF2C0B08),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: const Color(0xFFD4AF37).withOpacity(0.4)),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(icon, size: 24, color: const Color(0xFFD4AF37)),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  title,
-                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
-                  textDirection: TextDirection.rtl,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Text(
-            desc,
-            style: const TextStyle(color: Colors.white70, fontSize: 12),
-            textDirection: TextDirection.rtl,
-          ),
-          const Spacer(),
-          Text(
-            footer,
-            style: const TextStyle(color: Color(0xFFF3E5AB), fontSize: 11, fontStyle: FontStyle.italic),
-            textDirection: TextDirection.rtl,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildGridItem(String title, String subtitle, IconData icon) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: const Color(0xFF2C0B08),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFD4AF37).withOpacity(0.3)),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, size: 28, color: const Color(0xFFF3E5AB)),
-          const SizedBox(height: 6),
-          Text(
-            title,
-            style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
-            textDirection: TextDirection.rtl,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            subtitle,
-            style: const TextStyle(color: Colors.white60, fontSize: 10),
-            textAlign: TextAlign.center,
-            textDirection: TextDirection.rtl,
-          ),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 26, color: const Color(0xFFF3E5AB)),
+            const SizedBox(height: 8),
+            Text(
+              title,
+              style: const TextStyle(color: Color(0xFFF3E5AB), fontSize: 13, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+              textDirection: TextDirection.rtl,
+            ),
+            const SizedBox(height: 6),
+            Text(
+              description,
+              style: const TextStyle(color: Colors.white70, fontSize: 11, height: 1.3),
+              textAlign: TextAlign.center,
+              textDirection: TextDirection.rtl,
+            ),
+          ],
+        ),
       ),
     );
   }
