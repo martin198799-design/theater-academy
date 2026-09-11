@@ -6,6 +6,7 @@ import 'lighting_screen.dart';
 import 'scenography_screen.dart';
 import 'decor_screen.dart';
 import 'costumes_screen.dart';
+import 'gallery_screen.dart'; // تم إضافة ملف القسم الثامن بأمان
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -36,129 +37,89 @@ class HomeScreen extends StatelessWidget {
       {
         "id": "scenography",
         "title": "5. السينوغرافيا",
-        "desc": "فلسفة الفضاء المعماري، دراماتورجيا الأزياء، والتشكيل البصري"
+        "desc": "فضاء العرض المسرحي وتكوين العناصر البصرية"
       },
       {
         "id": "decor",
-        "title": "6. الديكور",
-        "desc": "هندسة الكتل، المنصات، الأساليب الواقعية والتعبيرية، وخامات الصنع"
+        "title": "6. الديكور والكتل",
+        "desc": "تصميم الكتل الفراغية وتوظيف الديكور درامياً"
       },
       {
         "id": "costumes",
-        "title": "7. قسم الأزياء",
-        "desc": "فلسفة الزي، السرد التاريخي، وآلية الاختيار الإخراجي"
+        "title": "7. الأزياء والماكياج",
+        "desc": "دلالات الأزياء وتشكيل الماكياج النفسي للشخصيات"
       },
+      {
+        "id": "gallery",
+        "title": "8. المعرض والأرشيف السمعي البصري",
+        "desc": "المشاعر المسرحية، كواليس الديكور، الإضاءة، والفيديوهات"
+      }, // القسم الثامن الجديد المكمل
     ];
 
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text("خشبة المسرح"),
-          backgroundColor: Colors.black87,
+    return Scaffold(
+      backgroundColor: const Color(0xFF1A0505),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF4A120E),
+        title: const Text(
+          "خشبة المسرح",
+          style: TextStyle(color: Color(0xFFF3E5AB), fontWeight: FontWeight.bold),
         ),
-        backgroundColor: const Color(0xFF121212),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Center(
-                child: Icon(
-                  Icons.theater_comedy,
-                  size: 60,
-                  color: Colors.amber,
-                ),
-              ),
-              const SizedBox(height: 12),
-              const Center(
-                child: Text(
-                  "خشبة المسرح",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                "الأقسام الأكاديمية:",
-                style: TextStyle(
-                  fontSize: 16,
+        centerTitle: true,
+      ),
+      body: ListView.builder(
+        padding: const EdgeInsets.all(16.0),
+        itemCount: theatreSections.length,
+        itemBuilder: (context, index) {
+          final section = theatreSections[index];
+          return Container(
+            margin: const EdgeInsets.only(bottom: 14),
+            decoration: BoxDecoration(
+              color: const Color(0xFF2C0B08),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: const Color(0xFFD4AF37).withOpacity(0.4)),
+            ),
+            child: ListTile(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              title: Text(
+                section["title"]!,
+                style: const TextStyle(
+                  color: Color(0xFFF3E5AB),
                   fontWeight: FontWeight.bold,
-                  color: Colors.amberAccent,
+                  fontSize: 16,
                 ),
               ),
-              const SizedBox(height: 10),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: theatreSections.length,
-                  itemBuilder: (context, index) {
-                    final section = theatreSections[index];
-                    return Card(
-                      color: const Color(0xFF1E1E1E),
-                      margin: const EdgeInsets.only(bottom: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        side: BorderSide(
-                          color: Colors.amber.withOpacity(0.3),
-                        ),
-                      ),
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8),
-                        title: Text(
-                          section["title"]!,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        subtitle: Padding(
-                          padding: const EdgeInsets.only(top: 4.0),
-                          child: Text(
-                            section["desc"]!,
-                            style: const TextStyle(
-                              color: Colors.white60,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ),
-                        trailing: const Icon(
-                          Icons.arrow_forward_ios,
-                          color: Colors.amber,
-                          size: 16,
-                        ),
-                        onTap: () {
-                          final String sectionId = section["id"]!;
-
-                          if (sectionId == "texts") {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const TextsLibraryScreen()));
-                          } else if (sectionId == "directing") {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const DirectingStudiesScreen()));
-                          } else if (sectionId == "acting") {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const ActingScreen()));
-                          } else if (sectionId == "lighting") {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const LightingScreen()));
-                          } else if (sectionId == "scenography") {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const ScenographyScreen()));
-                          } else if (sectionId == "decor") {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const DecorScreen()));
-                          } else if (sectionId == "costumes") {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const CostumesScreen()));
-                          }
-                        },
-                      ),
-                    );
-                  },
+              subtitle: Padding(
+                padding: const EdgeInsets.only(top: 6.0),
+                child: Text(
+                  section["desc"]!,
+                  style: const TextStyle(color: Colors.white70, fontSize: 13),
                 ),
               ),
-            ],
-          ),
-        ),
+              trailing: const Icon(Icons.arrow_forward_ios, color: Color(0xFFD4AF37), size: 18),
+              onTap: () {
+                // التوجيه الآمن لكل قسم حسب معرفه (id)
+                if (section["id"] == "texts") {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const TextsLibraryScreen()));
+                } else if (section["id"] == "directing") {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const DirectingScreen()));
+                } else if (section["id"] == "acting") {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const ActingScreen()));
+                } else if (section["id"] == "lighting") {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const LightingScreen()));
+                } else if (section["id"] == "scenography") {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const ScenographyScreen()));
+                } else if (section["id"] == "decor") {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const DecorScreen()));
+                } else if (section["id"] == "costumes") {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const CostumesScreen()));
+                } else if (section["id"] == "gallery") {
+                  // فتح القسم الثامن الجديد بكل سلاسة وأمان
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const GalleryScreen()));
+                }
+              },
+            ),
+          );
+        },
       ),
     );
   }
