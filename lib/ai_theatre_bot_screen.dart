@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'math.dart' as math;
 
 class AiTheatreBotScreen extends StatefulWidget {
   const AiTheatreBotScreen({Key? key}) : super(key: key);
@@ -29,7 +28,6 @@ class _AiTheatreBotScreenState extends State<AiTheatreBotScreen> {
     'توليد أفكار مسرحية'
   ];
 
-  // دالة متقدمة لتوليد مشاهد مسرحية وأفكار درامية تفصيلية
   String _generateAdvancedResponse(String section, String query) {
     if (section == 'توليد أفكار مسرحية' || query.contains('مشهد') || query.contains('حوار') || query.contains('اكتب')) {
       return '''مقترح مشهد مسرحي (مستوحى من طلبك):
@@ -60,7 +58,7 @@ class _AiTheatreBotScreenState extends State<AiTheatreBotScreen> {
     } else if (section == 'مساعد الإضاءة') {
       return 'رؤية سينوغرافية وإضاءة لـ ($query):\n- تدرج الألوان من العنبر الدافئ إلى الأزرق الفولاذي عند انقلاب الحدث.\n- إضاءة خلفية (Backlight) لعزل الشخصية عن الديكور وتأكيد عزلتها الدرامية.';
     } else {
-      return 'بناءً على طرحك في قسم ($section) حول ($query):\nنقترح معالجة درامية ترتكز على إيقاع الحركة الم,سرحية وتوظيف الفضاء الفارغ لخلق دلالات بصرية عميقة.';
+      return 'بناءً على طرحك في قسم ($section) حول ($query):\nنقترح معالجة درامية ترتكز على إيقاع الحركة المسرحية وتوظيف الفضاء الفارغ لخلق دلالات بصرية عميقة.';
     }
   }
 
