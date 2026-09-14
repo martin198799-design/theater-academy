@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'math.dart' as math;
 
 class AiTheatreBotScreen extends StatefulWidget {
   const AiTheatreBotScreen({Key? key}) : super(key: key);
@@ -8,14 +9,14 @@ class AiTheatreBotScreen extends StatefulWidget {
 }
 
 class _AiTheatreBotScreenState extends State<AiTheatreBotScreen> {
-  String _selectedSection = 'محادثة';
+  String _selectedSection = 'توليد أفكار مسرحية';
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   
   final List<Map<String, String>> _messages = [
     {
       'sender': 'bot',
-      'text': 'أهلاً بك في مساعد المسرح الذكي 🎭. كيف يمكنني مساعدتك في عملك الفني اليوم؟'
+      'text': 'أهلاً بك في مساعد المسرح الذكي 🎭. جاهز الآن لتوليد الأفكار الدرامية وكتابة المشاهد الحوارية.'
     }
   ];
 
@@ -28,20 +29,38 @@ class _AiTheatreBotScreenState extends State<AiTheatreBotScreen> {
     'توليد أفكار مسرحية'
   ];
 
-  // دالة لتوليد رد ذكي بناءً على القسم والمدخلات
-  String _generateBotResponse(String section, String userQuery) {
-    if (section == 'تحليل نص مسرحي') {
-      return 'تحليل نص "$userQuery":\n1. البناء الدرامي: يتميز بتصاعد الصراع النفسي والدرامي.\n2. الشخصيات: عميقة الأبعاد وتحمل دلالات رمزية وفلسفية.\n3. الفكرة العامة: استكشاف أعماق النفس البشرية وصراعها مع القدر أو المجتمع.';
+  // دالة متقدمة لتوليد مشاهد مسرحية وأفكار درامية تفصيلية
+  String _generateAdvancedResponse(String section, String query) {
+    if (section == 'توليد أفكار مسرحية' || query.contains('مشهد') || query.contains('حوار') || query.contains('اكتب')) {
+      return '''مقترح مشهد مسرحي (مستوحى من طلبك):
+      
+العنوان: صراع الذاكرة والظل
+الشخصيات:
+- (أ): شخصية تبحث عن هويتها وسط الفراغ.
+- (ب): صوت داخلي أو مراقب يثير الأسئلة.
+
+(يبدأ المشهد بإضاءة خافتة تسلط على كرسي خشبي وسط الخشبة)
+
+(أ) (بصوت متعب وهو ينظر إلى كف يديه):
+هل عشت حقاً هنا، أم أنني كنت مجرد متفرج في صف الأمام؟
+
+(ب) (يخرج صوته من مكبرات جانبية ببطء):
+الخشبة لا تعترف بمن ولدوا سراً.. الذاكرة تبدأ حين ينطفئ آخر صف من الجمهور.
+
+(أ) (ينهض فجأة):
+إذن فليضيء العرض، ولتسقط الأقنعة!
+      
+---
+مقترح فكرة درامية إضافية:
+- فكرة عرض تجريبي يعتمد على تقزيم الزمن، حيث يعيش البطل صراع حياته كاملاً في دقات ساعة جدارية واحدة تنهار تدريجياً.''';
+    } else if (section == 'تحليل نص مسرحي') {
+      return 'تحليل عميق للنص ($query):\n- البناء المعماري للحدث يعتمد على الكسر المتتالي للزمن الدرامي.\n- الصراع الرئيسي: خارجي متمثل في قسوة السلطة، وداخلي متمثل في الوخز الأخلاقي للشخصية.';
     } else if (section == 'مساعد الممثل') {
-      return 'نصائح أدائية لطلبك ($userQuery):\n- التركيز على الذاكرة الانفعالية واستدعاء الشعور الداخلي.\n- الاهتمام بلغة الجسد والإيقاع الصوتي لتوصيل الدافع الخفي للشخصية.';
-    } else if (section == 'مساعد المخرج') {
-      return 'رؤية إخراجية مقترحة لـ ($userQuery):\n- التكوين البشري على خشبة المسرح يجب أن يعكس صراع السلطة أو العزلة.\n- توظيف الإيقاع البصري والسمعي لخدمة ذروة المشهد (Climax).';
+      return 'توجيهات أداء شخصية ($query):\n- في لحظة ذروة الانفعال، اعتمد على الصمت الناطق قبل إطلاق الجملة الحوارية.\n- استخدم إيقاع التنفس السريع لإيصال حالة التوتر للمتفرج دون صراخ مبالغ فيه.';
     } else if (section == 'مساعد الإضاءة') {
-      return 'توزيع الإضاءة المقترح لـ ($userQuery):\n- استخدام الإضاءة المركزية (Spotlight) لتسليط الضوء على الصراع الداخلي.\n- درجات الألوان الباردة أو الدافئة تعتمد على الحالة النفسية للمشهد.';
-    } else if (section == 'توليد أفكار مسرحية') {
-      return 'مقترح درامي جديد مستوحى من طلبك:\n- فكرة عرض تجريبي قصير يعتمد على الفضاء الفارغ (المسرح الفقير).\n- الصراع يدور حول مواجهة الإنسان لذكرياته وسط ديكور تجريدي رمزي.';
+      return 'رؤية سينوغرافية وإضاءة لـ ($query):\n- تدرج الألوان من العنبر الدافئ إلى الأزرق الفولاذي عند انقلاب الحدث.\n- إضاءة خلفية (Backlight) لعزل الشخصية عن الديكور وتأكيد عزلتها الدرامية.';
     } else {
-      return 'أنا هنا لمساعدتك في كل ما يتعلق بالمسرح وعناصره الفنية. تفضل بطرح المزيد من التفاصيل حول "$userQuery".';
+      return 'بناءً على طرحك في قسم ($section) حول ($query):\nنقترح معالجة درامية ترتكز على إيقاع الحركة الم,سرحية وتوظيف الفضاء الفارغ لخلق دلالات بصرية عميقة.';
     }
   }
 
@@ -57,9 +76,8 @@ class _AiTheatreBotScreenState extends State<AiTheatreBotScreen> {
 
     _scrollToBottom();
 
-    // محاكاة وقت التفكير ثم إرسال الرد الحقيقي
-    Future.delayed(const Duration(milliseconds: 600), () {
-      final botReply = _generateBotResponse(_selectedSection, userMessage);
+    Future.delayed(const Duration(milliseconds: 700), () {
+      final botReply = _generateAdvancedResponse(_selectedSection, userMessage);
       setState(() {
         _messages.add({'sender': 'bot', 'text': botReply});
       });
@@ -116,7 +134,7 @@ class _AiTheatreBotScreenState extends State<AiTheatreBotScreen> {
                         _selectedSection = section;
                         _messages.add({
                           'sender': 'bot',
-                          'text': 'تم الانتقال إلى قسم: $section. تفضل بطرح سؤالك أو نصك.'
+                          'text': 'تم الانتقال إلى قسم: $section. تفضل بطرح فكرتك أو طلبك الدرامي.'
                         });
                       });
                       _scrollToBottom();
@@ -146,11 +164,11 @@ class _AiTheatreBotScreenState extends State<AiTheatreBotScreen> {
                       border: Border.all(color: const Color(0xFFD4AF37).withOpacity(0.3)),
                     ),
                     constraints: BoxConstraints(
-                      maxWidth: MediaQuery.of(context).size.width * 0.8,
+                      maxWidth: MediaQuery.of(context).size.width * 0.85,
                     ),
                     child: Text(
                       msg['text'] ?? '',
-                      style: const TextStyle(color: Colors.white, fontSize: 15),
+                      style: const TextStyle(color: Colors.white, fontSize: 15, height: 1.4),
                       textDirection: TextDirection.rtl,
                     ),
                   ),
@@ -174,7 +192,7 @@ class _AiTheatreBotScreenState extends State<AiTheatreBotScreen> {
                     textDirection: TextDirection.rtl,
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
-                      hintText: 'اكتب سؤالك المسرحي هنا...',
+                      hintText: 'اكتب طلبك أو اطلب كتابة مشهد مسرحي...',
                       hintStyle: TextStyle(color: Colors.white54),
                       border: InputBorder.none,
                     ),
