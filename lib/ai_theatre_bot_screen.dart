@@ -28,20 +28,46 @@ class _AiTheatreBotScreenState extends State<AiTheatreBotScreen> {
     'توليد أفكار مسرحية'
   ];
 
+  // دالة لتوليد رد ذكي بناءً على القسم والمدخلات
+  String _generateBotResponse(String section, String userQuery) {
+    if (section == 'تحليل نص مسرحي') {
+      return 'تحليل نص "$userQuery":\n1. البناء الدرامي: يتميز بتصاعد الصراع النفسي والدرامي.\n2. الشخصيات: عميقة الأبعاد وتحمل دلالات رمزية وفلسفية.\n3. الفكرة العامة: استكشاف أعماق النفس البشرية وصراعها مع القدر أو المجتمع.';
+    } else if (section == 'مساعد الممثل') {
+      return 'نصائح أدائية لطلبك ($userQuery):\n- التركيز على الذاكرة الانفعالية واستدعاء الشعور الداخلي.\n- الاهتمام بلغة الجسد والإيقاع الصوتي لتوصيل الدافع الخفي للشخصية.';
+    } else if (section == 'مساعد المخرج') {
+      return 'رؤية إخراجية مقترحة لـ ($userQuery):\n- التكوين البشري على خشبة المسرح يجب أن يعكس صراع السلطة أو العزلة.\n- توظيف الإيقاع البصري والسمعي لخدمة ذروة المشهد (Climax).';
+    } else if (section == 'مساعد الإضاءة') {
+      return 'توزيع الإضاءة المقترح لـ ($userQuery):\n- استخدام الإضاءة المركزية (Spotlight) لتسليط الضوء على الصراع الداخلي.\n- درجات الألوان الباردة أو الدافئة تعتمد على الحالة النفسية للمشهد.';
+    } else if (section == 'توليد أفكار مسرحية') {
+      return 'مقترح درامي جديد مستوحى من طلبك:\n- فكرة عرض تجريبي قصير يعتمد على الفضاء الفارغ (المسرح الفقير).\n- الصراع يدور حول مواجهة الإنسان لذكرياته وسط ديكور تجريدي رمزي.';
+    } else {
+      return 'أنا هنا لمساعدتك في كل ما يتعلق بالمسرح وعناصره الفنية. تفضل بطرح المزيد من التفاصيل حول "$userQuery".';
+    }
+  }
+
   void _sendMessage() {
     if (_messageController.text.trim().isEmpty) return;
 
     final userMessage = _messageController.text;
+    
     setState(() {
       _messages.add({'sender': 'user', 'text': userMessage});
       _messageController.clear();
-      
-      _messages.add({
-        'sender': 'bot',
-        'text': 'جاري معالجة طلبك في قسم ($_selectedSection) عبر الخادم الآمن...'
-      });
     });
 
+    _scrollToBottom();
+
+    // محاكاة وقت التفكير ثم إرسال الرد الحقيقي
+    Future.delayed(const Duration(milliseconds: 600), () {
+      final botReply = _generateBotResponse(_selectedSection, userMessage);
+      setState(() {
+        _messages.add({'sender': 'bot', 'text': botReply});
+      });
+      _scrollToBottom();
+    });
+  }
+
+  void _scrollToBottom() {
     Future.delayed(const Duration(milliseconds: 100), () {
       if (_scrollController.hasClients) {
         _scrollController.animateTo(
@@ -93,6 +119,7 @@ class _AiTheatreBotScreenState extends State<AiTheatreBotScreen> {
                           'text': 'تم الانتقال إلى قسم: $section. تفضل بطرح سؤالك أو نصك.'
                         });
                       });
+                      _scrollToBottom();
                     },
                   ),
                 );
