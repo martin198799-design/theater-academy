@@ -1,203 +1,26 @@
-import 'package:flutter/material.dart';
-
-class AiTheatreBotScreen extends StatefulWidget {
-  const AiTheatreBotScreen({Key? key}) : super(key: key);
-
-  @override
-  State<AiTheatreBotScreen> createState() => _AiTheatreBotScreenState();
-}
-
-class _AiTheatreBotScreenState extends State<AiTheatreBotScreen> {
-  String _selectedSection = 'توليد أفكار مسرحية';
-  final TextEditingController _messageController = TextEditingController();
-  final ScrollController _scrollController = ScrollController();
-  
-  final List<Map<String, String>> _messages = [
-    {
-      'sender': 'bot',
-      'text': 'أهلاً بك في مساعد المسرح الذكي 🎭. أنا جاهز لتوليد أفكار ومشاهد فريدة بناءً على طلبك الآن.'
-    }
-  ];
-
-  final List<String> _sections = [
-    'محادثة',
-    'تحليل نص مسرحي',
-    'مساعد الممثل',
-    'مساعد المخرج',
-    'مساعد الإضاءة',
-    'توليد أفكار مسرحية'
-  ];
-
-  // دالة متطورة لتوليد ردود متنوعة ومختلفة حسب السؤال والكلمات المفتاحية
   String _generateDynamicResponse(String section, String query) {
-    if (query.contains('مشهد') || query.contains('حوار') || section == 'توليد أفكار مسرحية') {
-      return '''مقترح درامي متجدد بناءً على طلبك ("$query"):
+    // التحقق الشامل إذا كان السؤال يطلب فكرة أو مشهداً في أي قسم كنت
+    if (query.contains('مشهد') || query.contains('حوار') || query.contains('اكتب') || query.contains('فكر') || query.contains('قدرتك') || query.contains('أفكار')) {
+      return '''مفهوم إبداعي مقترح بناءً على طلبك ("$query"):
 
-العنوان المقترح: عتبات الطين والذاكرة
-النمط: مسرح تجريبي / عبثي
+العنوان: طقوس الغرفة المجاورة
+النوع: دراما تجريبية قصيرة
 
-(المشهد: خشبة مظلمة تماماً، يكسوها ضوء خافت أزرق يخرج من زاوية أفقية)
+(شخصية (أ) تتأمل جداراً فارغاً):
+"نحن لا نبني المسرح لكي نحاكي الواقع، بل لنختلق واقعاً أخراً أصدق من حكاياتنا المنسية."
 
-الشخصية (أ) تقف ناظرة إلى الجمهور بذهول:
-"هل تعلم ما معنى أن تحترق الكلمات في حلقك قبل أن تصل إلى الميكروفون؟ نحن لسنا سوى طيف يعيد تمثيل ما حدث قبل ألف عام."
-
-الشخصية (ب) (تدخل من العمق بخطى بطيئة وبصوت متهدج):
-"إذن فلنغير النهاية هذه المرة.. دَع الجمهور يختار من يموت أولاً."
+(شخصية (ب) ترد من خلف الكواليس بإيقاع صوتي متصاعد):
+"إذن ليكن الحوار القادم شجاراً بين ظل الإنسان وذاكرته!"
 
 ---
-رؤية إضافية: يمكن تحويل هذا المشهد إلى لوحة بصرية تعتمد على الإيقاع الصوتي البطيء.''';
-    } else if (section == 'تحليل نص مسرحي') {
-      return 'تحليل تفصيلي لـ ("$query"):\n- البناء الدرامي: يتصاعد تدريجياً عبر كسر التتابع الزمني التقليدي.\n- الصراع الجوهري: مواجهة بين الهوية الفردية وضغط الجماعة أو المؤسسة.\n- الدلالة الفنية: الاعتماد على الرمزية المفرطة لتعميق الإحساس بالعزلة.';
-    } else if (section == 'مساعد الممثل') {
-      return 'توجيهات إدائية خاصة بـ ("$query"):\n- تعامل مع الجملة الحوارية بوصفها طعنة لا مجرد كلام عابر.\n- استثمر لغة الجسد الساكنة (التوقفات الصامتة) لتوصيل العمق النفسي الداخلي.';
-    } else if (section == 'مساعد الإضاءة') {
-      return 'توزيع الإضاءة المقترح لـ ("$query"):\n- استخدام إضاءة السكاي لايت (Sky-Dome) لتعميق الفضاء المسرحي.\n- درجات ألوان متغيرة بين العتمة الكاملة والوهج الدافئ عند ذروة الانفعال.';
+فكرة درامية بديلة: نص قصير يعتمد على صراع صامت بين ممثل ومخرج يتبادلان الأدوار كلما سقطت ستارة المسرح.''';
+    } else if (section == 'تحليل نص مسرحي' || query.contains('تحليل')) {
+      return 'قراءة نقدية لـ ("$query"):\n- البناء المعماري: يعتمد على توتر تصاعدي متقطع.\n- الأبعاد النفسية: الصراع هنا يعكس أزمة الاغتراب الفردي وسط عالم متسارع.';
+    } else if (section == 'مساعد الممثل' || query.contains('ممثل')) {
+      return 'توجيه تمثيلي لـ ("$query"):\n- وظف لغة العين والالتفاتات السريعة لإظهار التوتر الخفي.\n- اجعل الجملة الحوارية تحمل طبقات شعورية مزدوجة بين ما تنطقه وما تضمره داخلك.';
+    } else if (section == 'مساعد الإضاءة' || query.contains('إضاءة')) {
+      return 'مُقترح سينوغرافيا الإضاءة لـ ("$query"):\n- استخدم بقعة إضاءة (Spotlight) حادة بلون بارد لتعميق الإحساس بالعزلة الدرامية.\n- تدرج التدريجي نحو الظلمة مع نهاية الجملة الحوارية لتأكيد لحظة التنوير أو الصدمة.';
     } else {
-      return 'بناءً على طرحك في قسم ($section) حول ("$query"):\nنقترح دراسة الإيقاع العام للعرض وتوظيف الكتل الديكورية المتقشفة لإبراز القيمة التعبيرية للنص.';
+      return 'رؤية إخراجية مقترحة حول ($query):\n- نقترح كسر الجدار الرابع واستثمار الفضاء الفارغ للخشبة لتكريس دلالات بصرية ترتبط بروح النص وعمقه الفلسفي.';
     }
   }
-
-  void _sendMessage() {
-    if (_messageController.text.trim().isEmpty) return;
-
-    final userMessage = _messageController.text;
-    
-    setState(() {
-      _messages.add({'sender': 'user', 'text': userMessage});
-      _messageController.clear();
-    });
-
-    _scrollToBottom();
-
-    // محاكاة معالجة ذكية تولد رداً مختلفاً
-    Future.delayed(const Duration(milliseconds: 600), () {
-      final botReply = _generateDynamicResponse(_selectedSection, userMessage);
-      setState(() {
-        _messages.add({'sender': 'bot', 'text': botReply});
-      });
-      _scrollToBottom();
-    });
-  }
-
-  void _scrollToBottom() {
-    Future.delayed(const Duration(milliseconds: 100), () {
-      if (_scrollController.hasClients) {
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-        );
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF1A0505),
-      appBar: AppBar(
-        title: const Text('🎭 مساعد المسرح الذكي', style: TextStyle(color: Color(0xFFF3E5AB))),
-        centerTitle: true,
-        backgroundColor: const Color(0xFF4A120E),
-        iconTheme: const IconThemeData(color: Color(0xFFF3E5AB)),
-      ),
-      body: Column(
-        children: [
-          Container(
-            height: 60,
-            color: const Color(0xFF2C0B08),
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: _sections.length,
-              itemBuilder: (context, index) {
-                final section = _sections[index];
-                final isSelected = _selectedSection == section;
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 10.0),
-                  child: ChoiceChip(
-                    label: Text(section),
-                    selected: isSelected,
-                    selectedColor: const Color(0xFFD4AF37),
-                    backgroundColor: const Color(0xFF1A0505),
-                    labelStyle: TextStyle(
-                      color: isSelected ? const Color(0xFF1A0505) : const Color(0xFFF3E5AB),
-                      fontWeight: FontWeight.bold,
-                    ),
-                    onSelected: (selected) {
-                      setState(() {
-                        _selectedSection = section;
-                        _messages.add({
-                          'sender': 'bot',
-                          'text': 'تم الانتقال إلى قسم: $section. تفضل بطرح فكرتك أو طلبك الجديد.'
-                        });
-                      });
-                      _scrollToBottom();
-                    },
-                  ),
-                );
-              },
-            ),
-          ),
-          
-          Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              padding: const EdgeInsets.all(16.0),
-              itemCount: _messages.length,
-              itemBuilder: (context, index) {
-                final msg = _messages[index];
-                final isUser = msg['sender'] == 'user';
-                return Align(
-                  alignment: isUser ? Alignment.centerLeft : Alignment.centerRight,
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(vertical: 6.0),
-                    padding: const EdgeInsets.all(12.0),
-                    decoration: BoxDecoration(
-                      color: isUser ? const Color(0xFF4A120E) : const Color(0xFF2C0B08),
-                      borderRadius: BorderRadius.circular(12.0),
-                      border: Border.all(color: const Color(0xFFD4AF37).withOpacity(0.3)),
-                    ),
-                    constraints: BoxConstraints(
-                      maxWidth: MediaQuery.of(context).size.width * 0.85,
-                    ),
-                    child: Text(
-                      msg['text'] ?? '',
-                      style: const TextStyle(color: Colors.white, fontSize: 15, height: 1.4),
-                      textDirection: TextDirection.rtl,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-
-          Container(
-            padding: const EdgeInsets.all(8.0),
-            color: const Color(0xFF2C0B08),
-            child: Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.send, color: Color(0xFFD4AF37)),
-                  onPressed: _sendMessage,
-                ),
-                Expanded(
-                  child: TextField(
-                    controller: _messageController,
-                    textDirection: TextDirection.rtl,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: const InputDecoration(
-                      hintText: 'اكتب سؤالك أو اطلب مشهداً جديداً...',
-                      hintStyle: TextStyle(color: Colors.white54),
-                      border: InputBorder.none,
-                    ),
-                    onSubmitted: (_) => _sendMessage(),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
