@@ -10,11 +10,12 @@ class AiTheatreBotScreen extends StatefulWidget {
 class _AiTheatreBotScreenState extends State<AiTheatreBotScreen> {
   String _selectedSection = 'محادثة';
   final TextEditingController _messageController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
   
   final List<Map<String, String>> _messages = [
     {
       'sender': 'bot',
-      'text': 'أهلاً بك يا ابراهيم في مساعد المسرح الذكي 🎭. كيف يمكنني مساعدتك في عملك الفني اليوم؟'
+      'text': 'أهلاً بك في مساعد المسرح الذكي 🎭. كيف يمكنني مساعدتك في عملك الفني اليوم؟'
     }
   ];
 
@@ -40,22 +41,33 @@ class _AiTheatreBotScreenState extends State<AiTheatreBotScreen> {
         'text': 'جاري معالجة طلبك في قسم ($_selectedSection) عبر الخادم الآمن...'
       });
     });
+
+    Future.delayed(const Duration(milliseconds: 100), () {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF1A0505),
       appBar: AppBar(
-        title: const Text('🎭 مساعد المسرح الذكي'),
+        title: const Text('🎭 مساعد المسرح الذكي', style: TextStyle(color: Color(0xFFF3E5AB))),
         centerTitle: true,
-        backgroundColor: Colors.deepPurple[900],
-        foregroundColor: Colors.white,
+        backgroundColor: const Color(0xFF4A120E),
+        iconTheme: const IconThemeData(color: Color(0xFFF3E5AB)),
       ),
       body: Column(
         children: [
           Container(
             height: 60,
-            color: Colors.grey[900],
+            color: const Color(0xFF2C0B08),
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: _sections.length,
@@ -67,10 +79,10 @@ class _AiTheatreBotScreenState extends State<AiTheatreBotScreen> {
                   child: ChoiceChip(
                     label: Text(section),
                     selected: isSelected,
-                    selectedColor: Colors.deepPurple,
-                    backgroundColor: Colors.grey[800],
+                    selectedColor: const Color(0xFFD4AF37),
+                    backgroundColor: const Color(0xFF1A0505),
                     labelStyle: TextStyle(
-                      color: isSelected ? Colors.white : Colors.white70,
+                      color: isSelected ? const Color(0xFF1A0505) : const Color(0xFFF3E5AB),
                       fontWeight: FontWeight.bold,
                     ),
                     onSelected: (selected) {
@@ -89,45 +101,44 @@ class _AiTheatreBotScreenState extends State<AiTheatreBotScreen> {
           ),
           
           Expanded(
-            child: Container(
-              color: Colors.black54,
-              child: ListView.builder(
-                padding: const EdgeInsets.all(12.0),
-                itemCount: _messages.length,
-                itemBuilder: (context, index) {
-                  final msg = _messages[index];
-                  final isUser = msg['sender'] == 'user';
-                  return Align(
-                    alignment: isUser ? Alignment.centerLeft : Alignment.centerRight,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(vertical: 6.0),
-                      padding: const EdgeInsets.all(12.0),
-                      decoration: BoxDecoration(
-                        color: isUser ? Colors.deepPurple[700] : Colors.grey[800],
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      constraints: BoxConstraints(
-                        maxWidth: MediaQuery.of(context).size.width * 0.75,
-                      ),
-                      child: Text(
-                        msg['text'] ?? '',
-                        style: const TextStyle(color: Colors.white, fontSize: 16),
-                        textDirection: TextDirection.rtl,
-                      ),
+            child: ListView.builder(
+              controller: _scrollController,
+              padding: const EdgeInsets.all(16.0),
+              itemCount: _messages.length,
+              itemBuilder: (context, index) {
+                final msg = _messages[index];
+                final isUser = msg['sender'] == 'user';
+                return Align(
+                  alignment: isUser ? Alignment.centerLeft : Alignment.centerRight,
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 6.0),
+                    padding: const EdgeInsets.all(12.0),
+                    decoration: BoxDecoration(
+                      color: isUser ? const Color(0xFF4A120E) : const Color(0xFF2C0B08),
+                      borderRadius: BorderRadius.circular(12.0),
+                      border: Border.all(color: const Color(0xFFD4AF37).withOpacity(0.3)),
                     ),
-                  );
-                },
-              ),
+                    constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * 0.8,
+                    ),
+                    child: Text(
+                      msg['text'] ?? '',
+                      style: const TextStyle(color: Colors.white, fontSize: 15),
+                      textDirection: TextDirection.rtl,
+                    ),
+                  ),
+                );
+              },
             ),
           ),
 
           Container(
             padding: const EdgeInsets.all(8.0),
-            color: Colors.grey[900],
+            color: const Color(0xFF2C0B08),
             child: Row(
               children: [
                 IconButton(
-                  icon: const Icon(Icons.send, color: Colors.deepPurpleAccent),
+                  icon: const Icon(Icons.send, color: Color(0xFFD4AF37)),
                   onPressed: _sendMessage,
                 ),
                 Expanded(
