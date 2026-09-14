@@ -7,6 +7,7 @@ import 'scenography_screen.dart';
 import 'decor_screen.dart';
 import 'costumes_screen.dart';
 import 'makeup_screen.dart';
+import 'ai_theatre_bot_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -41,7 +42,7 @@ class HomeScreen extends StatelessWidget {
       },
       {
         "id": "decor",
-        "title": "6. الديكور", // تم ضبط العنوان بدقة
+        "title": "6. الديكور",
         "desc": "تصميم الكتل الفراغية وتوظيف الديكور في البناء الدرامي"
       },
       {
@@ -116,6 +117,21 @@ class HomeScreen extends StatelessWidget {
                 }
               },
             ),
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: const Color(0xFFD4AF37),
+        foregroundColor: const Color(0xFF1A0505),
+        icon: const Icon(Icons.smart_toy),
+        label: const Text(
+          "مساعد المسرح الذكي",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AiTheatreBotScreen()),
           );
         },
       ),
