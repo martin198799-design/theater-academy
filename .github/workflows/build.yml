@@ -10,8 +10,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          repository: ${{ github.repository }}
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -26,13 +24,13 @@ jobs:
           channel: 'stable'
 
       - name: Install Dependencies
-        run: cd theater-academy && flutter pub get
+        run: flutter pub get
 
       - name: Build Release AAB
-        run: cd theater-academy && flutter build appbundle --release
+        run: flutter build appbundle --release
 
       - name: Upload AAB Artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-release-bundle
-          path: theater-academy/build/app/outputs/bundle/release/app-release.aab
+          path: build/app/outputs/bundle/release/app-release.aab
