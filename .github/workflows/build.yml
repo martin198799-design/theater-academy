@@ -25,7 +25,7 @@ jobs:
 
       - name: Find Project Directory and Build
         run: |
-          # البحث عن المجلد الذي يحتوي على ملف pubspec.yaml
+          # البحث عن المجلد الذي يحتوي على pubspec.yaml
           PROJECT_DIR=$(find . -name "pubspec.yaml" -exec dirname {} \;)
           echo "Found project in: $PROJECT_DIR"
           cd "$PROJECT_DIR"
@@ -33,15 +33,14 @@ jobs:
           # تثبيت التبعيات
           flutter pub get
           
-          # تفعيل استخدام التضمين القديم وتجاوز الخطأ
+          # تفعيل تجاوز خطأ Android v1 embedding
           export FLUTTER_BUILD_ANDROID_V1_EMBEDDING=true
           
-          # بناء التطبيق مع تجاوز تحذيرات AndroidX إذا لزم الأمر
-          flutter build appbundle --release --no-pub
+          # بناء التطبيق
+          flutter build appbundle --release
 
       - name: Upload AAB Artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-release-bundle
-          # البحث عن الملف الناتج في المجلد الصحيح
           path: '**/build/app/outputs/bundle/release/app-release.aab'
