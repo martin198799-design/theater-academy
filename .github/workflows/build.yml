@@ -25,12 +25,14 @@ jobs:
 
       - name: Install Dependencies
         run: flutter pub get
+        working-directory: ./theater-academy
 
       - name: Build Release AAB
         run: flutter build appbundle --release
+        working-directory: ./theater-academy
 
       - name: Upload AAB Artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-release-bundle
-          path: build/app/outputs/bundle/release/app-release.aab
+          path: theater-academy/build/app/outputs/bundle/release/app-release.aab
