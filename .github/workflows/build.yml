@@ -23,15 +23,11 @@ jobs:
           flutter-version: '3.19.x'
           channel: 'stable'
 
-      - name: Update Android Gradle and Files
-        run: |
-          flutter create . --org com.ibrahim.theater --project-name academy --platforms=android
-
       - name: Install Dependencies
         run: flutter pub get
 
       - name: Build App Bundle
-        run: flutter build appbundle --release
+        run: flutter build appbundle --release --no-pub
 
       - name: Upload AAB Artifact
         uses: actions/upload-artifact@v4
