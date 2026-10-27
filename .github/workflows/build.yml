@@ -1,4 +1,4 @@
-name: Build Android Release APK
+name: Build Android Release AAB
 
 on:
   push:
@@ -22,11 +22,6 @@ jobs:
         with:
           flutter-version: '3.19.x'
           channel: 'stable'
-
-      - name: Recreate Android Directory Cleanly
-        run: |
-          rm -rf android
-          flutter create . --org com.ibrahim.theater --project-name academy --platforms=android
 
       - name: Install Dependencies
         run: flutter pub get
