@@ -1,4 +1,4 @@
-name: Build Android Release APK
+name: Build Android Release AAB
 
 on:
   push:
@@ -29,11 +29,21 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
-      - name: Build APK Release
-        run: flutter build apk --release --no-pub
+      - name: Generate Release Keystore and Properties
+        run: |
+          keytool -genkey -v -keystore android/app/upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload-alias -storepass password123 -keypass password123 -dname "CN=Android, O=Android, C=US"
+          printf "storePassword=password123\nkeyPassword=password123\nkeyAlias=upload-alias\nstoreFile=upload-keystore.jks\n" > android/key.properties
 
-      - name: Upload APK Artifact
+      - name: Configure Gradle Signing in build.gradle
+        run: |
+          # حقن إعدادات التوقيع مباشرة في ملف الإعدادات لضمان اعتمادها رسمياً
+          echo "android { signingConfigs { release { storeFile file('upload-keystore.jks'); storePassword 'password123'; keyAlias 'upload-alias'; keyPassword 'password123' } } buildTypes { release { signingConfig signingConfigs.release } } }" >> android/app/build.gradle
+
+      - name: Build App Bundle Release
+        run: flutter build appbundle --release --no-pub
+
+      - name: Upload AAB Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: app-release-bundle
+          path: build/app/outputs/bundle/release/app-release.aab
