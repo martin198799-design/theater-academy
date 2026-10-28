@@ -1,8 +1,8 @@
-name: theater_app
+Name: theater_app
 description: "تطبيق خشبة المسرح للفنون والنصوص والدراسات - تصميم وتطوير: إبراهيم سامي حسن"
 publish_to: 'none'
 
-version: 1.0.2+3
+version: 1.0.2+4
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
