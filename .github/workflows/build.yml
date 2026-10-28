@@ -29,17 +29,8 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
-      - name: Generate Keystore and Properties
+      - name: Build App Bundle Release
         run: |
-          mkdir -p android/app
-          keytool -genkey -v -keystore android/app/upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias ${{ secrets.KEY_ALIAS }} -storepass ${{ secrets.KEY_PASSWORD }} -keypass ${{ secrets.KEY_PASSWORD }} -dname "CN=Android, O=Android, C=US"
-          printf "storePassword=%s\nkeyPassword=%s\nkeyAlias=%s\nstoreFile=upload-keystore.jks\n" "${{ secrets.KEY_PASSWORD }}" "${{ secrets.KEY_PASSWORD }}" "${{ secrets.KEY_ALIAS }}" > android/key.properties
-
-      - name: Build App Bundle
-        run: flutter build appbundle --release --no-pub
-
-      - name: Upload AAB Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-release-bundle
-          path: build/app/outputs/bundle/release/app-release.aab
+          flutter build appbundle --release \
+            --android-signing-key-store-path=<مسار_المفتاح_إن وجد> \
+            --no-pub
