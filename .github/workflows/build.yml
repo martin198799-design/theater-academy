@@ -1,4 +1,4 @@
-name: Build Android Release AAB
+Name: Build Android Release AAB
 
 on:
   push:
@@ -32,6 +32,11 @@ jobs:
       - name: Update minSdk to 24
         run: |
           sed -i 's/minSdkVersion flutter.minSdkVersion/minSdkVersion 24/g' android/app/build.gradle || true
+
+      - name: Update targetSdk and compileSdk to 36
+        run: |
+          sed -i 's/compileSdkVersion.*/compileSdkVersion 36/g' android/app/build.gradle || true
+          sed -i 's/targetSdkVersion.*/targetSdkVersion 36/g' android/app/build.gradle || true
 
       - name: Generate Fixed Release Keystore
         run: |
