@@ -29,6 +29,10 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
+      - name: Update minSdk to 24
+        run: |
+          sed -i 's/minSdkVersion flutter.minSdkVersion/minSdkVersion 24/g' android/app/build.gradle || true
+
       - name: Generate Real Release Keystore and Properties
         run: |
           mkdir -p android/app
