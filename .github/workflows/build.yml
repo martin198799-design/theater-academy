@@ -26,24 +26,24 @@ jobs:
       - name: Upgrade Gradle Structure
         run: flutter create . --platforms=android --org com.ibrahim.theater --project-name academy
 
+      - name: Install Android SDK 36 Tools
+        run: |
+          echo "y" | sudo ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --install "platforms;android-36" "build-tools;36.0.0" || true
+
       - name: Install Dependencies
         run: flutter pub get
 
-      - name: Update SDK versions safely with Python
+      - name: Update minSdk and targetSdk safely with Python
         run: |
           python3 -c "
           path = 'android/app/build.gradle'
           with open(path, 'r') as f:
               content = f.read()
           content = content.replace('minSdkVersion flutter.minSdkVersion', 'minSdkVersion 24')
-          content = content.replace('compileSdkVersion flutter.compileSdkVersion', 'compileSdkVersion 36')
           content = content.replace('targetSdkVersion flutter.targetSdkVersion', 'targetSdkVersion 36')
-          content = content.replace('compileSdk flutter.compileSdkVersion', 'compileSdk 36')
           content = content.replace('targetSdk flutter.targetSdkVersion', 'targetSdk 36')
           import re
-          content = re.sub(r'compileSdkVersion\s+\d+', 'compileSdkVersion 36', content)
           content = re.sub(r'targetSdkVersion\s+\d+', 'targetSdkVersion 36', content)
-          content = re.sub(r'compileSdk\s+\d+', 'compileSdk 36', content)
           content = re.sub(r'targetSdk\s+\d+', 'targetSdk 36', content)
           with open(path, 'w') as f:
               f.write(content)
@@ -52,7 +52,6 @@ jobs:
       - name: Generate Fixed Release Keystore
         run: |
           mkdir -p android/app
-          # استخدام مفتاح ثابت ومحدد لضمان مطابقة البصمة
           keytool -genkey -v -keystore android/app/upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload-alias -storepass ibrahim123 -keypass ibrahim123 -dname "CN=Ibrahim, O=Theater, C=IQ"
           printf "storePassword=ibrahim123\nkeyPassword=ibrahim123\nkeyAlias=upload-alias\nstoreFile=upload-keystore.jks\n" > android/key.properties
 
