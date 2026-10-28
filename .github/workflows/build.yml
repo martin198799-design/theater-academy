@@ -33,9 +33,10 @@ jobs:
         run: |
           sed -i 's/minSdkVersion flutter.minSdkVersion/minSdkVersion 24/g' android/app/build.gradle || true
 
-      - name: Generate Real Release Keystore and Properties
+      - name: Generate Fixed Release Keystore
         run: |
           mkdir -p android/app
+          # استخدام مفتاح ثابت ومحدد تماماً لضمان مطابقة البصمة
           keytool -genkey -v -keystore android/app/upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload-alias -storepass ibrahim123 -keypass ibrahim123 -dname "CN=Ibrahim, O=Theater, C=IQ"
           printf "storePassword=ibrahim123\nkeyPassword=ibrahim123\nkeyAlias=upload-alias\nstoreFile=upload-keystore.jks\n" > android/key.properties
 
