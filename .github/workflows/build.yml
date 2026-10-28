@@ -23,11 +23,36 @@ jobs:
           flutter-version: '3.19.x'
           channel: 'stable'
 
-      - name: Upgrade Gradle Structure
-        run: flutter create . --platforms=android --org com.ibrahim.theater --project-name academy
-
       - name: Install Dependencies
         run: flutter pub get
+
+      - name: Generate Real Release Keystore and Properties
+        run: |
+          mkdir -p android/app
+          keytool -genkey -v -keystore android/app/upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload-alias -storepass ibrahim123 -keypass ibrahim123 -dname "CN=Ibrahim, O=Theater, C=IQ"
+          printf "storePassword=ibrahim123\nkeyPassword=ibrahim123\nkeyAlias=upload-alias\nstoreFile=upload-keystore.jks\n" > android/key.properties
+
+      - name: Inject Signing Config into Build Gradle
+        run: |
+          # حقن إعدادات التوقيع في ملف build.gradle لضمان قراءة المفتاح واعتماده رسمياً للإصدار
+          cat << 'EOF' >> android/app/build.gradle
+
+          android {
+              signingConfigs {
+                  release {
+                      storeFile file('upload-keystore.jks')
+                      storePassword 'ibrahim123'
+                      keyAlias 'upload-alias'
+                      keyPassword 'ibrahim123'
+                  }
+              }
+              buildTypes {
+                  release {
+                      signingConfig signingConfigs.release
+                  }
+              }
+          }
+          EOF
 
       - name: Build App Bundle Release
         run: flutter build appbundle --release --no-pub
