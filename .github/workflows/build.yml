@@ -1,4 +1,4 @@
-name: Build Android Release APK
+name: Build Android Release AAB
 
 on:
   push:
@@ -29,11 +29,16 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
-      - name: Build APK Release
-        run: flutter build apk --release --no-pub
+      - name: Generate Keystore and Properties
+        run: |
+          keytool -genkey -v -keystore android/app/upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias ${{ secrets.KEY_ALIAS }} -storepass ${{ secrets.KEY_PASSWORD }} -keypass ${{ secrets.KEY_PASSWORD }} -dname "CN=Android, O=Android, C=US"
+          printf "storePassword=%s\nkeyPassword=%s\nkeyAlias=%s\nstoreFile=upload-keystore.jks\n" "${{ secrets.KEYSTORE_PASSWORD }}" "${{ secrets.KEY_PASSWORD }}" "${{ secrets.KEY_ALIAS }}" > android/key.properties
 
-      - name: Upload APK Artifact
+      - name: Build App Bundle
+        run: flutter build appbundle --release --no-pub
+
+      - name: Upload AAB Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: app-release-bundle
+          path: build/app/outputs/bundle/release/app-release.aab
