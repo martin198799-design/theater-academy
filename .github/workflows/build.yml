@@ -23,16 +23,13 @@ jobs:
           flutter-version: '3.19.x'
           channel: 'stable'
 
-      - name: Upgrade Gradle Structure
-        run: flutter create . --platforms=android --org com.ibrahim.theater --project-name academy
-
       - name: Install Dependencies
         run: flutter pub get
 
-      - name: Generate Keystore and Key Properties
+      - name: Generate Keystore and Properties
         run: |
           keytool -genkey -v -keystore android/app/upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias ${{ secrets.KEY_ALIAS }} -storepass ${{ secrets.KEY_PASSWORD }} -keypass ${{ secrets.KEY_PASSWORD }} -dname "CN=Android, O=Android, C=US"
-          printf "storePassword=%s\nkeyPassword=%s\nkeyAlias=%s\nstoreFile=upload-keystore.jks\n" "${{ secrets.KEY_PASSWORD }}" "${{ secrets.KEY_PASSWORD }}" "${{ secrets.KEY_ALIAS }}" > android/key.properties
+          printf "storePassword=%s\nkeyPassword=%s\nkeyAlias=%s\nstoreFile=upload-keystore.jks\n" "${{ secrets.KEYSTORE_PASSWORD }}" "${{ secrets.KEY_PASSWORD }}" "${{ secrets.KEY_ALIAS }}" > android/key.properties
 
       - name: Build App Bundle
         run: flutter build appbundle --release --no-pub
