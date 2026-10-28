@@ -29,16 +29,11 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
-      - name: Update minSdk to 24
+      - name: Update minSdk to 24 and Force SDK 36
         run: |
           sed -i 's/minSdkVersion flutter.minSdkVersion/minSdkVersion 24/g' android/app/build.gradle || true
-
-      - name: Update targetSdk and compileSdk to 36
-        run: |
-          sed -i 's/flutter.compileSdkVersion/36/g' android/app/build.gradle || true
-          sed -i 's/flutter.targetSdkVersion/36/g' android/app/build.gradle || true
-          sed -i 's/compileSdkVersion flutter.compileSdkVersion/compileSdkVersion 36/g' android/app/build.gradle || true
-          sed -i 's/targetSdkVersion flutter.targetSdkVersion/targetSdkVersion 36/g' android/app/build.gradle || true
+          echo "android { compileSdk 36 }" >> android/app/build.gradle
+          echo "android { defaultConfig { targetSdk 36 } }" >> android/app/build.gradle
 
       - name: Generate Fixed Release Keystore
         run: |
