@@ -35,10 +35,10 @@ jobs:
 
       - name: Update targetSdk and compileSdk to 36
         run: |
-          sed -i 's/compileSdkVersion.*/compileSdkVersion flutter.compileSdkVersion/g' android/app/build.gradle || true
-          sed -i 's/targetSdkVersion.*/targetSdkVersion flutter.targetSdkVersion/g' android/app/build.gradle || true
           sed -i 's/flutter.compileSdkVersion/36/g' android/app/build.gradle || true
           sed -i 's/flutter.targetSdkVersion/36/g' android/app/build.gradle || true
+          sed -i 's/compileSdkVersion flutter.compileSdkVersion/compileSdkVersion 36/g' android/app/build.gradle || true
+          sed -i 's/targetSdkVersion flutter.targetSdkVersion/targetSdkVersion 36/g' android/app/build.gradle || true
 
       - name: Generate Fixed Release Keystore
         run: |
