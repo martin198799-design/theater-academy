@@ -23,6 +23,9 @@ jobs:
           flutter-version: '3.19.x'
           channel: 'stable'
 
+      - name: Upgrade Gradle Structure and Create Android
+        run: flutter create . --platforms=android --org com.ibrahim.theater2027 --project-name academy
+
       - name: Install Dependencies
         run: flutter pub get
 
@@ -30,7 +33,7 @@ jobs:
         run: |
           BUILD_GRADLE="android/app/build.gradle"
           
-          # تعديل اسم الحزمة مباشرة لضمان عدم التعارض مع التطبيق القديم
+          # تعديل اسم الحزمة مباشرة لضمان عدم التعارض
           sed -i 's/applicationId ".*"/applicationId "com.ibrahim.theater2027.academy"/g' $BUILD_GRADLE
           
           # فرض الإصدارات 36 بوضوح
