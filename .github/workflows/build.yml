@@ -29,9 +29,12 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
-      - name: Install Android SDK 36 explicitly
+      - name: Force API 35 Configurations
         run: |
-          echo "y" | sudo /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" "build-tools;34.0.0"
+          BUILD_GRADLE="android/app/build.gradle"
+          sed -i -E 's/compileSdk[[:space:]]+[0-9]+/compileSdk 35/' "$BUILD_GRADLE"
+          sed -i -E 's/targetSdk[[:space:]]+[0-9]+/targetSdk 35/' "$BUILD_GRADLE"
+          sed -i -E 's/minSdk[[:space:]]+[0-9]+/minSdk 24/' "$BUILD_GRADLE"
 
       - name: Build App Bundle Release
         run: flutter build appbundle --release --no-pub
