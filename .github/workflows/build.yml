@@ -33,13 +33,14 @@ jobs:
         run: |
           echo "y" | sudo /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" "build-tools;34.0.0"
 
-      - name: Configure SDK Versions (Compile 34 & Target 36)
+      - name: Configure SDK Versions (Compile 34, Target 36, Min 24)
         run: |
           BUILD_GRADLE="android/app/build.gradle"
           
-          # تثبيت compileSdk على 34 لتجنب أي نقص في الملفات، و targetSdk على 36 لإرضاء متجر جوجل
+          # ضبط الأرقام الثلاثة بالشكل السليم والصحيح تماماً
           sed -i -E 's/compileSdk(Version)?[[:space:]]*[= ]+[a-zA-Z0-9_.]+/compileSdk = 34/' "$BUILD_GRADLE"
           sed -i -E 's/targetSdk(Version)?[[:space:]]*[= ]+[a-zA-Z0-9_.]+/targetSdk = 36/' "$BUILD_GRADLE"
+          sed -i -E 's/minSdk(Version)?[[:space:]]*[= ]+[a-zA-Z0-9_.]+/minSdk = 24/' "$BUILD_GRADLE"
           
           echo "Final SDK Check:"
           grep -nE 'compileSdk|targetSdk|minSdk' "$BUILD_GRADLE"
