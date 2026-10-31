@@ -23,18 +23,22 @@ jobs:
           flutter-version: '3.24.0'
           channel: 'stable'
 
-      - name: Generate Android Structure
-        run: flutter create . --platforms=android --org com.ibrahim.theater2028 --project-name academy99
-
       - name: Install Dependencies
         run: flutter pub get
 
-      - name: Force API 34 Stable Configurations
+      - name: Generate Release Keystore and Signing Config
+        run: |
+          mkdir -p android/app
+          keytool -genkey -v -keystore android/app/upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload-alias -storepass ibrahim123 -keypass ibrahim123 -dname "CN=Ibrahim, O=Theater, C=IQ"
+
+      - name: Force API 34 Configurations in Gradle
         run: |
           BUILD_GRADLE="android/app/build.gradle"
-          sed -i -E 's/compileSdk[[:space:]]+[0-9]+/compileSdk 34/' "$BUILD_GRADLE"
-          sed -i -E 's/targetSdk[[:space:]]+[0-9]+/targetSdk 34/' "$BUILD_GRADLE"
-          sed -i -E 's/minSdk[[:space:]]+[0-9]+/minSdk 24/' "$BUILD_GRADLE"
+          if [ -f "$BUILD_GRADLE" ]; then
+            sed -i -E 's/compileSdk[[:space:]]+[0-9]+/compileSdk 34/' "$BUILD_GRADLE"
+            sed -i -E 's/targetSdk[[:space:]]+[0-9]+/targetSdk 34/' "$BUILD_GRADLE"
+            sed -i -E 's/minSdk[[:space:]]+[0-9]+/minSdk 24/' "$BUILD_GRADLE"
+          fi
 
       - name: Build App Bundle Release
         run: flutter build appbundle --release --no-pub
