@@ -29,15 +29,11 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
-      - name: Install Correct Android SDK and Build Tools
-        run: |
-          echo "y" | sudo /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "platforms;android-35" "build-tools;35.0.0"
-
-      - name: Force API 35 Configurations
+      - name: Force API 34 Stable Configurations
         run: |
           BUILD_GRADLE="android/app/build.gradle"
-          sed -i -E 's/compileSdk[[:space:]]+[0-9]+/compileSdk 35/' "$BUILD_GRADLE"
-          sed -i -E 's/targetSdk[[:space:]]+[0-9]+/targetSdk 35/' "$BUILD_GRADLE"
+          sed -i -E 's/compileSdk[[:space:]]+[0-9]+/compileSdk 34/' "$BUILD_GRADLE"
+          sed -i -E 's/targetSdk[[:space:]]+[0-9]+/targetSdk 34/' "$BUILD_GRADLE"
           sed -i -E 's/minSdk[[:space:]]+[0-9]+/minSdk 24/' "$BUILD_GRADLE"
 
       - name: Build App Bundle Release
