@@ -29,20 +29,25 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
-      - name: Fix Package Name and API 36 in build.gradle
+      - name: Fix Android SDK Versions and Package ID
         run: |
           BUILD_GRADLE="android/app/build.gradle"
           
-          # تغيير اسم الحزمة بالكامل لتطبيق جديد
-          sed -i 's/applicationId ".*"/applicationId "com.ibrahim.theater2028.academy"/g' $BUILD_GRADLE
+          # ضبط اسم الحزمة الجديد لتطبيق جديد كلياً على المتجر
+          sed -i 's/applicationId ".*"/applicationId "com.ibrahim.theater2028.academy"/g' "$BUILD_GRADLE"
+
+          # تطبيق الأكواد الخاصة بك بدقة لتحديث أرقام الـ SDK
+          sed -i 's/compileSdk = flutter.compileSdkVersion/compileSdk = 34/' "$BUILD_GRADLE"
+          sed -i 's/minSdk = flutter.minSdkVersion/minSdk = 24/' "$BUILD_GRADLE"
+          sed -i 's/targetSdk = flutter.targetSdkVersion/targetSdk = 36/' "$BUILD_GRADLE"
           
-          # تعديل أرقام الإصدارات بالطريقة السليمة داخل ملف الـ gradle
-          sed -i 's/minSdk = .*/minSdk = 24/g' $BUILD_GRADLE || true
-          sed -i 's/targetSdk = .*/targetSdk = 36/g' $BUILD_GRADLE || true
-          sed -i 's/compileSdk = .*/compileSdk = 36/g' $BUILD_GRADLE || true
-          sed -i 's/minSdkVersion.*/minSdkVersion 24/g' $BUILD_GRADLE || true
-          sed -i 's/targetSdkVersion.*/targetSdkVersion 36/g' $BUILD_GRADLE || true
-          sed -i 's/compileSdkVersion.*/compileSdkVersion 36/g' $BUILD_GRADLE || true
+          # احتياطي في حال كانت مكتوبة بالطريقة التقليدية القديمة
+          sed -i 's/compileSdkVersion.*/compileSdkVersion 34/g' "$BUILD_GRADLE"
+          sed -i 's/minSdkVersion.*/minSdkVersion 24/g' "$BUILD_GRADLE"
+          sed -i 's/targetSdkVersion.*/targetSdkVersion 36/g' "$BUILD_GRADLE"
+
+          echo "Android SDK versions configured successfully"
+          grep -nE 'compileSdk|minSdk|targetSdk' "$BUILD_GRADLE"
 
       - name: Generate Fixed Release Keystore
         run: |
