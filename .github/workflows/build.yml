@@ -29,6 +29,10 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
+      - name: Install Android SDK 36 Platform explicitly
+        run: |
+          echo "y" | sudo /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" "build-tools;35.0.0"
+
       - name: Generate Release Keystore
         run: |
           mkdir -p android/app
