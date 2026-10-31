@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace "com.ibrahim.theater2028.academy99"
-    compileSdk 34
+    compileSdk 36
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -21,8 +21,8 @@ android {
         applicationId "com.ibrahim.theater2028.academy99"
         minSdk 24
         targetSdk 36
-        versionCode 1
-        versionName "1.0.0"
+        versionCode 3
+        versionName "1.0.2"
     }
 
     signingConfigs {
@@ -45,4 +45,4 @@ flutter {
     source '../..'
 }
 
-// Force rebuild for academy99 package clean release
+// Force rebuild for API 36 and academy99 clean release
