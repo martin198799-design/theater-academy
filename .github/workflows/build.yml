@@ -33,18 +33,24 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
-      - name: Update minSdk and targetSdk safely with Python
+      - name: Force targetSdk 36 and minSdk 24 with Python
         run: |
           python3 -c "
           path = 'android/app/build.gradle'
           with open(path, 'r') as f:
               content = f.read()
+          
+          # تعديل الحد الأدنى والإصدار المستهدف بدقة وضمان
           content = content.replace('minSdkVersion flutter.minSdkVersion', 'minSdkVersion 24')
-          content = content.replace('targetSdkVersion flutter.targetSdkVersion', 'targetSdkVersion 36')
-          content = content.replace('targetSdk flutter.targetSdkVersion', 'targetSdk 36')
+          content = content.replace('targetSdkVersion 32', 'targetSdkVersion 36')
+          content = content.replace('targetSdk 32', 'targetSdk 36')
+          
           import re
           content = re.sub(r'targetSdkVersion\s+\d+', 'targetSdkVersion 36', content)
-          content = re.sub(r'targetSdk\s+\d+', 'targetSdk 36', content)
+          content = re.sub(r'targetSdk\s+\d+', 'targetSdkVersion 36', content)
+          content = re.sub(r'compileSdkVersion\s+\d+', 'compileSdkVersion 36', content)
+          content = re.sub(r'compileSdk\s+\d+', 'compileSdk 36', content)
+          
           with open(path, 'w') as f:
               f.write(content)
           "
