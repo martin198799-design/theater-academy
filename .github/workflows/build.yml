@@ -24,7 +24,7 @@ jobs:
           channel: 'stable'
 
       - name: Upgrade Gradle Structure
-        run: flutter create . --platforms=android --org com.ibrahim.theater2026 --project-name academy
+        run: flutter create . --platforms=android --org com.ibrahim.theater2027 --project-name academy
 
       - name: Install Android SDK 36 Tools
         run: |
