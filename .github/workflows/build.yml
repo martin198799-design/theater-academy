@@ -33,14 +33,17 @@ jobs:
         run: |
           echo "y" | sudo /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" "build-tools;34.0.0"
 
-      - name: Force Application ID and SDK Configurations
+      - name: Force New Package Name and SDK Configurations
         run: |
           BUILD_GRADLE="android/app/build.gradle"
           
+          # ضبط معلمات الـ SDK
           sed -i -E 's/compileSdk(Version)?[[:space:]]*[= ]+[a-zA-Z0-9_.]+/compileSdk = 34/' "$BUILD_GRADLE"
           sed -i -E 's/targetSdk(Version)?[[:space:]]*[= ]+[a-zA-Z0-9_.]+/targetSdk = 36/' "$BUILD_GRADLE"
           sed -i -E 's/minSdk(Version)?[[:space:]]*[= ]+[a-zA-Z0-9_.]+/minSdk = 24/' "$BUILD_GRADLE"
-          sed -i -E 's/applicationId "[^"]*"/applicationId "com.ibrahim.theater2028.academy2"/' "$BUILD_GRADLE"
+          
+          # فرض اسم الحزمة الجديد كلياً academy3
+          sed -i -E 's/applicationId "[^"]*"/applicationId "com.ibrahim.theater2028.academy3"/' "$BUILD_GRADLE"
 
       - name: Generate Fixed Release Keystore
         run: |
