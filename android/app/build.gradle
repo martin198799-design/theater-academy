@@ -44,3 +44,5 @@ android {
 flutter {
     source '../..'
 }
+
+// Force rebuild for academy99 package clean release
