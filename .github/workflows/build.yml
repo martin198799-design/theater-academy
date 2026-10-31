@@ -23,9 +23,6 @@ jobs:
           flutter-version: '3.24.0'
           channel: 'stable'
 
-      - name: Create Android Structure
-        run: flutter create . --platforms=android --org com.ibrahim.theater2028 --project-name academy
-
       - name: Install Dependencies
         run: flutter pub get
 
@@ -33,20 +30,17 @@ jobs:
         run: |
           echo "y" | sudo /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" "build-tools;34.0.0"
 
-      - name: Configure Package Name and SDK Versions
+      - name: Force Application ID and SDK Configurations
         run: |
           BUILD_GRADLE="android/app/build.gradle"
           
-          # ضبط الأرقام الثلاثة بدقة
+          # ضبط معلمات الـ SDK
           sed -i -E 's/compileSdk(Version)?[[:space:]]*[= ]+[a-zA-Z0-9_.]+/compileSdk = 34/' "$BUILD_GRADLE"
           sed -i -E 's/targetSdk(Version)?[[:space:]]*[= ]+[a-zA-Z0-9_.]+/targetSdk = 36/' "$BUILD_GRADLE"
           sed -i -E 's/minSdk(Version)?[[:space:]]*[= ]+[a-zA-Z0-9_.]+/minSdk = 24/' "$BUILD_GRADLE"
           
-          # تحديث applicationId ليتطابق تماماً مع اسم الحزمة الجديد على المتجر
+          # فرض اسم الحزمة الجديد المطلوب على المتجر
           sed -i -E 's/applicationId "[^"]*"/applicationId "com.ibrahim.theater2028.academy2"/' "$BUILD_GRADLE"
-
-          echo "Final Configuration Check:"
-          grep -nE 'compileSdk|targetSdk|minSdk|applicationId' "$BUILD_GRADLE"
 
       - name: Generate Fixed Release Keystore
         run: |
