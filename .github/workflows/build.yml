@@ -23,10 +23,13 @@ jobs:
           flutter-version: '3.24.0'
           channel: 'stable'
 
+      - name: Generate Android Structure
+        run: flutter create . --platforms=android --org com.ibrahim.theater2028 --project-name academy99
+
       - name: Install Dependencies
         run: flutter pub get
 
-      - name: Generate Release Keystore and Signing Config
+      - name: Generate Release Keystore
         run: |
           mkdir -p android/app
           keytool -genkey -v -keystore android/app/upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload-alias -storepass ibrahim123 -keypass ibrahim123 -dname "CN=Ibrahim, O=Theater, C=IQ"
