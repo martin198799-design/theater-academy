@@ -24,7 +24,7 @@ jobs:
           channel: 'stable'
 
       - name: Upgrade Gradle Structure and Create Android
-        run: flutter create . --platforms=android --org com.ibrahim.theater2027 --project-name academy
+        run: flutter create . --platforms=android --org com.ibrahim.theater2028 --project-name academy
 
       - name: Install Dependencies
         run: flutter pub get
@@ -33,10 +33,10 @@ jobs:
         run: |
           BUILD_GRADLE="android/app/build.gradle"
           
-          # تعديل اسم الحزمة مباشرة لضمان عدم التعارض
-          sed -i 's/applicationId ".*"/applicationId "com.ibrahim.theater2027.academy"/g' $BUILD_GRADLE
+          # تغيير اسم الحزمة بالكامل إلى اسم جديد لضمان قبوله كتطبيق جديد كلياً
+          sed -i 's/applicationId ".*"/applicationId "com.ibrahim.theater2028.academy"/g' $BUILD_GRADLE
           
-          # ضبط الإصدارات على 34 لضمان توافقها التام مع الفلاتر وتجنب أخطاء android.jar
+          # ضبط الإصدارات على 34 لتتوافق مع فلاتر 3.19 وتجنب أي أخطاء
           sed -i 's/minSdkVersion.*/minSdkVersion 24/g' $BUILD_GRADLE
           sed -i 's/targetSdkVersion.*/targetSdkVersion 34/g' $BUILD_GRADLE
           sed -i 's/compileSdkVersion.*/compileSdkVersion 34/g' $BUILD_GRADLE
