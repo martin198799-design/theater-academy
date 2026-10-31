@@ -26,11 +26,47 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
+      - name: Update Android SDK to API 36
+        run: |
+          BUILD_GRADLE="android/app/build.gradle"
+
+          sed -i -E \
+          's/compileSdk(Version)?[[:space:]]*[= ]+[a-zA-Z0-9_.]+/compileSdk = 36/' \
+          "$BUILD_GRADLE"
+
+          sed -i -E \
+          's/targetSdk(Version)?[[:space:]]*[= ]+[a-zA-Z0-9_.]+/targetSdk = 36/' \
+          "$BUILD_GRADLE"
+
+          echo "Checking SDK configuration:"
+          grep -nE 'compileSdk|targetSdk|minSdk' "$BUILD_GRADLE"
+
       - name: Generate Fixed Release Keystore
         run: |
           mkdir -p android/app
           keytool -genkey -v -keystore android/app/upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload-alias -storepass ibrahim123 -keypass ibrahim123 -dname "CN=Ibrahim, O=Theater, C=IQ"
           printf "storePassword=ibrahim123\nkeyPassword=ibrahim123\nkeyAlias=upload-alias\nstoreFile=upload-keystore.jks\n" > android/key.properties
+
+      - name: Inject Signing Config into Build Gradle
+        run: |
+          cat << 'EOF' >> android/app/build.gradle
+
+          android {
+              signingConfigs {
+                  release {
+                      storeFile file('upload-keystore.jks')
+                      storePassword 'ibrahim123'
+                      keyAlias 'upload-alias'
+                      keyPassword 'ibrahim123'
+                  }
+              }
+              buildTypes {
+                  release {
+                      signingConfig signingConfigs.release
+                  }
+              }
+          }
+          EOF
 
       - name: Build App Bundle Release
         run: flutter build appbundle --release --no-pub
