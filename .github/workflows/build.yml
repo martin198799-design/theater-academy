@@ -26,22 +26,31 @@ jobs:
       - name: Upgrade Gradle Structure and Create Android
         run: flutter create . --platforms=android --org com.ibrahim.theater2028 --project-name academy
 
+      - name: Install Android SDK 36 Platforms and Tools
+        run: |
+          echo "y" | sudo ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --install "platforms;android-36" "build-tools;36.0.0"
+
       - name: Install Dependencies
         run: flutter pub get
 
-      - name: Fix build.gradle for API 34 and New Package ID
+      - name: Fix build.gradle for API 36 and New Package ID
         run: |
           BUILD_GRADLE="android/app/build.gradle"
           
-          # تغيير اسم الحزمة بالكامل إلى اسم جديد لضمان قبوله كتطبيق جديد كلياً
+          # تغيير اسم الحزمة بالكامل
           sed -i 's/applicationId ".*"/applicationId "com.ibrahim.theater2028.academy"/g' $BUILD_GRADLE
           
-          # ضبط الإصدارات على 34 لتتوافق مع فلاتر 3.19 وتجنب أي أخطاء
+          # فرض الإصدارات على 36 تلبية لمتطلبات جوجل الجديدة
           sed -i 's/minSdkVersion.*/minSdkVersion 24/g' $BUILD_GRADLE
-          sed -i 's/targetSdkVersion.*/targetSdkVersion 34/g' $BUILD_GRADLE
-          sed -i 's/compileSdkVersion.*/compileSdkVersion 34/g' $BUILD_GRADLE
-          sed -i 's/targetSdk.*/targetSdk 34/g' $BUILD_GRADLE
-          sed -i 's/compileSdk.*/compileSdk 34/g' $BUILD_GRADLE
+          sed -i 's/targetSdkVersion.*/targetSdkVersion 36/g' $BUILD_GRADLE
+          sed -i 's/compileSdkVersion.*/compileSdkVersion 36/g' $BUILD_GRADLE
+          sed -i 's/targetSdk.*/targetSdk 36/g' $BUILD_GRADLE
+          sed -i 's/compileSdk.*/compileSdk 36/g' $BUILD_GRADLE
+          
+          # فرض إصدار أدوات البناء على 36.0.0
+          if ! grep -q "buildToolsVersion" $BUILD_GRADLE; then
+            sed -i '/defaultConfig {/a \    buildToolsVersion "36.0.0"' $BUILD_GRADLE
+          fi
 
       - name: Generate Fixed Release Keystore
         run: |
