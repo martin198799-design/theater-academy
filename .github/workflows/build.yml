@@ -29,19 +29,20 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
-      - name: Fix build.gradle for API 36 and New Package ID
+      - name: Fix Package Name and API 36 in build.gradle
         run: |
           BUILD_GRADLE="android/app/build.gradle"
           
-          # تغيير اسم الحزمة بالكامل
+          # تغيير اسم الحزمة بالكامل لتطبيق جديد
           sed -i 's/applicationId ".*"/applicationId "com.ibrahim.theater2028.academy"/g' $BUILD_GRADLE
           
-          # ضبط الإصدارات على 36 لتلبية متطلبات متجر جوجل
-          sed -i 's/minSdkVersion.*/minSdkVersion 24/g' $BUILD_GRADLE
-          sed -i 's/targetSdkVersion.*/targetSdkVersion 36/g' $BUILD_GRADLE
-          sed -i 's/compileSdkVersion.*/compileSdkVersion 36/g' $BUILD_GRADLE
-          sed -i 's/targetSdk.*/targetSdk 36/g' $BUILD_GRADLE
-          sed -i 's/compileSdk.*/compileSdk 36/g' $BUILD_GRADLE
+          # تعديل أرقام الإصدارات بالطريقة السليمة داخل ملف الـ gradle
+          sed -i 's/minSdk = .*/minSdk = 24/g' $BUILD_GRADLE || true
+          sed -i 's/targetSdk = .*/targetSdk = 36/g' $BUILD_GRADLE || true
+          sed -i 's/compileSdk = .*/compileSdk = 36/g' $BUILD_GRADLE || true
+          sed -i 's/minSdkVersion.*/minSdkVersion 24/g' $BUILD_GRADLE || true
+          sed -i 's/targetSdkVersion.*/targetSdkVersion 36/g' $BUILD_GRADLE || true
+          sed -i 's/compileSdkVersion.*/compileSdkVersion 36/g' $BUILD_GRADLE || true
 
       - name: Generate Fixed Release Keystore
         run: |
