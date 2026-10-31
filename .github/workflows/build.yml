@@ -29,19 +29,19 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
-      - name: Update Android SDK to API 36
+      - name: Install Android SDK 36 explicitly
+        run: |
+          echo "y" | sudo /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" "build-tools;34.0.0"
+
+      - name: Configure SDK Versions (Compile 34 & Target 36)
         run: |
           BUILD_GRADLE="android/app/build.gradle"
-
-          sed -i -E \
-          's/compileSdk(Version)?[[:space:]]*[= ]+[a-zA-Z0-9_.]+/compileSdk = 36/' \
-          "$BUILD_GRADLE"
-
-          sed -i -E \
-          's/targetSdk(Version)?[[:space:]]*[= ]+[a-zA-Z0-9_.]+/targetSdk = 36/' \
-          "$BUILD_GRADLE"
-
-          echo "Checking SDK configuration:"
+          
+          # تثبيت compileSdk على 34 لتجنب أي نقص في الملفات، و targetSdk على 36 لإرضاء متجر جوجل
+          sed -i -E 's/compileSdk(Version)?[[:space:]]*[= ]+[a-zA-Z0-9_.]+/compileSdk = 34/' "$BUILD_GRADLE"
+          sed -i -E 's/targetSdk(Version)?[[:space:]]*[= ]+[a-zA-Z0-9_.]+/targetSdk = 36/' "$BUILD_GRADLE"
+          
+          echo "Final SDK Check:"
           grep -nE 'compileSdk|targetSdk|minSdk' "$BUILD_GRADLE"
 
       - name: Generate Fixed Release Keystore
