@@ -28,7 +28,7 @@ jobs:
 
       - name: Install Android SDK 36 Tools
         run: |
-          echo "y" | sudo ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --install "platforms;android-36" "build-tools;36.0.0" || true
+          echo "y" | sudo ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --install "platforms;android-36" "build-tools;36.0.0"
 
       - name: Install Dependencies
         run: flutter pub get
@@ -40,12 +40,17 @@ jobs:
           # تعديل اسم الحزمة مباشرة لضمان عدم التعارض
           sed -i 's/applicationId ".*"/applicationId "com.ibrahim.theater2027.academy"/g' $BUILD_GRADLE
           
-          # فرض الإصدارات 36 بوضوح
+          # فرض الإصدارات 36 بوضوح وتثبيت إصدار الـ buildToolsVersion على 36.0.0
           sed -i 's/minSdkVersion.*/minSdkVersion 24/g' $BUILD_GRADLE
           sed -i 's/targetSdkVersion.*/targetSdkVersion 36/g' $BUILD_GRADLE
           sed -i 's/compileSdkVersion.*/compileSdkVersion 36/g' $BUILD_GRADLE
           sed -i 's/targetSdk.*/targetSdk 36/g' $BUILD_GRADLE
           sed -i 's/compileSdk.*/compileSdk 36/g' $BUILD_GRADLE
+          
+          # إضافة buildToolsVersion صراحة داخل كتلة android إذا لمواجهة أي أدوات قديمة
+          if ! grep -q "buildToolsVersion" $BUILD_GRADLE; then
+            sed -i '/defaultConfig {/a \    buildToolsVersion "36.0.0"' $BUILD_GRADLE
+          fi
 
       - name: Generate Fixed Release Keystore
         run: |
