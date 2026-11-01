@@ -44,9 +44,7 @@ jobs:
       - name: Generate Release Keystore
         run: |
           mkdir -p android/app
-          if [ ! -f android/app/upload-keystore.jks ]; then
-            keytool -genkey -v -keystore android/app/upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload-alias -storepass ibrahim123 -keypass ibrahim123 -dname "CN=Ibrahim, O=Theater, C=IQ"
-          fi
+          keytool -genkey -v -keystore android/app/upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload-alias -storepass ibrahim123 -keypass ibrahim123 -dname "CN=Ibrahim, O=Theater, C=IQ"
 
       - name: Force API 36 Configurations in Gradle
         run: |
