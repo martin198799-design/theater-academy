@@ -27,7 +27,7 @@ jobs:
       - name: Generate Fresh Android Structure
         run: flutter create . --platforms=android --org com.ibrahim.theater2028 --project-name academy99
 
-      - name: Copy Keystore to Android App Folder
+      - name: Copy Keystore and Properties to Android App Folder
         run: |
           mkdir -p android/app
           cp android/upload-keystore.jks android/app/ || true
