@@ -31,16 +31,16 @@ jobs:
         run: |
           mkdir -p android/app
           
-          # توليد مفتاح توقيع دائم وثابت بنفس المعطيات الثابتة تماماً
+          # توليد مفتاح توقيع دائم وثابت بكلمات مرور موحدة
           keytool -genkey -v -keystore android/app/upload-keystore.jks \
             -keyalg RSA -keysize 2048 -validity 10000 \
             -alias upload \
-            -storepass android -keypass android \
-            -dname "CN=Ibrahim, O=Theater, C=IQ" || true
+            -storepass upload123 -keypass upload123 \
+            -dname "CN=Ibrahim, O=Theater, C=IQ"
 
-          # إنشاء ملف key.properties الثابت والمطابق تماماً للمفتاح
-          echo "storePassword=android" > android/app/key.properties
-          echo "keyPassword=android" >> android/app/key.properties
+          # إنشاء ملف key.properties متطابق تماماً مع المفتاح المولّد
+          echo "storePassword=upload123" > android/app/key.properties
+          echo "keyPassword=upload123" >> android/app/key.properties
           echo "keyAlias=upload" >> android/app/key.properties
           echo "storeFile=upload-keystore.jks" >> android/app/key.properties
 
