@@ -31,22 +31,22 @@ jobs:
         run: |
           sed -i 's/version: .*/version: 1.0.0+4/' pubspec.yaml
 
-      - name: Generate Clean Permanent Keystore and Properties
+      - name: Generate Permanent Stable Keystore and Properties
         run: |
           mkdir -p android/app
           
-          # 1. توليد مفتاح جديد ونظيف كلياً بكلمة مرور موحدة وبسيطة جداً (123456)
+          # 1. توليد مفتاح التوقيع الثابت والنظيف
           keytool -genkey -v -keystore android/app/upload-keystore.jks \
             -keyalg RSA -keysize 2048 -validity 10000 \
             -alias upload-alias \
             -storepass 123456 -keypass 123456 \
             -dname "CN=Ibrahim, O=Theater, C=IQ"
 
-          # 2. كتابة ملف key.properties المتطابق 100% مع المفتاح الجديد
-          echo "storePassword=123456" > android/app/key.properties
-          echo "keyPassword=123456" >> android/app/key.properties
-          echo "keyAlias=upload-alias" >> android/app/key.properties
-          echo "storeFile=upload-keystore.jks" >> android/app/key.properties
+          # 2. وضع ملف key.properties في مجلد android الرئيسي (مجلد الجذر لـ Gradle)
+          echo "storePassword=123456" > android/key.properties
+          echo "keyPassword=123456" >> android/key.properties
+          echo "keyAlias=upload-alias" >> android/key.properties
+          echo "storeFile=app/upload-keystore.jks" >> android/key.properties
 
       - name: Install Dependencies
         run: flutter pub get
