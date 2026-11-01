@@ -27,20 +27,24 @@ jobs:
       - name: Generate Fresh Android Structure
         run: flutter create . --platforms=android --org com.ibrahim.theater2028 --project-name academy99
 
-      - name: Generate Permanent Stable Keystore & Properties
+      - name: Set Version Code to 4 in pubspec.yaml
+        run: |
+          sed -i 's/version: .*/version: 1.0.0+4/' pubspec.yaml
+
+      - name: Generate Clean Permanent Keystore and Properties
         run: |
           mkdir -p android/app
           
-          # توليد المفتاح الثابت باسم upload-alias وكلمة مرور android
+          # 1. توليد مفتاح جديد ونظيف كلياً بكلمة مرور موحدة وبسيطة جداً (123456)
           keytool -genkey -v -keystore android/app/upload-keystore.jks \
             -keyalg RSA -keysize 2048 -validity 10000 \
             -alias upload-alias \
-            -storepass android -keypass android \
+            -storepass 123456 -keypass 123456 \
             -dname "CN=Ibrahim, O=Theater, C=IQ"
 
-          # إنشاء ملف key.properties المتطابق تماماً
-          echo "storePassword=android" > android/app/key.properties
-          echo "keyPassword=android" >> android/app/key.properties
+          # 2. كتابة ملف key.properties المتطابق 100% مع المفتاح الجديد
+          echo "storePassword=123456" > android/app/key.properties
+          echo "keyPassword=123456" >> android/app/key.properties
           echo "keyAlias=upload-alias" >> android/app/key.properties
           echo "storeFile=upload-keystore.jks" >> android/app/key.properties
 
