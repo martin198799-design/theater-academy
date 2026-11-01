@@ -27,58 +27,29 @@ jobs:
       - name: Generate Fresh Android Structure
         run: flutter create . --platforms=android --org com.ibrahim.theater2028 --project-name academy99
 
-      - name: Set Version Code to 4 in pubspec.yaml
+      - name: Set Version Code to 4
         run: |
           sed -i 's/version: .*/version: 1.0.0+4/' pubspec.yaml
 
-      - name: Generate Permanent Stable Keystore and Properties
+      - name: Create Keystore and Properties Files
         run: |
           mkdir -p android/app
           
-          # 1. توليد مفتاح التوقيع الثابت والنظيف
+          # 1. توليد المفتاح الثابت بكلمة مرور 123456 واسم upload-alias
           keytool -genkey -v -keystore android/app/upload-keystore.jks \
             -keyalg RSA -keysize 2048 -validity 10000 \
             -alias upload-alias \
             -storepass 123456 -keypass 123456 \
             -dname "CN=Ibrahim, O=Theater, C=IQ"
 
-          # 2. إنشاء ملف key.properties في مجلد android الرئيسي
+          # 2. إنشاء ملف key.properties في المكان الصحيح
           echo "storePassword=123456" > android/key.properties
           echo "keyPassword=123456" >> android/key.properties
           echo "keyAlias=upload-alias" >> android/key.properties
           echo "storeFile=app/upload-keystore.jks" >> android/key.properties
 
-      - name: Fix Android SDK & Gradle Signing Configurations
-        run: |
-          BUILD_GRADLE="android/app/build.gradle"
-          if [ -f "$BUILD_GRADLE" ]; then
-            # تعديل إصدارات SDK
-            sed -i -E 's/compileSdk[[:space:]]+[0-9]+/compileSdk 36/' "$BUILD_GRADLE"
-            sed -i -E 's/targetSdk[[:space:]]+[0-9]+/targetSdk 36/' "$BUILD_GRADLE"
-            sed -i -E 's/minSdk[[:space:]]+[0-9]+/minSdk 24/' "$BUILD_GRADLE"
-            
-            # إضافة إعدادات التوقيع صراحة لضمان عدم فشل الـ signing
-            if ! grep -q "signingConfigs" "$BUILD_GRADLE"; then
-              sed -i '/ buildTypes {/i \
-    signingConfigs {\
-        release {\
-            storeFile file("upload-keystore.jks")\
-            storePassword "123456"\
-            keyAlias "upload-alias"\
-            keyPassword "123456"\
-        }\
-    }' "$BUILD_GRADLE"
-              sed -i '/release {/a \
-            signingConfig signingConfigs.release' "$BUILD_GRADLE"
-            fi
-          fi
-
-      - name: Install Dependencies
+      - name: Get Dependencies
         run: flutter pub get
-
-      - name: Install Android SDK 36 Platform explicitly
-        run: |
-          echo "y" | sudo /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" "build-tools;35.0.0"
 
       - name: Build App Bundle Release
         run: flutter build appbundle --release --no-pub
