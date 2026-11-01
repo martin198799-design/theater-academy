@@ -27,21 +27,21 @@ jobs:
       - name: Generate Fresh Android Structure
         run: flutter create . --platforms=android --org com.ibrahim.theater2028 --project-name academy99
 
-      - name: Generate Permanent Stable Keystore & Properties (After Flutter Create)
+      - name: Generate Permanent Stable Keystore & Properties
         run: |
           mkdir -p android/app
           
-          # توليد المفتاح الثابت بالمعطيات الصحيحة والموحدة
+          # توليد المفتاح الثابت باسم upload-alias وكلمة مرور android
           keytool -genkey -v -keystore android/app/upload-keystore.jks \
             -keyalg RSA -keysize 2048 -validity 10000 \
-            -alias upload \
-            -storepass upload123 -keypass upload123 \
+            -alias upload-alias \
+            -storepass android -keypass android \
             -dname "CN=Ibrahim, O=Theater, C=IQ"
 
           # إنشاء ملف key.properties المتطابق تماماً
-          echo "storePassword=upload123" > android/app/key.properties
-          echo "keyPassword=upload123" >> android/app/key.properties
-          echo "keyAlias=upload" >> android/app/key.properties
+          echo "storePassword=android" > android/app/key.properties
+          echo "keyPassword=android" >> android/app/key.properties
+          echo "keyAlias=upload-alias" >> android/app/key.properties
           echo "storeFile=upload-keystore.jks" >> android/app/key.properties
 
       - name: Install Dependencies
