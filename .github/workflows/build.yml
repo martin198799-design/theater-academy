@@ -31,40 +31,22 @@ jobs:
         run: |
           sed -i 's/version: .*/version: 1.0.0+4/' pubspec.yaml
 
-      - name: Generate Keystore and Configure Signing via Python
+      - name: Create Official Flutter Keystore and Properties
         run: |
           mkdir -p android/app
           
-          # 1. توليد مفتاح التوقيع الثابت
+          # 1. توليد مفتاح التوقيع الثابت بالمعطيات القياسية
           keytool -genkey -v -keystore android/app/upload-keystore.jks \
             -keyalg RSA -keysize 2048 -validity 10000 \
             -alias upload-alias \
             -storepass 123456 -keypass 123456 \
             -dname "CN=Ibrahim, O=Theater, C=IQ"
 
-          # 2. تعديل ملف build.gradle بأمان تام عبر بايثون لربط التوقيع
-          python3 -c '
-          path = "android/app/build.gradle"
-          with open(path, "r") as f:
-              content = f.read()
-
-          signing_block = """
-              signingConfigs {
-                  release {
-                      storeFile file("upload-keystore.jks")
-                      storePassword "123456"
-                      keyAlias "upload-alias"
-                      keyPassword "123456"
-                  }
-              }
-          """
-
-          if "signingConfigs" not in content:
-              content = content.replace("buildTypes {", signing_block + "\n    buildTypes {")
-              content = content.replace("release {", "release {\n            signingConfig signingConfigs.release")
-              with open(path, "w") as f:
-                  f.write(content)
-          '
+          # 2. إنشاء ملف key.properties بالطريقة الرسمية التي يقرؤها Gradle تلقائياً
+          echo "storePassword=123456" > android/key.properties
+          echo "keyPassword=123456" >> android/key.properties
+          echo "keyAlias=upload-alias" >> android/key.properties
+          echo "storeFile=upload-keystore.jks" >> android/key.properties
 
       - name: Get Dependencies
         run: flutter pub get
