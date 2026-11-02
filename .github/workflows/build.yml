@@ -31,48 +31,22 @@ jobs:
         run: |
           sed -i 's/version: .*/version: 1.0.0+4/' pubspec.yaml
 
-      - name: Generate Keystore & Directly Configure Gradle Signing
+      - name: Create Permanent Keystore and Proper key.properties
         run: |
           mkdir -p android/app
           
-          # 1. توليد مفتاح التوقيع الثابت بالمعطيات الثابتة
+          # 1. توليد مفتاح التوقيع الثابت بكلمة مرور 123456 واسم upload-alias
           keytool -genkey -v -keystore android/app/upload-keystore.jks \
             -keyalg RSA -keysize 2048 -validity 10000 \
             -alias upload-alias \
             -storepass 123456 -keypass 123456 \
             -dname "CN=Ibrahim, O=Theater, C=IQ"
 
-          # 2. حقن إعدادات التوقيع برمجياً مباشرة داخل build.gradle لتجنب مشاكل المسارات تماماً
-          python3 -c '
-          path = "android/app/build.gradle"
-          with open(path, "r") as f:
-              lines = f.readlines()
-
-          new_lines = []
-          signing_added = False
-          release_signed = False
-
-          for line in lines:
-              if "buildTypes {" and not signing_added:
-                  new_lines.append("    signingConfigs {\n")
-                  new_lines.append("        release {\n")
-                  new_lines.append("            storeFile file(\"upload-keystore.jks\")\n")
-                  new_lines.append("            storePassword \"123456\"\n")
-                  new_lines.append("            keyAlias \"upload-alias\"\n")
-                  new_lines.append("            keyPassword \"123456\"\n")
-                  new_lines.append("        }\n")
-                  new_lines.append("    }\n")
-                  signing_added = True
-              
-              new_lines.append(line)
-              
-              if "release {" in line and not release_signed:
-                  new_lines.append("            signingConfig signingConfigs.release\n")
-                  release_signed = True
-
-          with open(path, "w") as f:
-              f.writelines(new_lines)
-          '
+          # 2. إنشاء ملف key.properties بالصيغة القياسية الصحيحة تماماً داخل مجلد android الرئيسي
+          echo "storePassword=123456" > android/key.properties
+          echo "keyPassword=123456" >> android/key.properties
+          echo "keyAlias=upload-alias" >> android/key.properties
+          echo "storeFile=app/upload-keystore.jks" >> android/key.properties
 
       - name: Get Dependencies
         run: flutter pub get
