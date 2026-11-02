@@ -31,22 +31,35 @@ jobs:
         run: |
           sed -i 's/version: .*/version: 1.0.0+4/' pubspec.yaml
 
-      - name: Create Permanent Keystore and Properties
+      - name: Generate Keystore & Inject Signing Configs
         run: |
           mkdir -p android/app
           
-          # 1. توليد المفتاح الثابت بكلمة مرور 123456 واسم upload-alias
+          # 1. توليد المفتاح الثابت
           keytool -genkey -v -keystore android/app/upload-keystore.jks \
             -keyalg RSA -keysize 2048 -validity 10000 \
             -alias upload-alias \
             -storepass 123456 -keypass 123456 \
             -dname "CN=Ibrahim, O=Theater, C=IQ"
 
-          # 2. إنشاء ملف key.properties في مجلد android الرئيسي بشكل صحيح تماماً
-          echo "storePassword=123456" > android/key.properties
-          echo "keyPassword=123456" >> android/key.properties
-          echo "keyAlias=upload-alias" >> android/key.properties
-          echo "storeFile=upload-keystore.jks" >> android/key.properties
+          # 2. الحقن المباشر لإعدادات التوقيع داخل build.gradle لتجنب أي خطأ في key.properties
+          BUILD_GRADLE="android/app/build.gradle"
+          if [ -f "$BUILD_GRADLE" ]; then
+            # إضافة signingConfigs قبل buildTypes
+            sed -i '/ buildTypes {/i \
+    signingConfigs {\
+        release {\
+            storeFile file("upload-keystore.jks")\
+            storePassword "123456"\
+            keyAlias "upload-alias"\
+            keyPassword "123456"\
+        }\
+    }' "$BUILD_GRADLE"
+            
+            # ربط release بـ signingConfig
+            sed -i '/release {/a \
+            signingConfig signingConfigs.release' "$BUILD_GRADLE"
+          fi
 
       - name: Get Dependencies
         run: flutter pub get
