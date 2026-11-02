@@ -31,43 +31,25 @@ jobs:
         run: |
           sed -i 's/version: .*/version: 1.0.0+4/' pubspec.yaml
 
-      - name: Generate Keystore & Force Direct Gradle Signing
+      - name: Create Keystore and key.properties in android/app
         run: |
           mkdir -p android/app
           
-          # 1. توليد مفتاح التوقيع الثابت بالمعطيات الثابتة
+          # 1. توليد المفتاح الثابت مباشرة داخل مجلد android/app
           keytool -genkey -v -keystore android/app/upload-keystore.jks \
             -keyalg RSA -keysize 2048 -validity 10000 \
             -alias upload-alias \
             -storepass 123456 -keypass 123456 \
             -dname "CN=Ibrahim, O=Theater, C=IQ"
 
-          # 2. الحقن المباشر لإعدادات التوقيع داخل build.gradle عبر بايثون
-          python3 -c '
-          path = "android/app/build.gradle"
-          with open(path, "r") as f:
-              content = f.read()
+          # 2. وضع ملف key.properties في android/app ليكون بجانب المفتاح وملف الـ gradle تماماً
+          echo "storePassword=123456" > android/app/key.properties
+          echo "keyPassword=123456" >> android/app/key.properties
+          echo "keyAlias=upload-alias" >> android/app/key.properties
+          echo "storeFile=upload-keystore.jks" >> android/app/key.properties
 
-          # إضافة signingConfigs مباشرة تحت android {
-          if "signingConfigs" not in content:
-              signing_code = """android {
-                  signingConfigs {
-                      release {
-                          storeFile file("upload-keystore.jks")
-                          storePassword "123456"
-                          keyAlias "upload-alias"
-                          keyPassword "123456"
-                      }
-                  }"""
-              content = content.replace("android {", signing_code, 1)
-
-          # ربط release بـ signingConfig release
-          if "signingConfig signingConfigs.release" not in content:
-              content = content.replace("release {", "release {\n            signingConfig signingConfigs.release")
-
-          with open(path, "w") as f:
-              f.write(content)
-          '
+          # 3. نسخ نسخة مطابقة إلى مجلد android الرئيسي لضمان قراءته من أي مسار محتمل
+          cp android/app/key.properties android/key.properties
 
       - name: Get Dependencies
         run: flutter pub get
