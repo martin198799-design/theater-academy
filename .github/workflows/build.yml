@@ -31,7 +31,7 @@ jobs:
         run: |
           sed -i 's/version: .*/version: 1.0.0+4/' pubspec.yaml
 
-      - name: Generate Keystore & Inject Direct Signing Configuration
+      - name: Generate Keystore & Directly Configure Gradle Signing
         run: |
           mkdir -p android/app
           
@@ -42,7 +42,7 @@ jobs:
             -storepass 123456 -keypass 123456 \
             -dname "CN=Ibrahim, O=Theater, C=IQ"
 
-          # 2. الحقن المباشر والآمن لإعدادات التوقيع داخل build.gradle
+          # 2. الحقن المباشر لإعدادات التوقيع داخل build.gradle لضمان التطابق التام
           python3 -c '
           path = "android/app/build.gradle"
           with open(path, "r") as f:
@@ -59,13 +59,13 @@ jobs:
               }
           """
 
-          if "signingConfigs" not in content:
+          # إضافة signingConfigs إذا لم تكن موجودة
+          if "signingConfigs {" not in content:
               content = content.replace("    buildTypes {", signing_block + "\n    buildTypes {")
 
+          # ربط release بـ signingConfig release
           if "signingConfig signingConfigs.release" not in content:
-              content = content.replace("signingConfig signingConfigs.debug", "signingConfig signingConfigs.release")
-              if "signingConfig signingConfigs.release" not in content:
-                  content = content.replace("release {", "release {\n            signingConfig signingConfigs.release")
+              content = content.replace("release {", "release {\n            signingConfig signingConfigs.release")
 
           with open(path, "w") as f:
               f.write(content)
