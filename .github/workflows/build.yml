@@ -31,11 +31,11 @@ jobs:
         run: |
           sed -i 's/version: .*/version: 1.0.0+4/' pubspec.yaml
 
-      - name: Generate JKS Keystore & Directly Inject Signing Config
+      - name: Generate True JKS Keystore & Inject Explicit StoreType
         run: |
           mkdir -p android/app
           
-          # 1. توليد المفتاح بصيغة JKS حصرياً داخل android/app لتوافق تام مع جافا 17
+          # 1. توليد المفتاح بصيغة JKS صراحةً ليتوافق تماماً مع جافا 17
           keytool -genkey -v -keystore android/app/upload-keystore.jks \
             -storetype JKS \
             -keyalg RSA -keysize 2048 -validity 10000 \
@@ -43,7 +43,7 @@ jobs:
             -storepass 123456 -keypass 123456 \
             -dname "CN=Ibrahim, O=Theater, C=IQ"
 
-          # 2. الحقن المباشر لإعدادات التوقيع داخل ملف build.gradle لتجاوز مشاكل المسارات نهائياً
+          # 2. الحقن المباشر لإعدادات التوقيع مع تحديد storeType "JKS" صراحةً داخل build.gradle
           python3 -c '
           path = "android/app/build.gradle"
           with open(path, "r") as f:
@@ -51,7 +51,7 @@ jobs:
 
           if "signingConfigs" not in content:
               target = "android {"
-              replacement = "android {\n    signingConfigs {\n        release {\n            storeFile file(\"upload-keystore.jks\")\n            storePassword \"123456\"\n            keyAlias \"upload-alias\"\n            keyPassword \"123456\"\n        }\n    }"
+              replacement = "android {\n    signingConfigs {\n        release {\n            storeFile file(\"upload-keystore.jks\")\n            storePassword \"123456\"\n            keyAlias \"upload-alias\"\n            keyPassword \"123456\"\n            storeType \"JKS\"\n        }\n    }"
               content = content.replace(target, replacement, 1)
 
           if "signingConfig signingConfigs.release" not in content:
