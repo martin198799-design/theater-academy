@@ -31,7 +31,7 @@ jobs:
         run: |
           sed -i 's/version: .*/version: 1.0.0+4/' pubspec.yaml
 
-      - name: Generate JKS Keystore & Activate Gradle Signing
+      - name: Generate JKS Keystore & Activate Gradle Signing Safely
         run: |
           mkdir -p android/app
           
@@ -43,33 +43,39 @@ jobs:
             -storepass 123456 -keypass 123456 \
             -dname "CN=Ibrahim, O=Theater, C=IQ"
 
-          # 2. حقن وتفعيل إعدادات التوقيع صراحة داخل build.gradle وتجاوز التعليقات الافتراضية
-          python3 -c '
+          # 2. كتابة وتنفيذ سكربت بايثون بطريقة آمنة تماماً لتجنب أخطاء صيغة الـ YAML
+          cat << 'EOF' > update_gradle.py
+          import os
+
           path = "android/app/build.gradle"
-          with open(path, "r") as f:
-              content = f.read()
+          if os.path.exists(path):
+              with open(path, "r") as f:
+                  content = f.read()
 
-          # إضافة كتلة signingConfigs بشكل قاطع قبل buildTypes
-          target = "    buildTypes {"
-          signing_code = """    signingConfigs {
-            release {
-                storeFile file("upload-keystore.jks")
-                storePassword "123456"
-                keyAlias "upload-alias"
-                keyPassword "123456"
-                storeType "JKS"
-            }
-        }
+              if "signingConfigs {" not in content:
+                  target = "    buildTypes {"
+                  signing_code = """    signingConfigs {
+              release {
+                  storeFile file('upload-keystore.jks')
+                  storePassword '123456'
+                  keyAlias 'upload-alias'
+                  keyPassword '123456'
+                  storeType 'JKS'
+              }
+          }
 
-    buildTypes {"""
+      buildTypes {"""
+                  if target in content:
+                      content = content.replace(target, signing_code, 1)
 
-          if "signingConfig signingConfigs.release" not in content:
-              content = content.replace(target, signing_code, 1)
-              content = content.replace("release {", "release {\n            signingConfig signingConfigs.release", 1)
+              if "signingConfig signingConfigs.release" not in content:
+                  content = content.replace("release {", "release {\n            signingConfig signingConfigs.release", 1)
 
-          with open(path, "w") as f:
-              f.write(content)
-          '
+              with open(path, "w") as f:
+                  f.write(content)
+          EOF
+
+          python3 update_gradle.py
 
       - name: Get Dependencies
         run: flutter pub get
