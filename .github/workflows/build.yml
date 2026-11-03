@@ -31,22 +31,23 @@ jobs:
         run: |
           sed -i 's/version: .*/version: 1.0.0+4/' pubspec.yaml
 
-      - name: Create Keystore and key.properties in android/app
+      - name: Create True JKS Keystore and key.properties
         run: |
           mkdir -p android/app
           
-          # 1. توليد مفتاح التوقيع الثابت مباشرة في مجلد android/app
+          # توليد المفتاح بصيغة JKS صراحة لتتوافق 100% مع Gradle وتتجنب خطأ كلمة المرور
           keytool -genkey -v -keystore android/app/upload-keystore.jks \
+            -storetype JKS \
             -keyalg RSA -keysize 2048 -validity 10000 \
             -alias upload-alias \
             -storepass 123456 -keypass 123456 \
             -dname "CN=Ibrahim, O=Theater, C=IQ"
 
-          # 2. إنشاء ملف key.properties في نفس المجلد (android/app) لضمان مطابقة المسار تماماً
-          echo "storePassword=123456" > android/app/key.properties
-          echo "keyPassword=123456" >> android/app/key.properties
-          echo "keyAlias=upload-alias" >> android/app/key.properties
-          echo "storeFile=upload-keystore.jks" >> android/app/key.properties
+          # إنشاء ملف key.properties بالشكل القياسي في مجلد android الرئيسي
+          echo "storePassword=123456" > android/key.properties
+          echo "keyPassword=123456" >> android/key.properties
+          echo "keyAlias=upload-alias" >> android/key.properties
+          echo "storeFile=app/upload-keystore.jks" >> android/key.properties
 
       - name: Get Dependencies
         run: flutter pub get
