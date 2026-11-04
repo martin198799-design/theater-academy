@@ -31,7 +31,7 @@ jobs:
         run: |
           sed -i 's/version: .*/version: 1.0.0+4/' pubspec.yaml
 
-      - name: Generate Keystore
+      - name: Generate JKS Keystore
         run: |
           mkdir -p android/app
           keytool -genkey -v -keystore android/app/upload-keystore.jks \
@@ -41,7 +41,7 @@ jobs:
             -storepass 123456 -keypass 123456 \
             -dname "CN=Ibrahim, O=Theater, C=IQ"
 
-      - name: Create key.properties File
+      - name: Create Standard key.properties File
         run: |
           cat << 'EOF' > android/key.properties
           storePassword=123456
@@ -50,32 +50,57 @@ jobs:
           storeFile=upload-keystore.jks
           EOF
 
-      - name: Configure signingConfigs in build.gradle safely
+      - name: Write Official Flutter build.gradle with Signing Config
         run: |
-          python3 -c "
-          path = 'android/app/build.gradle'
-          with open(path, 'r') as f:
-              content = f.read()
+          cat << 'EOF' > android/app/build.gradle
+          plugins {
+              id "com.android.application"
+              id "kotlin-android"
+              id "dev.flutter.flutter-gradle-plugin"
+          }
 
-          # إضافة إعدادات التوقيع بربطها مع key.properties بالطريقة الرسمية لفلاتر
-          signing_snippet = '''
+          def keystoreProperties = new Properties()
+          def keystorePropertiesFile = rootProject.file('key.properties')
+          if (keystorePropertiesFile.exists()) {
+              keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+          }
+
           android {
+              namespace "com.ibrahim.theater2028"
+              compileSdk flutter.compileSdkVersion
+              ndkVersion flutter.ndkVersion
+
+              compileOptions {
+                  sourceCompatibility JavaVersion.VERSION_17
+                  targetCompatibility JavaVersion.VERSION_17
+              }
+
+              kotlinOptions {
+                  jvmTarget = '17'
+              }
+
               signingConfigs {
                   release {
-                      if (project.hasProperty('myKeyProps')) {
-                          // سيتم القراءة تلقائيا
-                      }
+                      keyAlias keystoreProperties.getProperty('keyAlias')
+                      keyPassword keystoreProperties.getProperty('keyPassword')
+                      storeFile keystoreProperties.getProperty('storeFile') ? file(keystoreProperties.getProperty('storeFile')) : null
+                      storePassword keystoreProperties.getProperty('storePassword')
                   }
               }
-          '''
-          
-          # تعديل الـ buildTypes لربط الـ release بالتوقيع القياسي
-          if 'signingConfig signingConfigs.release' not in content:
-              content = content.replace('release {', 'release {\n            signingConfig signingConfigs.release', 1)
 
-          with open(path, 'w') as f:
-              f.write(content)
-          "
+              buildTypes {
+                  release {
+                      signingConfig signingConfigs.release
+                      minifyEnabled true
+                      shrinkResources true
+                  }
+              }
+          }
+
+          flutter {
+              source '../..'
+          }
+          EOF
 
       - name: Get Dependencies
         run: flutter pub get
