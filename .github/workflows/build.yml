@@ -41,14 +41,38 @@ jobs:
             -storepass 123456 -keypass 123456 \
             -dname "CN=Ibrahim, O=Theater, C=IQ"
 
-      - name: Create key.properties File
+      - name: Inject Direct Signing Config into build.gradle
         run: |
-          cat << 'EOF' > android/key.properties
-          storePassword=123456
-          keyPassword=123456
-          keyAlias=upload-alias
-          storeFile=upload-keystore.jks
-          EOF
+          python3 -c "
+          import os
+          workspace = os.environ.get('GITHUB_WORKSPACE', '')
+          k_path = os.path.join(workspace, 'android/app/upload-keystore.jks').replace('\\', '/')
+
+          path = 'android/app/build.gradle'
+          with open(path, 'r', encoding='utf-8') as f:
+              content = f.read()
+
+          signing_block = '''
+          android {
+              signingConfigs {
+                  release {
+                      storeFile file(\"''' + k_path + '''\")
+                      storePassword \"123456\"
+                      keyAlias \"upload-alias\"
+                      keyPassword \"123456\"
+                  }
+              }
+          '''
+
+          if 'signingConfigs' not in content:
+              content = content.replace('android {', signing_block, 1)
+
+          if 'signingConfig signingConfigs.release' not in content:
+              content = content.replace('release {', 'release {\n            signingConfig signingConfigs.release', 1)
+
+          with open(path, 'w', encoding='utf-8') as f:
+              f.write(content)
+          "
 
       - name: Get Dependencies
         run: flutter pub get
