@@ -50,50 +50,35 @@ jobs:
           storeFile=upload-keystore.jks
           EOF
 
-      - name: Overwrite build.gradle with Proper Signing Config
+      - name: Configure signing in app build.gradle
         run: |
-          cat << 'EOF' > android/app/build.gradle
-          plugins {
-              id "com.android.application"
-              id "kotlin-android"
-              id "dev.flutter.flutter-gradle-plugin"
-          }
+          BUILD_GRADLE="android/app/build.gradle"
+          python3 -c "
+          path = '$BUILD_GRADLE'
+          with open(path, 'r', encoding='utf-8') as f:
+              content = f.read()
 
-          android {
-              namespace "com.ibrahim.theater2028"
-              compileSdk 36
-
-              compileOptions {
-                  sourceCompatibility JavaVersion.VERSION_1_8
-                  targetCompatibility JavaVersion.VERSION_1_8
-              }
-
-              kotlinOptions {
-                  jvmTarget = '1.8'
-              }
-
+          # Add signingConfigs inside android block
+          signing_config = '''
               signingConfigs {
                   release {
-                      storeFile file('upload-keystore.jks')
-                      storePassword '123456'
-                      keyAlias 'upload-alias'
-                      keyPassword '123456'
+                      storeFile file(\"upload-keystore.jks\")
+                      storePassword \"123456\"
+                      keyAlias \"upload-alias\"
+                      keyPassword \"123456\"
                   }
               }
+          '''
+          if 'signingConfigs' not in content:
+              content = content.replace('android {', 'android {' + signing_config, 1)
 
-              buildTypes {
-                  release {
-                      signingConfig signingConfigs.release
-                      minifyEnabled false
-                      shrinkResources false
-                  }
-              }
-          }
+          # Add signingConfig to release build type
+          if 'signingConfig signingConfigs.release' not in content:
+              content = content.replace('release {', 'release {\n\t\t\tsigningConfig signingConfigs.release', 1)
 
-          flutter {
-              source '../..'
-          }
-          EOF
+          with open(path, 'w', encoding='utf-8') as f:
+              f.write(content)
+          "
 
       - name: Get Dependencies
         run: flutter pub get
