@@ -31,23 +31,23 @@ jobs:
         run: |
           sed -i 's/version: .*/version: 1.0.0+4/' pubspec.yaml
 
-      - name: Generate True JKS Keystore
+      - name: Generate Modern PKCS12 Keystore
         run: |
           mkdir -p android/app
-          keytool -genkey -v -keystore android/app/upload-keystore.jks \
-            -storetype JKS \
+          keytool -genkey -v -keystore android/app/upload-keystore.p12 \
+            -storetype PKCS12 \
             -keyalg RSA -keysize 2048 -validity 10000 \
             -alias upload-alias \
             -storepass 123456 -keypass 123456 \
             -dname "CN=Ibrahim, O=Theater, C=IQ"
 
-      - name: Safely Overwrite build.gradle with Signing Config
+      - name: Configure Gradle with PKCS12 Signing
         run: |
           cat << 'EOF' > fix_gradle.py
           import os
 
           workspace = os.environ.get('GITHUB_WORKSPACE', '')
-          keystore_path = os.path.join(workspace, 'android/app/upload-keystore.jks').replace('\\', '/')
+          keystore_path = os.path.join(workspace, 'android/app/upload-keystore.p12').replace('\\', '/')
 
           path = 'android/app/build.gradle'
           if os.path.exists(path):
@@ -61,7 +61,7 @@ jobs:
                   storePassword '123456'
                   keyAlias 'upload-alias'
                   keyPassword '123456'
-                  storeType 'JKS'
+                  storeType 'PKCS12'
               }}
           }}
           """
