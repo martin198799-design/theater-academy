@@ -31,7 +31,7 @@ jobs:
         run: |
           sed -i 's/version: .*/version: 1.0.0+4/' pubspec.yaml
 
-      - name: Generate JKS Keystore
+      - name: Generate True JKS Keystore
         run: |
           mkdir -p android/app
           keytool -genkey -v -keystore android/app/upload-keystore.jks \
@@ -41,42 +41,52 @@ jobs:
             -storepass 123456 -keypass 123456 \
             -dname "CN=Ibrahim, O=Theater, C=IQ"
 
-      - name: Configure Gradle Signing Block Safely
+      - name: Write Complete build.gradle with Direct Signing
         run: |
-          cat << 'EOF' > fix_gradle.py
-          import os
+          cat << 'EOF' > android/app/build.gradle
+          plugins {
+              id "com.android.application"
+              id "kotlin-android"
+              id "dev.flutter.flutter-gradle-plugin"
+          }
 
-          workspace = os.environ.get('GITHUB_WORKSPACE', '')
-          keystore_path = os.path.join(workspace, 'android/app/upload-keystore.jks').replace('\\', '/')
+          android {
+              namespace "com.ibrahim.theater2028"
+              compileSdk flutter.compileSdkVersion
+              ndkVersion flutter.ndkVersion
 
-          path = 'android/app/build.gradle'
-          if os.path.exists(path):
-              with open(path, 'r', encoding='utf-8') as f:
-                  content = f.read()
+              compileOptions {
+                  sourceCompatibility JavaVersion.VERSION_17
+                  targetCompatibility JavaVersion.VERSION_17
+              }
 
-              signing_config_block = f"""
-          signingConfigs {{
-              release {{
-                  storeFile file('{keystore_path}')
-                  storePassword '123456'
-                  keyAlias 'upload-alias'
-                  keyPassword '123456'
-                  storeType 'JKS'
-              }}
-          }}
-          """
+              kotlinOptions {
+                  jvmTarget = '17'
+              }
 
-              if 'signingConfigs' not in content:
-                  content = content.replace('android {', 'android {\n' + signing_config_block, 1)
+              signingConfigs {
+                  release {
+                      storeFile file('upload-keystore.jks')
+                      storePassword '123456'
+                      keyAlias 'upload-alias'
+                      keyPassword '123456'
+                      storeType 'JKS'
+                  }
+              }
 
-              if 'signingConfig signingConfigs.release' not in content:
-                  content = content.replace('release {', 'release {\n            signingConfig signingConfigs.release', 1)
+              buildTypes {
+                  release {
+                      signingConfig signingConfigs.release
+                      minifyEnabled true
+                      shrinkResources true
+                  }
+              }
+          }
 
-              with open(path, 'w', encoding='utf-8') as f:
-                  f.write(content)
+          flutter {
+              source '../..'
+          }
           EOF
-
-          python3 fix_gradle.py
 
       - name: Get Dependencies
         run: flutter pub get
