@@ -41,24 +41,35 @@ jobs:
             -storepass 123456 -keypass 123456 \
             -dname "CN=Ibrahim, O=Theater, C=IQ"
 
-      - name: Create Direct key.properties File
+      - name: Inject Direct Signing Config into build.gradle
         run: |
-          echo "storePassword=123456" > android/key.properties
-          echo "keyPassword=123456" >> android/key.properties
-          echo "keyAlias=upload-alias" >> android/key.properties
-          echo "storeFile=app/upload-keystore.jks" >> android/key.properties
-
-      - name: Ensure app/build.gradle is properly configured for signing
-        run: |
-          # التأكد من تفعيل keyProperties في ملف build.gradle الافتراضي لفلاتر
           python3 -c "
+          import os
+          workspace = os.environ['GITHUB_WORKSPACE']
+          keystore_path = os.path.join(workspace, 'android/app/upload-keystore.jks').replace('\\', '/')
+
           path = 'android/app/build.gradle'
           with open(path, 'r') as f:
               content = f.read()
 
-          # تفعيل ربط keyProperties في buildTypes release
+          signing_block = f'''
+          android {{
+              signingConfigs {{
+                  release {{
+                      storeFile file(\"{keystore_path}\")
+                      storePassword \"123456\"
+                      keyAlias \"upload-alias\"
+                      keyPassword \"123456\"
+                      storeType \"JKS\"
+                  }}
+              }}
+          '''
+
+          if 'signingConfigs {' not in content:
+              content = content.replace('android {', signing_block, 1)
+
           if 'signingConfig signingConfigs.release' not in content:
-              content = content.replace('release {', 'release {\n            signingConfig signingConfigs.release')
+              content = content.replace('release {', 'release {\n            signingConfig signingConfigs.release', 1)
 
           with open(path, 'w') as f:
               f.write(content)
