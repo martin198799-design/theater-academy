@@ -31,7 +31,7 @@ jobs:
         run: |
           sed -i 's/version: .*/version: 1.0.0+4/' pubspec.yaml
 
-      - name: Generate JKS Keystore & Configure Absolute Path Signing
+      - name: Generate JKS Keystore
         run: |
           mkdir -p android/app
           keytool -genkey -v -keystore android/app/upload-keystore.jks \
@@ -41,29 +41,30 @@ jobs:
             -storepass 123456 -keypass 123456 \
             -dname "CN=Ibrahim, O=Theater, C=IQ"
 
-      - name: Inject Absolute Path Signing into Gradle
+      - name: Inject Absolute Path Signing into Gradle Safely
         run: |
-          python3 -c "
+          cat << 'EOF' > patch_gradle.py
           import os
+
           workspace = os.environ['GITHUB_WORKSPACE']
           keystore_path = os.path.join(workspace, 'android/app/upload-keystore.jks').replace('\\', '/')
-          
+
           path = 'android/app/build.gradle'
           with open(path, 'r') as f:
               content = f.read()
 
-          signing_block = f'''
+          signing_block = f"""
           android {{
               signingConfigs {{
                   release {{
-                      storeFile file(\"{keystore_path}\")
-                      storePassword \"123456\"
-                      keyAlias \"upload-alias\"
-                      keyPassword \"123456\"
-                      storeType \"JKS\"
+                      storeFile file("{keystore_path}")
+                      storePassword "123456"
+                      keyAlias "upload-alias"
+                      keyPassword "123456"
+                      storeType "JKS"
                   }}
               }}
-          '''
+          """
 
           if 'signingConfigs {' not in content:
               content = content.replace('android {', signing_block, 1)
@@ -73,7 +74,9 @@ jobs:
 
           with open(path, 'w') as f:
               f.write(content)
-          "
+          EOF
+
+          python3 patch_gradle.py
 
       - name: Get Dependencies
         run: flutter pub get
