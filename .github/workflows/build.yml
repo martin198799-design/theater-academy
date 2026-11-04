@@ -50,35 +50,33 @@ jobs:
           storeFile=upload-keystore.jks
           EOF
 
-      - name: Configure signing in app build.gradle
+      - name: Add Signing Config to android/app/build.gradle Standard Way
         run: |
           BUILD_GRADLE="android/app/build.gradle"
-          python3 -c "
-          path = '$BUILD_GRADLE'
-          with open(path, 'r', encoding='utf-8') as f:
-              content = f.read()
+          cat << 'EOF' >> "$BUILD_GRADLE"
 
-          # Add signingConfigs inside android block
-          signing_config = '''
+          def keystoreProperties = new Properties()
+          def keystorePropertiesFile = rootProject.file('key.properties')
+          if (keystorePropertiesFile.exists()) {
+              keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+          }
+
+          android {
               signingConfigs {
                   release {
-                      storeFile file(\"upload-keystore.jks\")
-                      storePassword \"123456\"
-                      keyAlias \"upload-alias\"
-                      keyPassword \"123456\"
+                      keyAlias keystoreProperties.getProperty('keyAlias')
+                      keyPassword keystoreProperties.getProperty('keyPassword')
+                      storeFile keystoreProperties.getProperty('storeFile') ? file(keystoreProperties.getProperty('storeFile')) : null
+                      storePassword keystoreProperties.getProperty('storePassword')
                   }
               }
-          '''
-          if 'signingConfigs' not in content:
-              content = content.replace('android {', 'android {' + signing_config, 1)
-
-          # Add signingConfig to release build type
-          if 'signingConfig signingConfigs.release' not in content:
-              content = content.replace('release {', 'release {\n\t\t\tsigningConfig signingConfigs.release', 1)
-
-          with open(path, 'w', encoding='utf-8') as f:
-              f.write(content)
-          "
+              buildTypes {
+                  release {
+                      signingConfig signingConfigs.release
+                  }
+              }
+          }
+          EOF
 
       - name: Get Dependencies
         run: flutter pub get
