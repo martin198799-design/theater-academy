@@ -41,41 +41,42 @@ jobs:
             -storepass 123456 -keypass 123456 \
             -dname "CN=Ibrahim, O=Theater, C=IQ"
 
-      - name: Overwrite build.gradle with Guaranteed Signing Config
+      - name: Safely Overwrite build.gradle with Signing Config
         run: |
-          python3 -c "
+          cat << 'EOF' > fix_gradle.py
           import os
-          workspace = os.environ['GITHUB_WORKSPACE']
+
+          workspace = os.environ.get('GITHUB_WORKSPACE', '')
           keystore_path = os.path.join(workspace, 'android/app/upload-keystore.jks').replace('\\', '/')
 
           path = 'android/app/build.gradle'
-          with open(path, 'r') as f:
-              content = f.read()
+          if os.path.exists(path):
+              with open(path, 'r') as f:
+                  content = f.read()
 
-          # إزالة أي buildTypes قديمة وتعويضها بالنسخة المجهزة بالتوقيع الكامل
-          signing_config_block = f'''
+              signing_config_block = f"""
           signingConfigs {{
               release {{
-                  storeFile file(\"{keystore_path}\")
-                  storePassword \"123456\"
-                  keyAlias \"upload-alias\"
-                  keyPassword \"123456\"
-                  storeType \"JKS\"
+                  storeFile file('{keystore_path}')
+                  storePassword '123456'
+                  keyAlias 'upload-alias'
+                  keyPassword '123456'
+                  storeType 'JKS'
               }}
           }}
-          '''
+          """
 
-          # حقن الـ signingConfigs مباشرة بعد android {
-          if 'signingConfigs' not in content:
-              content = content.replace('android {', 'android {\n' + signing_config_block, 1)
+              if 'signingConfigs' not in content:
+                  content = content.replace('android {', 'android {\n' + signing_config_block, 1)
 
-          # ربط الـ release بالـ signingConfig
-          if 'signingConfig signingConfigs.release' not in content:
-              content = content.replace('release {', 'release {\n            signingConfig signingConfigs.release', 1)
+              if 'signingConfig signingConfigs.release' not in content:
+                  content = content.replace('release {', 'release {\n            signingConfig signingConfigs.release', 1)
 
-          with open(path, 'w') as f:
-              f.write(content)
-          "
+              with open(path, 'w') as f:
+                  f.write(content)
+          EOF
+
+          python3 fix_gradle.py
 
       - name: Get Dependencies
         run: flutter pub get
