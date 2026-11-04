@@ -50,9 +50,22 @@ jobs:
           storeFile=upload-keystore.jks
           EOF
 
-      - name: Add Signing Config to android/app/build.gradle Standard Way
+      - name: Update minSdkVersion to 24 and Add Signing Config
         run: |
           BUILD_GRADLE="android/app/build.gradle"
+          python3 -c "
+          path = '$BUILD_GRADLE'
+          with open(path, 'r', encoding='utf-8') as f:
+              content = f.read()
+
+          import re
+          content = re.sub(r'minSdkVersion\s+.*', 'minSdkVersion 24', content)
+          content = re.sub(r'minSdk\s+.*', 'minSdk 24', content)
+
+          with open(path, 'w', encoding='utf-8') as f:
+              f.write(content)
+          "
+          
           cat << 'EOF' >> "$BUILD_GRADLE"
 
           def keystoreProperties = new Properties()
