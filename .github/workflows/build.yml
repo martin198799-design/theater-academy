@@ -41,42 +41,42 @@ jobs:
             -storepass 123456 -keypass 123456 \
             -dname "CN=Ibrahim, O=Theater, C=IQ"
 
-      - name: Create and Run Injection Script
+      - name: Create key.properties File
         run: |
-          cat << 'EOF' > inject_sign.py
-          import os
-
-          workspace = os.environ.get('GITHUB_WORKSPACE', '')
-          k_path = os.path.join(workspace, 'android/app/upload-keystore.jks').replace('\\', '/')
-
-          path = 'android/app/build.gradle'
-          if os.path.exists(path):
-              with open(path, 'r', encoding='utf-8') as f:
-                  content = f.read()
-
-              signing_block = f"""
-          android {{
-              signingConfigs {{
-                  release {{
-                      storeFile file('{k_path}')
-                      storePassword '123456'
-                      keyAlias 'upload-alias'
-                      keyPassword '123456'
-                  }}
-              }}
-          """
-
-              if 'signingConfigs' not in content:
-                  content = content.replace('android {', signing_block, 1)
-
-              if 'signingConfig signingConfigs.release' not in content:
-                  content = content.replace('release {', 'release {\n            signingConfig signingConfigs.release', 1)
-
-              with open(path, 'w', encoding='utf-8') as f:
-                  f.write(content)
+          cat << 'EOF' > android/key.properties
+          storePassword=123456
+          keyPassword=123456
+          keyAlias=upload-alias
+          storeFile=upload-keystore.jks
           EOF
 
-          python3 inject_sign.py
+      - name: Configure signing in build.gradle
+        run: |
+          BUILD_GRADLE="android/app/build.gradle"
+          if ! grep -q "signingConfigs" "$BUILD_GRADLE"; then
+            python3 -c "
+            path = '$BUILD_GRADLE'
+            with open(path, 'r', encoding='utf-8') as f:
+                content = f.read()
+            
+            signing_config = '''
+            android {
+                signingConfigs {
+                    release {
+                        storeFile file(\"upload-keystore.jks\")
+                        storePassword \"123456\"
+                        keyAlias \"upload-alias\"
+                        keyPassword \"123456\"
+                    }
+                }
+            '''
+            content = content.replace('android {', signing_config, 1)
+            content = content.replace('release {', 'release {\n            signingConfig signingConfigs.release', 1)
+            
+            with open(path, 'w', encoding='utf-8') as f:
+                f.write(content)
+            "
+          fi
 
       - name: Get Dependencies
         run: flutter pub get
