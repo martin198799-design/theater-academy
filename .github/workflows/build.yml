@@ -38,17 +38,20 @@ jobs:
             -storepass 123456 -keypass 123456 \
             -dname "CN=Ibrahim, O=Theater, C=IQ"
 
+      - name: Create key.properties File
+        run: |
+          cat << 'EOF' > android/key.properties
+          storePassword=123456
+          keyPassword=123456
+          keyAlias=upload-alias
+          storeFile=upload-keystore.jks
+          EOF
+
       - name: Get Dependencies
         run: flutter pub get
 
-      - name: Build App Bundle with Direct Keystore Arguments
-        run: |
-          flutter build appbundle --release \
-            --no-pub \
-            --keystore-path=android/app/upload-keystore.jks \
-            --keystore-password=123456 \
-            --keystore-alias=upload-alias \
-            --keystore-key-password=123456
+      - name: Build App Bundle Release
+        run: flutter build appbundle --release --no-pub
 
       - name: Upload AAB Artifact
         uses: actions/upload-artifact@v4
