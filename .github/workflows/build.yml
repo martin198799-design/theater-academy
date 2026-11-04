@@ -50,39 +50,56 @@ jobs:
           storeFile=upload-keystore.jks
           EOF
 
-      - name: Configure signing in build.gradle
+      - name: Overwrite build.gradle with Proper Signing Config
         run: |
-          BUILD_GRADLE="android/app/build.gradle"
-          if ! grep -q "signingConfigs" "$BUILD_GRADLE"; then
-            python3 -c "
-            path = '$BUILD_GRADLE'
-            with open(path, 'r', encoding='utf-8') as f:
-                content = f.read()
-            
-            signing_config = '''
-            android {
-                signingConfigs {
-                    release {
-                        storeFile file(\"upload-keystore.jks\")
-                        storePassword \"123456\"
-                        keyAlias \"upload-alias\"
-                        keyPassword \"123456\"
-                    }
-                }
-            '''
-            content = content.replace('android {', signing_config, 1)
-            content = content.replace('release {', 'release {\n            signingConfig signingConfigs.release', 1)
-            
-            with open(path, 'w', encoding='utf-8') as f:
-                f.write(content)
-            "
-          fi
+          cat << 'EOF' > android/app/build.gradle
+          plugins {
+              id "com.android.application"
+              id "kotlin-android"
+              id "dev.flutter.flutter-gradle-plugin"
+          }
+
+          android {
+              namespace "com.ibrahim.theater2028"
+              compileSdk 36
+
+              compileOptions {
+                  sourceCompatibility JavaVersion.VERSION_1_8
+                  targetCompatibility JavaVersion.VERSION_1_8
+              }
+
+              kotlinOptions {
+                  jvmTarget = '1.8'
+              }
+
+              signingConfigs {
+                  release {
+                      storeFile file('upload-keystore.jks')
+                      storePassword '123456'
+                      keyAlias 'upload-alias'
+                      keyPassword '123456'
+                  }
+              }
+
+              buildTypes {
+                  release {
+                      signingConfig signingConfigs.release
+                      minifyEnabled false
+                      shrinkResources false
+                  }
+              }
+          }
+
+          flutter {
+              source '../..'
+          }
+          EOF
 
       - name: Get Dependencies
         run: flutter pub get
 
       - name: Build App Bundle Release
-        run: flutter build appbundle --release --no-pub
+        run: flutter build appbundle --release
 
       - name: Upload AAB Artifact
         uses: actions/upload-artifact@v4
