@@ -25,11 +25,11 @@ jobs:
           channel: 'stable'
 
       - name: Generate Fresh Android Structure
-        run: flutter create . --platforms=android --org com.ibrahim.theater2028 --project-name academy99
+        run: flutter create . --platforms=android --org com.ibrahim.theateracademy --project-name academy99
 
-      - name: Set Version Code to 4 in pubspec.yaml
+      - name: Set Version Code to 1 in pubspec.yaml
         run: |
-          sed -i 's/version: .*/version: 1.0.0+4/' pubspec.yaml
+          sed -i 's/version: .*/version: 1.0.0+1/' pubspec.yaml
 
       - name: Generate JKS Keystore
         run: |
@@ -97,8 +97,10 @@ jobs:
       - name: Build App Bundle Release
         run: flutter build appbundle --release
 
-      - name: Upload AAB Artifact
+      - name: Upload AAB and Keystore Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: app-release-bundle
-          path: build/app/outputs/bundle/release/app-release.aab
+          name: app-release-and-keystore
+          path: |
+            build/app/outputs/bundle/release/app-release.aab
+            android/app/upload-keystore.jks
