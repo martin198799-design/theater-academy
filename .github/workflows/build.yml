@@ -30,7 +30,7 @@ jobs:
         run: flutter pub get
 
       - name: Generate Android Template Files
-        run: flutter create . --platforms=android
+        run: flutter create . --platforms=android --org com.ibrahim --project-name theater_academy
 
       - name: Decode Keystore
         run: |
