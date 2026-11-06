@@ -29,6 +29,9 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Generate Android Template Files
+        run: flutter create . --platforms=android
+
       - name: Decode Keystore
         run: |
           mkdir -p android/app
