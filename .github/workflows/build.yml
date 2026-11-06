@@ -61,6 +61,10 @@ jobs:
           import re
           content = re.sub(r'minSdkVersion\s+.*', 'minSdkVersion 24', content)
           content = re.sub(r'minSdk\s+.*', 'minSdk 24', content)
+          content = re.sub(r'targetSdkVersion\s+.*', 'targetSdkVersion 36', content)
+          content = re.sub(r'targetSdk\s+.*', 'targetSdk 36', content)
+          content = re.sub(r'compileSdkVersion\s+.*', 'compileSdkVersion 36', content)
+          content = re.sub(r'compileSdk\s+.*', 'compileSdk 36', content)
 
           with open(path, 'w', encoding='utf-8') as f:
               f.write(content)
