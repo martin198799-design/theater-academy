@@ -37,18 +37,14 @@ jobs:
           mkdir -p android/app
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/upload-keystore.jks
 
-      - name: Create key.properties
+      - name: Create key.properties in android folder
         run: |
-          mkdir -p android
-          echo "storeFile=upload-keystore.jks" > android/key.properties
-          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> android/key.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
-          echo "keyPassword=${{ secrets.KEYSTORE_PASSWORD }}" >> android/key.properties
-
-      - name: Verify key.properties and Keystore exist
-        run: |
-          ls -la android/
-          ls -la android/app/
+          cd android
+          echo "storeFile=app/upload-keystore.jks" > key.properties
+          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> key.properties
+          echo "keyPassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
+          cat key.properties
 
       - name: Build App Bundle (AAB)
         run: flutter build appbundle --release --verbose
