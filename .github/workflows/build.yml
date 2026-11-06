@@ -51,5 +51,6 @@ jobs:
       - name: Upload AAB artifact
         uses: actions/upload-artifact@v4
         with:
-          name: release-aab
+          name: app-release
           path: build/app/outputs/bundle/release/app-release.aab
+          compression-level: 0
