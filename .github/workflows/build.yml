@@ -1,4 +1,4 @@
-name: Build Android App
+name: Build Android App Bundle (AAB)
 
 on:
   push:
@@ -40,11 +40,11 @@ jobs:
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
           echo "keyPassword=${{ secrets.KEYSTORE_PASSWORD }}" >> android/key.properties
 
-      - name: Build APK
-        run: flutter build apk --release
+      - name: Build App Bundle (AAB)
+        run: flutter build appbundle --release
 
-      - name: Upload APK artifact
+      - name: Upload AAB artifact
         uses: actions/upload-artifact@v4
         with:
-          name: release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: release-aab
+          path: build/app/outputs/bundle/release/app-release.aab
