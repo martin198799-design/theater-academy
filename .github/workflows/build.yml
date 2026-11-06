@@ -24,8 +24,8 @@ jobs:
           flutter-version: '3.27.1'
           channel: 'stable'
 
-      - name: Generate Fresh Android Structure with Exact Package Name
-        run: flutter create . --platforms=android --org com.ibrahim.theater --project-name hub2029
+      - name: Generate Fresh Android Structure with Fixed Package
+        run: flutter create . --platforms=android --org com.ibrahim.freetheater --project-name app
 
       - name: Set Version Code to 1 in pubspec.yaml
         run: |
@@ -39,7 +39,7 @@ jobs:
             -keyalg RSA -keysize 2048 -validity 10000 \
             -alias upload-alias \
             -storepass 123456 -keypass 123456 \
-            -dname "CN=Ibrahim, O=Theater, C=IQ"
+            -dname "CN=Ibrahim, O=FreeTheater, C=IQ"
 
       - name: Create key.properties File
         run: |
