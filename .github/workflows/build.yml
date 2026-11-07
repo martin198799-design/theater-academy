@@ -37,25 +37,13 @@ jobs:
           mkdir -p android/app
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/upload-keystore.jks
 
-      - name: Correct Path Inject Signing Config
+      - name: Create key.properties
         run: |
-          BUILD_FILE="android/app/build.gradle"
-          echo "" >> $BUILD_FILE
-          echo "android {" >> $BUILD_FILE
-          echo "    signingConfigs {" >> $BUILD_FILE
-          echo "        release {" >> $BUILD_FILE
-          echo "            storeFile file('upload-keystore.jks')" >> $BUILD_FILE
-          echo "            storePassword '${{ secrets.KEYSTORE_PASSWORD }}'" >> $BUILD_FILE
-          echo "keyAlias '${{ secrets.KEY_ALIAS }}'" >> $BUILD_FILE
-          echo "            keyPassword '${{ secrets.KEYSTORE_PASSWORD }}'" >> $BUILD_FILE
-          echo "        }" >> $BUILD_FILE
-          echo "    }" >> $BUILD_FILE
-          echo "    buildTypes {" >> $BUILD_FILE
-          echo "        release {" >> $BUILD_FILE
-          echo "            signingConfig signingConfigs.release" >> $BUILD_FILE
-          echo "        }" >> $BUILD_FILE
-          echo "    }" >> $BUILD_FILE
-          echo "}" >> $BUILD_FILE
+          cd android
+          echo "storeFile=app/upload-keystore.jks" > key.properties
+          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> key.properties
+          echo "keyPassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
 
       - name: Build App Bundle (AAB)
         run: flutter build appbundle --release
