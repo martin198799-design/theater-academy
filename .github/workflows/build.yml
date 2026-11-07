@@ -40,7 +40,7 @@ jobs:
       - name: Create key.properties
         run: |
           cd android
-          echo "storeFile=app/upload-keystore.jks" > key.properties
+          echo "storeFile=upload-keystore.jks" > key.properties
           echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> key.properties
           echo "keyPassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
@@ -48,13 +48,12 @@ jobs:
       - name: Force Release Signing in build.gradle
         run: |
           BUILD_FILE="android/app/build.gradle"
-          # كتابة إعدادات التوقيع وربطها بـ release buildTypes مباشرة في ملف الـ gradle
           cat << 'EOF' >> $BUILD_FILE
 
           android {
               signingConfigs {
                   release {
-                      storeFile file('app/upload-keystore.jks')
+                      storeFile file('upload-keystore.jks')
                       storePassword "${{ secrets.KEYSTORE_PASSWORD }}"
                       keyAlias "${{ secrets.KEY_ALIAS }}"
                       keyPassword "${{ secrets.KEYSTORE_PASSWORD }}"
