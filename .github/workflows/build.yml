@@ -29,6 +29,12 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Ensure Android Directory Exists
+        run: |
+          if [ ! -d "android" ]; then
+            flutter create . --platforms=android --org com.ibrahim --project-name theater_academy
+          fi
+
       - name: Decode Keystore
         run: |
           mkdir -p android/app
@@ -45,7 +51,8 @@ jobs:
       - name: Force Release Signing in build.gradle
         run: |
           BUILD_FILE="android/app/build.gradle"
-          # التأكد من حقن إعدادات التوقيع وربطها بـ release buildTypes يدوياً وبدقة
+          
+          # حقن إعدادات التوقيع وربطها بقسم release لضمان عدم استخدام وضع التصحيح أبداً
           cat << 'EOF' >> $BUILD_FILE
 
           android {
