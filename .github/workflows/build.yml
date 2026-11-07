@@ -43,13 +43,37 @@ jobs:
       - name: Create key.properties
         run: |
           cd android
-          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > key.properties
-          echo "keyPassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
+          echo "storeFile=upload-keystore.jks" > key.properties
+          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> key.properties
-          echo "storeFile=upload-keystore.jks" >> key.properties
+          echo "keyPassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
+
+      - name: Explicitly Configure Signing in build.gradle
+        run: |
+          BUILD_FILE="android/app/build.gradle"
+          
+          # إزالة أي إعدادات قديمة وإجبار ربط التوقيع بوضع الإصدار بشكل قاطع
+          cat << 'EOF' >> $BUILD_FILE
+
+          android {
+              signingConfigs {
+                  release {
+                      storeFile file('upload-keystore.jks')
+                      storePassword "${{ secrets.KEYSTORE_PASSWORD }}"
+                      keyAlias "${{ secrets.KEY_ALIAS }}"
+                      keyPassword "${{ secrets.KEYSTORE_PASSWORD }}"
+                  }
+              }
+              buildTypes {
+                  release {
+                      signingConfig signingConfigs.release
+                  }
+              }
+          }
+          EOF
 
       - name: Build App Bundle (AAB)
-        run: flutter build appbundle --release
+        run: flutter build appbundle --release --verbose
 
       - name: Upload AAB artifact
         uses: actions/upload-artifact@v4
