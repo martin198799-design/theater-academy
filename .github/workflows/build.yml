@@ -29,24 +29,37 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Generate Android Template Files (v2)
-        run: flutter create . --platforms=android --org com.ibrahim --project-name theater_academy
-
       - name: Decode Keystore
         run: |
           mkdir -p android/app
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/upload-keystore.jks
 
-      - name: Create key.properties
+      - name: Inject Release Signing Config
         run: |
-          cd android
-          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > key.properties
-          echo "keyPassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> key.properties
-          echo "storeFile=upload-keystore.jks" >> key.properties
+          BUILD_FILE="android/app/build.gradle"
+          
+          # التأكد من عدم تكرار الإعدادات وحقن التوقيع الصحيح بوضع الإصدار
+          cat << 'EOF' >> $BUILD_FILE
+
+          android {
+              signingConfigs {
+                  release {
+                      storeFile file('upload-keystore.jks')
+                      storePassword "${{ secrets.KEYSTORE_PASSWORD }}"
+                      keyAlias "${{ secrets.KEY_ALIAS }}"
+                      keyPassword "${{ secrets.KEYSTORE_PASSWORD }}"
+                  }
+              }
+              buildTypes {
+                  release {
+                      signingConfig signingConfigs.release
+                  }
+              }
+          }
+          EOF
 
       - name: Build App Bundle (AAB)
-        run: flutter build appbundle --release
+        run: flutter build appbundle --release --verbose
 
       - name: Upload AAB artifact
         uses: actions/upload-artifact@v4
