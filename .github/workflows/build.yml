@@ -29,7 +29,7 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Clean and Generate Android v2 Template
+      - name: Clean Android Directory & Recreate Template
         run: |
           rm -rf android
           flutter create . --platforms=android --org com.ibrahim --project-name theater_academy
@@ -47,31 +47,18 @@ jobs:
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> key.properties
           echo "keyPassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
 
-      - name: Setup Signing Config in build.gradle
+      - name: Fix Android Manifest Package Name
         run: |
-          BUILD_FILE="android/app/build.gradle"
-          # إضافة إعدادات التوقيع مباشرة لملف الـ gradle لضمان البناء بوضع الإصدار
-          cat << 'EOF' >> $BUILD_FILE
+          MANIFEST_FILE="android/app/src/main/AndroidManifest.xml"
+          if [ -f "$MANIFEST_FILE" ]; then
+            sed -i 's/package="com.example.theater_academy"/package="com.ibrahim.theatre.academy"/g' $MANIFEST_FILE || true
+          fi
 
-          android {
-              signingConfigs {
-                  release {
-                      storeFile file('upload-keystore.jks')
-                      storePassword "${{ secrets.KEYSTORE_PASSWORD }}"
-                      keyAlias "${{ secrets.KEY_ALIAS }}"
-                      keyPassword "${{ secrets.KEYSTORE_PASSWORD }}"
-                  }
-              }
-              buildTypes {
-                  release {
-                      signingConfig signingConfigs.release
-                  }
-              }
-          }
-          EOF
-
-      - name: Build App Bundle (AAB)
-        run: flutter build appbundle --release --verbose
+      - name: Clean Build and Build Release App Bundle
+        run: |
+          flutter clean
+          flutter pub get
+          flutter build appbundle --release
 
       - name: Upload AAB artifact
         uses: actions/upload-artifact@v4
