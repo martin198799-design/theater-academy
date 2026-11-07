@@ -29,6 +29,9 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Generate Android Template Files (v2)
+        run: flutter create . --platforms=android --org com.ibrahim --project-name theater_academy
+
       - name: Decode Keystore
         run: |
           mkdir -p android/app
@@ -42,23 +45,26 @@ jobs:
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> key.properties
           echo "keyPassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
 
-      - name: Inject Signing Config into build.gradle
+      - name: Safe Inject Signing Config
         run: |
           BUILD_FILE="android/app/build.gradle"
-          if [ -f "$BUILD_FILE" ]; then
-            # حقن إعدادات التوقيع
-            sed -i '/android {/a \
-                signingConfigs {\
-                    release {\
-                        storeFile file("app/upload-keystore.jks")\
-                        storePassword "${{ secrets.KEYSTORE_PASSWORD }}"\
-                        keyAlias "${{ secrets.KEY_ALIAS }}"\
-                        keyPassword "${{ secrets.KEYSTORE_PASSWORD }}"\
-                    }\
-                }' $BUILD_FILE
-            # ربط buildTypes
-            sed -i 's/buildTypes {/buildTypes {\n    release {\n        signingConfig signingConfigs.release\n    }/' $BUILD_FILE
-          fi
+          # إضافة الـ signingConfigs قبل نهاية ملف الـ android block أو بعد buildTypes
+          echo "" >> $BUILD_FILE
+          echo "android {" >> $BUILD_FILE
+          echo "    signingConfigs {" >> $BUILD_FILE
+          echo "        release {" >> $BUILD_FILE
+          echo "            storeFile file('app/upload-keystore.jks')" >> $BUILD_FILE
+          echo "            storePassword '${{ secrets.KEYSTORE_PASSWORD }}'" >> $BUILD_FILE
+          echo "            keyAlias '${{ secrets.KEY_ALIAS }}'" >> $BUILD_FILE
+          echo "            keyPassword '${{ secrets.KEYSTORE_PASSWORD }}'" >> $BUILD_FILE
+          echo "        }" >> $BUILD_FILE
+          echo "    }" >> $BUILD_FILE
+          echo "    buildTypes {" >> $BUILD_FILE
+          echo "        release {" >> $BUILD_FILE
+          echo "            signingConfig signingConfigs.release" >> $BUILD_FILE
+          echo "        }" >> $BUILD_FILE
+          echo "    }" >> $BUILD_FILE
+          echo "}" >> $BUILD_FILE
 
       - name: Build App Bundle (AAB)
         run: flutter build appbundle --release
