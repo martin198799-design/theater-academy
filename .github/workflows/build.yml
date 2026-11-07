@@ -29,6 +29,9 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Generate Android Template Files (v2)
+        run: flutter create . --platforms=android --org com.ibrahim --project-name theater_academy
+
       - name: Decode Keystore
         run: |
           mkdir -p android/app
@@ -41,6 +44,21 @@ jobs:
           echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> key.properties
           echo "keyPassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
+
+      - name: Configure Signing in build.gradle
+        run: |
+          FILE="android/app/build.gradle"
+          sed -i '/android {/a \
+              signingConfigs {\
+                  release {\
+                      storeFile file("upload-keystore.jks")\
+                      storePassword "${{ secrets.KEYSTORE_PASSWORD }}"\
+                      keyAlias "${{ secrets.KEY_ALIAS }}"\
+                      keyPassword "${{ secrets.KEYSTORE_PASSWORD }}"\
+                  }\
+              }' $FILE
+          sed -i 's/minifyEnabled true/minifyEnabled true\n            signingConfig signingConfigs.release/g' $FILE
+          sed -i 's/minifyEnabled false/minifyEnabled false\n            signingConfig signingConfigs.release/g' $FILE
 
       - name: Build App Bundle (AAB)
         run: flutter build appbundle --release --verbose
