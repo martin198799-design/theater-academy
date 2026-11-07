@@ -29,40 +29,15 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Generate Fresh Android Template with New Package Name
+      - name: Create key.properties directly with stored credentials
         run: |
-          rm -rf android
-          flutter create . --platforms=android --org com.ibrahim --project-name theatre_arts
-
-      - name: Decode Keystore
-        run: |
-          mkdir -p android/app
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/upload-keystore.jks
-
-      - name: Inject Correct Signing Config into build.gradle
-        run: |
-          BUILD_FILE="android/app/build.gradle"
-          
-          # حقن إعدادات التوقيع بوضع الإصدار بشكل قاطع
-          cat << 'EOF' >> $BUILD_FILE
-
-          android {
-              signingConfigs {
-                  release {
-                      storeFile file('upload-keystore.jks')
-                      storePassword "${{ secrets.KEYSTORE_PASSWORD }}"
-                      keyAlias "${{ secrets.KEY_ALIAS }}"
-                      keyPassword "${{ secrets.KEYSTORE_PASSWORD }}"
-                  }
-              }
-              buildTypes {
-                  release {
-                      signingConfig signingConfigs.release
-                      minifyEnabled false
-                      shrinkResources false
-                  }
-              }
-          }
+          cd android
+          mkdir -p app
+          cat << 'EOF' > key.properties
+          storePassword=${{ secrets.KEYSTORE_PASSWORD }}
+          keyPassword=${{ secrets.KEYSTORE_PASSWORD }}
+          keyAlias=${{ secrets.KEY_ALIAS }}
+          storeFile=upload-keystore.jks
           EOF
 
       - name: Build Official Release App Bundle
