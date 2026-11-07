@@ -29,7 +29,7 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Clean and Create Modern Android v2 Template
+      - name: Clean and Generate Android v2 Template
         run: |
           rm -rf android
           flutter create . --platforms=android --org com.ibrahim --project-name theater_academy
@@ -47,11 +47,28 @@ jobs:
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> key.properties
           echo "keyPassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
 
-      - name: Configure Release Signing in build.gradle
+      - name: Setup Signing Config in build.gradle
         run: |
           BUILD_FILE="android/app/build.gradle"
-          # التأكد من إضافة إعدادات التوقيع لقسم buildTypes release في الملف المنشأ حديثاً
-          sed -i '/buildTypes {/,/}/s/release {/release {\n        signingConfig signingConfigs.release/' $BUILD_FILE
+          # إضافة إعدادات التوقيع مباشرة لملف الـ gradle لضمان البناء بوضع الإصدار
+          cat << 'EOF' >> $BUILD_FILE
+
+          android {
+              signingConfigs {
+                  release {
+                      storeFile file('upload-keystore.jks')
+                      storePassword "${{ secrets.KEYSTORE_PASSWORD }}"
+                      keyAlias "${{ secrets.KEY_ALIAS }}"
+                      keyPassword "${{ secrets.KEYSTORE_PASSWORD }}"
+                  }
+              }
+              buildTypes {
+                  release {
+                      signingConfig signingConfigs.release
+                  }
+              }
+          }
+          EOF
 
       - name: Build App Bundle (AAB)
         run: flutter build appbundle --release --verbose
