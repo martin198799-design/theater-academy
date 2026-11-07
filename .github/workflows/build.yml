@@ -40,32 +40,10 @@ jobs:
       - name: Create key.properties
         run: |
           cd android
-          echo "storeFile=upload-keystore.jks" > key.properties
-          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> key.properties
+          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > key.properties
           echo "keyPassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
-
-      - name: Force Release Signing in build.gradle
-        run: |
-          BUILD_FILE="android/app/build.gradle"
-          cat << 'EOF' >> $BUILD_FILE
-
-          android {
-              signingConfigs {
-                  release {
-                      storeFile file('upload-keystore.jks')
-                      storePassword "${{ secrets.KEYSTORE_PASSWORD }}"
-                      keyAlias "${{ secrets.KEY_ALIAS }}"
-                      keyPassword "${{ secrets.KEYSTORE_PASSWORD }}"
-                  }
-              }
-              buildTypes {
-                  release {
-                      signingConfig signingConfigs.release
-                  }
-              }
-          }
-          EOF
+          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> key.properties
+          echo "storeFile=upload-keystore.jks" >> key.properties
 
       - name: Build App Bundle (AAB)
         run: flutter build appbundle --release
