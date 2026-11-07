@@ -29,25 +29,43 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Clean and Generate Fresh Android Template
+      - name: Generate Fresh Android Template with New Package Name
         run: |
           rm -rf android
-          flutter create . --platforms=android --org com.ibrahim --project-name theater_academy
+          flutter create . --platforms=android --org com.ibrahim --project-name theatre_arts
 
       - name: Decode Keystore
         run: |
           mkdir -p android/app
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/upload-keystore.jks
 
-      - name: Create key.properties (Standard Way)
+      - name: Inject Correct Signing Config into build.gradle
         run: |
-          cd android
-          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > key.properties
-          echo "keyPassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> key.properties
-          echo "storeFile=upload-keystore.jks" >> key.properties
+          BUILD_FILE="android/app/build.gradle"
+          
+          # حقن إعدادات التوقيع بوضع الإصدار بشكل قاطع
+          cat << 'EOF' >> $BUILD_FILE
 
-      - name: Build App Bundle (AAB)
+          android {
+              signingConfigs {
+                  release {
+                      storeFile file('upload-keystore.jks')
+                      storePassword "${{ secrets.KEYSTORE_PASSWORD }}"
+                      keyAlias "${{ secrets.KEY_ALIAS }}"
+                      keyPassword "${{ secrets.KEYSTORE_PASSWORD }}"
+                  }
+              }
+              buildTypes {
+                  release {
+                      signingConfig signingConfigs.release
+                      minifyEnabled false
+                      shrinkResources false
+                  }
+              }
+          }
+          EOF
+
+      - name: Build Official Release App Bundle
         run: flutter build appbundle --release
 
       - name: Upload AAB artifact
