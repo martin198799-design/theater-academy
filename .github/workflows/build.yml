@@ -42,6 +42,24 @@ jobs:
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> key.properties
           echo "keyPassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
 
+      - name: Inject Signing Config into build.gradle
+        run: |
+          BUILD_FILE="android/app/build.gradle"
+          if [ -f "$BUILD_FILE" ]; then
+            # حقن إعدادات التوقيع
+            sed -i '/android {/a \
+                signingConfigs {\
+                    release {\
+                        storeFile file("app/upload-keystore.jks")\
+                        storePassword "${{ secrets.KEYSTORE_PASSWORD }}"\
+                        keyAlias "${{ secrets.KEY_ALIAS }}"\
+                        keyPassword "${{ secrets.KEYSTORE_PASSWORD }}"\
+                    }\
+                }' $BUILD_FILE
+            # ربط buildTypes
+            sed -i 's/buildTypes {/buildTypes {\n    release {\n        signingConfig signingConfigs.release\n    }/' $BUILD_FILE
+          fi
+
       - name: Build App Bundle (AAB)
         run: flutter build appbundle --release
 
