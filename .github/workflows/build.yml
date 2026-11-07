@@ -45,6 +45,29 @@ jobs:
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> key.properties
           echo "keyPassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
 
+      - name: Force Release Signing in build.gradle
+        run: |
+          BUILD_FILE="android/app/build.gradle"
+          # كتابة إعدادات التوقيع وربطها بـ release buildTypes مباشرة في ملف الـ gradle
+          cat << 'EOF' >> $BUILD_FILE
+
+          android {
+              signingConfigs {
+                  release {
+                      storeFile file('app/upload-keystore.jks')
+                      storePassword "${{ secrets.KEYSTORE_PASSWORD }}"
+                      keyAlias "${{ secrets.KEY_ALIAS }}"
+                      keyPassword "${{ secrets.KEYSTORE_PASSWORD }}"
+                  }
+              }
+              buildTypes {
+                  release {
+                      signingConfig signingConfigs.release
+                  }
+              }
+          }
+          EOF
+
       - name: Build App Bundle (AAB)
         run: flutter build appbundle --release
 
