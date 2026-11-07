@@ -37,14 +37,30 @@ jobs:
           mkdir -p android/app
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/upload-keystore.jks
 
-      - name: Create key.properties in android folder
+      - name: Create key.properties
         run: |
           cd android
-          echo "storeFile=app/upload-keystore.jks" > key.properties
+          echo "storeFile=upload-keystore.jks" > key.properties
           echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> key.properties
           echo "keyPassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
-          cat key.properties
+
+      - name: Configure Signing in build.gradle
+        run: |
+          FILE="android/app/build.gradle"
+          # إضافة إعدادات التوقيع (signingConfigs) للملف
+          sed -i '/android {/a \
+              signingConfigs {\
+                  release {\
+                      storeFile file("upload-keystore.jks")\
+                      storePassword "${{ secrets.KEYSTORE_PASSWORD }}"\
+                      keyAlias "${{ secrets.KEY_ALIAS }}"\
+                      keyPassword "${{ secrets.KEYSTORE_PASSWORD }}"\
+                  }\
+              }' $FILE
+          # ربط buildTypes بـ release signingConfig
+          sed -i 's/minifyEnabled true/minifyEnabled true\n            signingConfig signingConfigs.release/g' $FILE
+          sed -i 's/minifyEnabled false/minifyEnabled false\n            signingConfig signingConfigs.release/g' $FILE
 
       - name: Build App Bundle (AAB)
         run: flutter build appbundle --release --verbose
