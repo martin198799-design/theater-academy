@@ -29,10 +29,16 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Generate Android Template
+        run: |
+          if [ ! -d "android" ]; then
+            flutter create . --platforms=android --org com.ibrahim --project-name theatre_arts
+          fi
+
       - name: Create key.properties directly with stored credentials
         run: |
+          mkdir -p android/app
           cd android
-          mkdir -p app
           cat << 'EOF' > key.properties
           storePassword=${{ secrets.KEYSTORE_PASSWORD }}
           keyPassword=${{ secrets.KEYSTORE_PASSWORD }}
