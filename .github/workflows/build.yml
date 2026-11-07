@@ -29,51 +29,26 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Generate Android Template
+      - name: Clean and Generate Fresh Android Template
         run: |
-          if [ ! -d "android" ]; then
-            flutter create . --platforms=android --org com.ibrahim --project-name theater_academy
-          fi
+          rm -rf android
+          flutter create . --platforms=android --org com.ibrahim --project-name theater_academy
 
       - name: Decode Keystore
         run: |
           mkdir -p android/app
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/upload-keystore.jks
 
-      - name: Create key.properties
+      - name: Create key.properties (Standard Way)
         run: |
           cd android
-          echo "storeFile=upload-keystore.jks" > key.properties
-          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> key.properties
+          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > key.properties
           echo "keyPassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
-
-      - name: Explicitly Configure Signing in build.gradle
-        run: |
-          BUILD_FILE="android/app/build.gradle"
-          
-          # إزالة أي إعدادات قديمة وإجبار ربط التوقيع بوضع الإصدار بشكل قاطع
-          cat << 'EOF' >> $BUILD_FILE
-
-          android {
-              signingConfigs {
-                  release {
-                      storeFile file('upload-keystore.jks')
-                      storePassword "${{ secrets.KEYSTORE_PASSWORD }}"
-                      keyAlias "${{ secrets.KEY_ALIAS }}"
-                      keyPassword "${{ secrets.KEYSTORE_PASSWORD }}"
-                  }
-              }
-              buildTypes {
-                  release {
-                      signingConfig signingConfigs.release
-                  }
-              }
-          }
-          EOF
+          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> key.properties
+          echo "storeFile=upload-keystore.jks" >> key.properties
 
       - name: Build App Bundle (AAB)
-        run: flutter build appbundle --release --verbose
+        run: flutter build appbundle --release
 
       - name: Upload AAB artifact
         uses: actions/upload-artifact@v4
