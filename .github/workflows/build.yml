@@ -29,34 +29,29 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Clean and Create Modern Android v2 Template
+        run: |
+          rm -rf android
+          flutter create . --platforms=android --org com.ibrahim --project-name theater_academy
+
       - name: Decode Keystore
         run: |
           mkdir -p android/app
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/upload-keystore.jks
 
-      - name: Inject Release Signing Config
+      - name: Create key.properties
+        run: |
+          cd android
+          echo "storeFile=upload-keystore.jks" > key.properties
+          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> key.properties
+          echo "keyPassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
+
+      - name: Configure Release Signing in build.gradle
         run: |
           BUILD_FILE="android/app/build.gradle"
-          
-          # التأكد من عدم تكرار الإعدادات وحقن التوقيع الصحيح بوضع الإصدار
-          cat << 'EOF' >> $BUILD_FILE
-
-          android {
-              signingConfigs {
-                  release {
-                      storeFile file('upload-keystore.jks')
-                      storePassword "${{ secrets.KEYSTORE_PASSWORD }}"
-                      keyAlias "${{ secrets.KEY_ALIAS }}"
-                      keyPassword "${{ secrets.KEYSTORE_PASSWORD }}"
-                  }
-              }
-              buildTypes {
-                  release {
-                      signingConfig signingConfigs.release
-                  }
-              }
-          }
-          EOF
+          # التأكد من إضافة إعدادات التوقيع لقسم buildTypes release في الملف المنشأ حديثاً
+          sed -i '/buildTypes {/,/}/s/release {/release {\n        signingConfig signingConfigs.release/' $BUILD_FILE
 
       - name: Build App Bundle (AAB)
         run: flutter build appbundle --release --verbose
