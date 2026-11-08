@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: AI Technical Agent - Complete Setup, Keystore, PEM & Version 36
+      - name: AI Technical Agent - Complete Setup, Application ID, Keystore, PEM & Version 36
         run: |
           python3 -c "
           import os
@@ -36,7 +36,7 @@ jobs:
           import shutil
           import re
 
-          print('🤖 [AI Agent]: Initializing clean build from scratch...')
+          print('🤖 [AI Agent]: Initializing clean build and enforcing package name...')
 
           # 1. ضبط رقم الإصدار ليصبح 36 بدقة
           pubspec_path = 'pubspec.yaml'
@@ -83,7 +83,7 @@ jobs:
           else:
               print('🤖 [AI Agent]: Keystore already exists. Preserving it safely.')
 
-          # 4. استخراج شهادة الـ PEM المطلوبة لمتجر جوجل بلاي تلقائياً!
+          # 4. استخراج شهادة الـ PEM المطلوبة لمتجر جوجل بلاي تلقائياً
           pem_path = 'upload_certificate.pem'
           print('🤖 [AI Agent]: Exporting upload_certificate.pem for Play Console...')
           pem_cmd = [
@@ -108,11 +108,18 @@ jobs:
           with open('android/app/key.properties', 'w') as f:
               f.write(key_props)
 
-          # 6. حقن إعدادات التوقيع ورفع minSdkVersion إلى 24 قسراً
+          # 6. حقن وتثبيت اسم الحزمة (applicationId) و minSdkVersion و إعدادات التوقيع قسراً
           gradle_path = 'android/app/build.gradle'
           if os.path.exists(gradle_path):
               with open(gradle_path, 'r') as f:
                   content = f.read()
+
+              # ضمان توحيد اسم الحزمة بدقة
+              if 'applicationId' in content:
+                  content = re.sub(r'applicationId\s+\".*?\"', 'applicationId \"com.ibrahim.theatre.arts\"', content)
+                  content = re.sub(r'applicationId\s+\'.*?\'', 'applicationId \"com.ibrahim.theatre.arts\"', content)
+              else:
+                  content = content.replace('defaultConfig {', 'defaultConfig {\n        applicationId \"com.ibrahim.theatre.arts\"', 1)
 
               if 'signingConfigs {' not in content:
                   signing_block = f'''
@@ -139,7 +146,7 @@ jobs:
               with open(gradle_path, 'w') as f:
                   f.write(content)
 
-          print('🤖 [AI Agent]: All setups completed successfully.')
+          print('🤖 [AI Agent]: All setups, package name, and verifications completed successfully.')
           "
 
       - name: Build Official Release App Bundle
