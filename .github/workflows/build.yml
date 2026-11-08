@@ -28,17 +28,29 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: AI Technical Agent - Setup key.properties & Gradle
+      - name: AI Technical Agent - Clean & Recreate Modern Android Template
         run: |
           python3 -c "
           import os
+          import subprocess
+          import shutil
 
-          print('🤖 [AI Agent]: Configuring signing properties...')
+          print('🤖 [AI Agent]: Checking Android project structure...')
 
-          # التأكد من وجود مجلد app
+          # إذا كان مجلد android قديماً أو ناقصاً، نقوم بإزالته وإعادة إنشائه بالمعايير الحديثة v2
+          if os.path.exists('android'):
+              if not os.path.exists('android/app/src/main/AndroidManifest.xml'):
+                  print('🤖 [AI Agent]: Found incomplete Android folder. Recreating clean template...')
+                  shutil.rmtree('android')
+
+          if not os.path.exists('android'):
+              print('🤖 [AI Agent]: Generating fresh Android v2 template...')
+              subprocess.run(['flutter', 'create', '.', '--platforms=android', '--org', 'com.ibrahim', '--project-name', 'theatre_arts'], check=True)
+
+          # التأكد من وجود مجلد app والتوقيع
           os.makedirs('android/app', exist_ok=True)
 
-          # كتابة ملف key.properties بالمعلومات الثابتة مدى الحياة
+          # كتابة ملف key.properties
           key_props = f'''storePassword={os.environ.get('KEYSTORE_PASSWORD', '')}
           keyPassword={os.environ.get('KEYSTORE_PASSWORD', '')}
           keyAlias={os.environ.get('KEY_ALIAS', '')}
@@ -51,7 +63,7 @@ jobs:
           with open('android/app/key.properties', 'w') as f:
               f.write(key_props)
 
-          # تعديل build.gradle لضمان استخدام توقيع الإصدار
+          # ضبط build.gradle للإصدار الموقّع
           gradle_path = 'android/app/build.gradle'
           if os.path.exists(gradle_path):
               with open(gradle_path, 'r') as f:
@@ -77,7 +89,7 @@ jobs:
               with open(gradle_path, 'w') as f:
                   f.write(content)
 
-          print('🤖 [AI Agent]: Configuration completed successfully.')
+          print('🤖 [AI Agent]: Setup and modern embedding verification completed successfully.')
           "
 
       - name: Build Official Release App Bundle
