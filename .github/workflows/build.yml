@@ -28,29 +28,19 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: AI Technical Agent - Clean & Recreate Modern Android Template
+      - name: AI Technical Agent - Configure Signing & Gradle Safely
         run: |
           python3 -c "
           import os
-          import subprocess
-          import shutil
 
-          print('🤖 [AI Agent]: Checking Android project structure...')
+          print('🤖 [AI Agent]: Verifying permanent keystore and gradle configuration...')
 
-          # إذا كان مجلد android قديماً أو ناقصاً، نقوم بإزالته وإعادة إنشائه بالمعايير الحديثة v2
-          if os.path.exists('android'):
-              if not os.path.exists('android/app/src/main/AndroidManifest.xml'):
-                  print('🤖 [AI Agent]: Found incomplete Android folder. Recreating clean template...')
-                  shutil.rmtree('android')
+          # التأكد من وجود ملف المفتاح في مكانه الصحيح
+          keystore_path = 'android/app/upload-keystore.jks'
+          if not os.path.exists(keystore_path):
+              raise FileNotFoundError(f'❌ Keystore file is missing at {keystore_path}! Please upload it to your repository.')
 
-          if not os.path.exists('android'):
-              print('🤖 [AI Agent]: Generating fresh Android v2 template...')
-              subprocess.run(['flutter', 'create', '.', '--platforms=android', '--org', 'com.ibrahim', '--project-name', 'theatre_arts'], check=True)
-
-          # التأكد من وجود مجلد app والتوقيع
-          os.makedirs('android/app', exist_ok=True)
-
-          # كتابة ملف key.properties
+          # إنشاء ملف key.properties بالمعلومات الثابتة مدى الحياة
           key_props = f'''storePassword={os.environ.get('KEYSTORE_PASSWORD', '')}
           keyPassword={os.environ.get('KEYSTORE_PASSWORD', '')}
           keyAlias={os.environ.get('KEY_ALIAS', '')}
@@ -63,7 +53,7 @@ jobs:
           with open('android/app/key.properties', 'w') as f:
               f.write(key_props)
 
-          # ضبط build.gradle للإصدار الموقّع
+          # ضبط build.gradle للإصدار الموقّع حصرياً
           gradle_path = 'android/app/build.gradle'
           if os.path.exists(gradle_path):
               with open(gradle_path, 'r') as f:
@@ -89,7 +79,7 @@ jobs:
               with open(gradle_path, 'w') as f:
                   f.write(content)
 
-          print('🤖 [AI Agent]: Setup and modern embedding verification completed successfully.')
+          print('🤖 [AI Agent]: Configuration verified. Keystore and Gradle are fully synced.')
           "
 
       - name: Build Official Release App Bundle
