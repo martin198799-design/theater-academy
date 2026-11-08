@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: AI Technical Agent - Bulletproof SDK & Keystore Auto-Fixer
+      - name: AI Technical Agent - Version 36, SDK & Keystore Auto-Fixer
         run: |
           python3 -c "
           import os
@@ -36,7 +36,20 @@ jobs:
           import shutil
           import re
 
-          print('🤖 [AI Agent]: Inspecting Android project structure...')
+          print('🤖 [AI Agent]: Inspecting Android project structure & version...')
+
+          # تحديث رقم الإصدار تلقائياً في pubspec.yaml ليصبح الإصدار 36
+          pubspec_path = 'pubspec.yaml'
+          if os.path.exists(pubspec_path):
+              with open(pubspec_path, 'r') as f:
+                  pub_content = f.read()
+              
+              if 'version:' in pub_content:
+                  pub_content = re.sub(r'version:\s+.*', 'version: 1.0.36+36', pub_content)
+              
+              with open(pubspec_path, 'w') as f:
+                  f.write(pub_content)
+              print('🤖 [AI Agent]: Version automatically bumped to 1.0.36+36.')
 
           # التأكد من وجود هيكل أندرويد حديث ومتكامل v2
           manifest_path = 'android/app/src/main/AndroidManifest.xml'
@@ -113,7 +126,6 @@ jobs:
                   content = re.sub(r'minSdkVersion\s+.*', 'minSdkVersion 24', content)
                   print('🤖 [AI Agent]: Forced minSdkVersion to 24 successfully.')
               else:
-                # إذا لم تجد الكلمة، نقوم بإضافتها داخل defaultConfig
                 content = content.replace('defaultConfig {', 'defaultConfig {\n        minSdkVersion 24', 1)
 
               with open(gradle_path, 'w') as f:
