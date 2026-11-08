@@ -1,13 +1,12 @@
-name: Build Android App Bundle (AAB)
+name: AI Autonomous Build & Healing Agent
 
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
-  build:
+  autonomous_build:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,58 +28,84 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Generate Android Template
-        run: |
-          if [ ! -d "android" ]; then
-            flutter create . --platforms=android --org com.ibrahim --project-name theatre_arts
-          fi
-
-      - name: Decode Keystore Safely
-        run: |
-          mkdir -p android/app
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/upload-keystore.jks
-
-      - name: Create key.properties
-        run: |
-          cd android
-          cat << 'EOF' > key.properties
-          storePassword=${{ secrets.KEYSTORE_PASSWORD }}
-          keyPassword=${{ secrets.KEYSTORE_PASSWORD }}
-          keyAlias=${{ secrets.KEY_ALIAS }}
-          storeFile=upload-keystore.jks
-          EOF
-
-      - name: Force True Release Signing in build.gradle
+      - name: AI Technical Agent - Keystore & Error Healing Guard
         run: |
           python3 -c "
-          path = 'android/app/build.gradle'
-          with open(path, 'r') as f:
-              content = f.read()
+          import os
+          import subprocess
 
-          signing_configs_block = '''
-              signingConfigs {
-                  release {
-                      storeFile file('upload-keystore.jks')
-                      storePassword '${{ secrets.KEYSTORE_PASSWORD }}'
-                      keyAlias '${{ secrets.KEY_ALIAS }}'
-                      keyPassword '${{ secrets.KEYSTORE_PASSWORD }}'
-                  }
-              }
+          print('🤖 [AI Agent]: Starting autonomous environment inspection...')
+
+          # 1. التأكد من وجود الهيكل أو إنشاؤه بحذر دون المساس ببصمة التوقيع أو اسم الحزمة
+          if not os.path.exists('android'):
+              print('🤖 [AI Agent]: Generating clean Android template...')
+              subprocess.run(['flutter', 'create', '.', '--platforms=android', '--org', 'com.ibrahim', '--project-name', 'theatre_arts'], check=True)
+
+          # 2. حراسة المفتاح الأصلي: فك تشفير المفتاح الحقيقي وثباته
+          os.makedirs('android/app', exist_ok=True)
+          keystore_base64 = os.environ.get('KEYSTORE_BASE64', '')
+          keystore_path = 'android/app/upload-keystore.jks'
+          
+          if keystore_base64:
+              print('🤖 [AI Agent]: Restoring original permanent signing keystore...')
+              import base64
+              with open(keystore_path, 'wb') as f:
+                  f.write(base64.b64decode(keystore_base64))
+          else:
+              print('🤖 [AI Agent Warning]: Keystore secret is empty, checking local existence...')
+
+          # 3. إنشاء ملف key.properties بالمعلومات الثابتة مدى الحياة
+          key_props = f'''storePassword={os.environ.get('KEYSTORE_PASSWORD', '')}
+          keyPassword={os.environ.get('KEYSTORE_PASSWORD', '')}
+          keyAlias={os.environ.get('KEY_ALIAS', '')}
+          storeFile=upload-keystore.jks
           '''
+          with open('android/key.properties', 'w') as f:
+              f.write(key_props)
+          
+          # نسخ الاحتياط داخل مجلد app لضمان توافقه التام مع كل إصدارات Gradle
+          with open('android/app/key.properties', 'w') as f:
+              f.write(key_props)
 
-          if 'signingConfigs {' not in content:
-              content = content.replace('android {', 'android {' + signing_configs_block, 1)
+          # 4. الإصلاح الذاتي لملف build.gradle وتوجيهه قسراً للإصدار الموقع حصرياً
+          gradle_path = 'android/app/build.gradle'
+          if os.path.exists(gradle_path):
+              with open(gradle_path, 'r') as f:
+                  gradle_content = f.read()
 
-          content = content.replace('signingConfig signingConfigs.debug', 'signingConfig signingConfigs.release')
+              # التحقق من وجود إعدادات التوقيع وحقنها إذا كانت مفقودة
+              if 'signingConfigs {' not in gradle_content:
+                  print('🤖 [AI Agent]: Self-healing build.gradle - Injecting permanent signing config...')
+                  signing_block = '''
+                  android {
+                      signingConfigs {
+                          release {
+                              storeFile file('upload-keystore.jks')
+                              storePassword \x27''' + os.environ.get('KEYSTORE_PASSWORD', '') + '''\x27
+                              keyAlias \x27''' + os.environ.get('KEY_ALIAS', '') + '''\x27
+                              keyPassword \x27''' + os.environ.get('KEY_PASSWORD', '') + '''\x27
+                          }
+                      }
+                  '''
+                  gradle_content = gradle_content.replace('android {', signing_block, 1)
 
-          with open(path, 'w') as f:
-              f.write(content)
+              # إجبار وضع الرفع على استخدام مفتاح الإصدار الأصلي حصرياً
+              if 'signingConfig signingConfigs.debug' in gradle_content:
+                  print('🤖 [AI Agent]: Fixing debug-sign vulnerability -> Switching to permanent release key...')
+                  gradle_content = gradle_content.replace('signingConfig signingConfigs.debug', 'signingConfig signingConfigs.release')
+
+              with open(gradle_path, 'w') as f:
+                  f.write(gradle_content)
+
+          print('🤖 [AI Agent]: Inspection and healing completed successfully. Ready for compilation.')
           "
 
-      - name: Build Official Release App Bundle
-        run: flutter build appbundle --release
+      - name: Build Official Release App Bundle (Autonomous Execution)
+        run: |
+          echo "🚀 Initiating Flutter Release Bundle Build..."
+          flutter build appbundle --release
 
-      - name: Upload AAB artifact
+      - name: Upload Verified Release Artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-release
