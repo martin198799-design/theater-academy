@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: AI Technical Agent - Modern Android, SDK & Keystore Auto-Fixer
+      - name: AI Technical Agent - Bulletproof SDK & Keystore Auto-Fixer
         run: |
           python3 -c "
           import os
@@ -83,7 +83,7 @@ jobs:
           with open('android/app/key.properties', 'w') as f:
               f.write(key_props)
 
-          # حقن وتعديل build.gradle لضمان التوقيع السليم ورفع minSdkVersion إلى 24
+          # حقن وتعديل build.gradle لضمان التوقيع وضبط minSdkVersion إلى 24 قطعا
           gradle_path = 'android/app/build.gradle'
           if os.path.exists(gradle_path):
               with open(gradle_path, 'r') as f:
@@ -108,10 +108,13 @@ jobs:
               if 'signingConfig signingConfigs.debug' in content:
                   content = content.replace('signingConfig signingConfigs.debug', 'signingConfig signingConfigs.release')
 
-              # رفع minSdkVersion إلى 24 تلقائياً لتوافق متطلبات المتجر
+              # استبدال أي صيغة لـ minSdkVersion بـ 24 قسراً
               if 'minSdkVersion' in content:
-                  content = re.sub(r'minSdkVersion\s+\d+', 'minSdkVersion 24', content)
-                  print('🤖 [AI Agent]: Successfully upgraded minSdkVersion to 24.')
+                  content = re.sub(r'minSdkVersion\s+.*', 'minSdkVersion 24', content)
+                  print('🤖 [AI Agent]: Forced minSdkVersion to 24 successfully.')
+              else:
+                # إذا لم تجد الكلمة، نقوم بإضافتها داخل defaultConfig
+                content = content.replace('defaultConfig {', 'defaultConfig {\n        minSdkVersion 24', 1)
 
               with open(gradle_path, 'w') as f:
                   f.write(content)
