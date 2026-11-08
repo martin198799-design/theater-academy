@@ -35,9 +35,13 @@ jobs:
             flutter create . --platforms=android --org com.ibrahim --project-name theatre_arts
           fi
 
-      - name: Create key.properties
+      - name: Decode Keystore Safely
         run: |
           mkdir -p android/app
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/upload-keystore.jks
+
+      - name: Create key.properties
+        run: |
           cd android
           cat << 'EOF' > key.properties
           storePassword=${{ secrets.KEYSTORE_PASSWORD }}
@@ -64,10 +68,9 @@ jobs:
               }
           '''
 
-          # حقن إعدادات التوقيع بعد كلمة android {
-          content = content.replace('android {', 'android {' + signing_configs_block, 1)
+          if 'signingConfigs {' not in content:
+              content = content.replace('android {', 'android {' + signing_configs_block, 1)
 
-          # تغيير توقيع الـ debug إلى release قسراً
           content = content.replace('signingConfig signingConfigs.debug', 'signingConfig signingConfigs.release')
 
           with open(path, 'w') as f:
