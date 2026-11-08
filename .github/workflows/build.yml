@@ -1,4 +1,4 @@
-name: Autonomous Build & Sign Agent
+name: Autonomous Build & Sign Agent - From Scratch
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: AI Technical Agent - Version 36, SDK & Keystore Auto-Fixer
+      - name: AI Technical Agent - Complete Setup, Keystore, PEM & Version 36
         run: |
           python3 -c "
           import os
@@ -36,9 +36,9 @@ jobs:
           import shutil
           import re
 
-          print('🤖 [AI Agent]: Inspecting Android project structure & version...')
+          print('🤖 [AI Agent]: Initializing clean build from scratch...')
 
-          # تحديث رقم الإصدار تلقائياً في pubspec.yaml ليصبح الإصدار 36
+          # 1. ضبط رقم الإصدار ليصبح 36 بدقة
           pubspec_path = 'pubspec.yaml'
           if os.path.exists(pubspec_path):
               with open(pubspec_path, 'r') as f:
@@ -49,17 +49,17 @@ jobs:
               
               with open(pubspec_path, 'w') as f:
                   f.write(pub_content)
-              print('🤖 [AI Agent]: Version automatically bumped to 1.0.36+36.')
+              print('🤖 [AI Agent]: Version locked to 1.0.36+36.')
 
-          # التأكد من وجود هيكل أندرويد حديث ومتكامل v2
+          # 2. التأكد من سلامة هيكل أندرويد v2
           manifest_path = 'android/app/src/main/AndroidManifest.xml'
           if not os.path.exists(manifest_path):
-              print('🤖 [AI Agent]: Android manifest missing or outdated. Recreating clean modern Android v2 template...')
+              print('🤖 [AI Agent]: Recreating clean modern Android v2 template...')
               if os.path.exists('android'):
                   shutil.rmtree('android')
               subprocess.run(['flutter', 'create', '.', '--platforms=android', '--org', 'com.ibrahim', '--project-name', 'theatre_arts'], check=True)
 
-          # تأمين وتوليد مفتاح التوقيع الدائم والثابت مدى الحياة
+          # 3. توليد مفتاح التوقيع الدائم والثابت
           os.makedirs('android/app', exist_ok=True)
           keystore_path = 'android/app/upload-keystore.jks'
           
@@ -81,9 +81,21 @@ jobs:
               ]
               subprocess.run(cmd, check=True)
           else:
-              print('🤖 [AI Agent]: Permanent keystore already exists. Preserving it safely.')
+              print('🤖 [AI Agent]: Keystore already exists. Preserving it safely.')
 
-          # كتابة ملف key.properties
+          # 4. استخراج شهادة الـ PEM المطلوبة لمتجر جوجل بلاي تلقائياً!
+          pem_path = 'upload_certificate.pem'
+          print('🤖 [AI Agent]: Exporting upload_certificate.pem for Play Console...')
+          pem_cmd = [
+              'keytool', '-export', '-rfc',
+              '-keystore', keystore_path,
+              '-alias', alias,
+              '-file', pem_path,
+              '-storepass', store_pass
+          ]
+          subprocess.run(pem_cmd, check=True)
+
+          # 5. كتابة ملفات key.properties
           key_props = f'''storePassword={store_pass}
           keyPassword={store_pass}
           keyAlias={alias}
@@ -96,13 +108,12 @@ jobs:
           with open('android/app/key.properties', 'w') as f:
               f.write(key_props)
 
-          # حقن وتعديل build.gradle لضمان التوقيع وضبط minSdkVersion إلى 24 قطعا
+          # 6. حقن إعدادات التوقيع ورفع minSdkVersion إلى 24 قسراً
           gradle_path = 'android/app/build.gradle'
           if os.path.exists(gradle_path):
               with open(gradle_path, 'r') as f:
                   content = f.read()
 
-              # حقن إعدادات التوقيع إذا لم تكن موجودة
               if 'signingConfigs {' not in content:
                   signing_block = f'''
                   android {{
@@ -117,29 +128,28 @@ jobs:
                   '''
                   content = content.replace('android {', signing_block, 1)
 
-              # إجبار استخدام مفتاح الإصدار
               if 'signingConfig signingConfigs.debug' in content:
                   content = content.replace('signingConfig signingConfigs.debug', 'signingConfig signingConfigs.release')
 
-              # استبدال أي صيغة لـ minSdkVersion بـ 24 قسراً
               if 'minSdkVersion' in content:
                   content = re.sub(r'minSdkVersion\s+.*', 'minSdkVersion 24', content)
-                  print('🤖 [AI Agent]: Forced minSdkVersion to 24 successfully.')
               else:
                 content = content.replace('defaultConfig {', 'defaultConfig {\n        minSdkVersion 24', 1)
 
               with open(gradle_path, 'w') as f:
                   f.write(content)
 
-          print('🤖 [AI Agent]: All verifications passed successfully. Ready to build.')
+          print('🤖 [AI Agent]: All setups completed successfully.')
           "
 
       - name: Build Official Release App Bundle
         run: flutter build appbundle --release
 
-      - name: Upload Verified Release Artifact
+      - name: Upload Verified Release Artifact & PEM Certificate
         uses: actions/upload-artifact@v4
         with:
-          name: app-release
-          path: build/app/outputs/bundle/release/app-release.aab
+          name: app-release-and-cert
+          path: |
+            build/app/outputs/bundle/release/app-release.aab
+            upload_certificate.pem
           compression-level: 0
