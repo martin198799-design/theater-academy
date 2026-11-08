@@ -35,7 +35,7 @@ jobs:
             flutter create . --platforms=android --org com.ibrahim --project-name theatre_arts
           fi
 
-      - name: Create key.properties directly with stored credentials
+      - name: Create key.properties
         run: |
           mkdir -p android/app
           cd android
@@ -45,6 +45,34 @@ jobs:
           keyAlias=${{ secrets.KEY_ALIAS }}
           storeFile=upload-keystore.jks
           EOF
+
+      - name: Force True Release Signing in build.gradle
+        run: |
+          python3 -c "
+          path = 'android/app/build.gradle'
+          with open(path, 'r') as f:
+              content = f.read()
+
+          signing_configs_block = '''
+              signingConfigs {
+                  release {
+                      storeFile file('upload-keystore.jks')
+                      storePassword '${{ secrets.KEYSTORE_PASSWORD }}'
+                      keyAlias '${{ secrets.KEY_ALIAS }}'
+                      keyPassword '${{ secrets.KEYSTORE_PASSWORD }}'
+                  }
+              }
+          '''
+
+          # حقن إعدادات التوقيع بعد كلمة android {
+          content = content.replace('android {', 'android {' + signing_configs_block, 1)
+
+          # تغيير توقيع الـ debug إلى release قسراً
+          content = content.replace('signingConfig signingConfigs.debug', 'signingConfig signingConfigs.release')
+
+          with open(path, 'w') as f:
+              f.write(content)
+          "
 
       - name: Build Official Release App Bundle
         run: flutter build appbundle --release
