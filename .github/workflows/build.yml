@@ -36,7 +36,7 @@ jobs:
           import shutil
           import re
 
-          print('🤖 [AI Agent]: Initializing clean build and configuring SDK 36 safely...')
+          print('🤖 [AI Agent]: Initializing clean build and configuring SDK 36...')
 
           # 1. ضبط رقم الإصدار ليصبح 36 بدقة
           pubspec_path = 'pubspec.yaml'
@@ -108,7 +108,7 @@ jobs:
           with open('android/app/key.properties', 'w') as f:
               f.write(key_props)
 
-          # 6. حقن وتثبيت اسم الحزمة وإعدادات SDK 36 والتوقيع بأمان تام
+          # 6. حقن وتثبيت اسم الحزمة وإعدادات SDK 36 والتوقيع بأمان تام وصحيح
           gradle_path = 'android/app/build.gradle'
           if os.path.exists(gradle_path):
               with open(gradle_path, 'r') as f:
@@ -138,24 +138,23 @@ jobs:
               if 'signingConfig signingConfigs.debug' in content:
                   content = content.replace('signingConfig signingConfigs.debug', 'signingConfig signingConfigs.release')
 
-              # ضبط القيم داخل defaultConfig بأمان
+              # ضبط minSdkVersion إلى 24
               if 'minSdkVersion' in content:
                   content = re.sub(r'minSdkVersion\s+.*', 'minSdkVersion 24', content)
               else:
                 content = content.replace('defaultConfig {', 'defaultConfig {\n        minSdkVersion 24', 1)
 
+              # ضبط targetSdkVersion إلى 36 بالشكل الصحيح
               if 'targetSdkVersion' in content:
-                  content = re.sub(r'targetSdkVersion\s+.*', 'targetSdkVersion 36', content)
-              elif 'targetSdk ' in content:
-                  content = re.sub(r'targetSdk\s+.*', 'targetSdk 36', content)
+                  content = re.sub(r'targetSdkVersion\s+\d+', 'targetSdkVersion 36', content)
               else:
                 content = content.replace('defaultConfig {', 'defaultConfig {\n        targetSdkVersion 36', 1)
 
-              # ضبط compileSdkVersion أو compileSdk بأمان تام في مستوى android العام
+              # ضبط compileSdkVersion إلى 36 بالشكل الصحيح داخل android block
               if 'compileSdkVersion' in content:
-                  content = re.sub(r'compileSdkVersion\s+.*', 'compileSdkVersion 36', content)
+                  content = re.sub(r'compileSdkVersion\s+\d+', 'compileSdkVersion 36', content)
               elif 'compileSdk ' in content:
-                  content = re.sub(r'compileSdk\s+.*', 'compileSdk 36', content)
+                  content = re.sub(r'compileSdk\s+\d+', 'compileSdk 36', content)
               else:
                   content = content.replace('android {', 'android {\n    compileSdkVersion 36', 1)
 
