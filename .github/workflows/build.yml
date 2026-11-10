@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: AI Technical Agent - Complete Setup, Application ID, Keystore, PEM & Version 36
+      - name: AI Technical Agent - Complete Setup, Application ID, Keystore, PEM & API 36
         run: |
           python3 -c "
           import os
@@ -36,7 +36,7 @@ jobs:
           import shutil
           import re
 
-          print('🤖 [AI Agent]: Initializing clean build and enforcing package name...')
+          print('🤖 [AI Agent]: Initializing clean build and enforcing package name and API 36...')
 
           # 1. ضبط رقم الإصدار ليصبح 36 بدقة
           pubspec_path = 'pubspec.yaml'
@@ -108,7 +108,7 @@ jobs:
           with open('android/app/key.properties', 'w') as f:
               f.write(key_props)
 
-          # 6. حقن وتثبيت اسم الحزمة (applicationId) و minSdkVersion و إعدادات التوقيع قسراً
+          # 6. حقن وتثبيت اسم الحزمة، minSdkVersion، targetSdkVersion 36، وإعدادات التوقيع قسراً
           gradle_path = 'android/app/build.gradle'
           if os.path.exists(gradle_path):
               with open(gradle_path, 'r') as f:
@@ -138,15 +138,32 @@ jobs:
               if 'signingConfig signingConfigs.debug' in content:
                   content = content.replace('signingConfig signingConfigs.debug', 'signingConfig signingConfigs.release')
 
+              # ضبط minSdkVersion إلى 24
               if 'minSdkVersion' in content:
                   content = re.sub(r'minSdkVersion\s+.*', 'minSdkVersion 24', content)
               else:
                 content = content.replace('defaultConfig {', 'defaultConfig {\n        minSdkVersion 24', 1)
 
+              # ضبط compileSdkVersion إلى 36
+              if 'compileSdkVersion' in content:
+                  content = re.sub(r'compileSdkVersion\s+.*', 'compileSdkVersion 36', content)
+              elif 'compileSdk' in content:
+                  content = re.sub(r'compileSdk\s+.*', 'compileSdk 36', content)
+              else:
+                  content = content.replace('android {', 'android {\n    compileSdkVersion 36', 1)
+
+              # ضبط targetSdkVersion إلى 36
+              if 'targetSdkVersion' in content:
+                  content = re.sub(r'targetSdkVersion\s+.*', 'targetSdkVersion 36', content)
+              elif 'targetSdk' in content:
+                  content = re.sub(r'targetSdk\s+.*', 'targetSdk 36', content)
+              else:
+                content = content.replace('defaultConfig {', 'defaultConfig {\n        targetSdkVersion 36', 1)
+
               with open(gradle_path, 'w') as f:
                   f.write(content)
 
-          print('🤖 [AI Agent]: All setups, package name, and verifications completed successfully.')
+          print('🤖 [AI Agent]: All setups, package name, API 36, and verifications completed successfully.')
           "
 
       - name: Build Official Release App Bundle
