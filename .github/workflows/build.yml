@@ -51,13 +51,13 @@ jobs:
                   f.write(pub_content)
               print('🤖 [AI Agent]: Version locked to 1.0.36+36.')
 
-          # 2. التأكد من سلامة هيكل أندرويد v2
+          # 2. التأكد من سلامة هيكل أندرويد بمعرف الحزمة الصحيح للمتجر
           manifest_path = 'android/app/src/main/AndroidManifest.xml'
           if not os.path.exists(manifest_path):
               print('🤖 [AI Agent]: Recreating clean modern Android v2 template...')
               if os.path.exists('android'):
                   shutil.rmtree('android')
-              subprocess.run(['flutter', 'create', '.', '--platforms=android', '--org', 'com.ibrahim', '--project-name', 'theatre_arts'], check=True)
+              subprocess.run(['flutter', 'create', '.', '--platforms=android', '--org', 'com.ibrahim.theater2028', '--project-name', 'academy99'], check=True)
 
           # 3. توليد مفتاح التوقيع الدائم والثابت
           os.makedirs('android/app', exist_ok=True)
@@ -108,18 +108,19 @@ jobs:
           with open('android/app/key.properties', 'w') as f:
               f.write(key_props)
 
-          # 6. حقن وتثبيت اسم الحزمة وإعدادات SDK 36 والتوقيع بأمان تام وصحيح
+          # 6. حقن وتثبيت اسم الحزمة الصحيح والإعدادات والتوقيع بأمان تام
           gradle_path = 'android/app/build.gradle'
           if os.path.exists(gradle_path):
               with open(gradle_path, 'r') as f:
                   content = f.read()
 
-              # ضمان توحيد اسم الحزمة بدقة
+              # ضمان توحيد اسم الحزمة بدقة مطابقة لمتطلبات المتجر
+              target_app_id = 'com.ibrahim.theater2028.academy99'
               if 'applicationId' in content:
-                  content = re.sub(r'applicationId\s+\".*?\"', 'applicationId \"com.ibrahim.theatre.arts\"', content)
-                  content = re.sub(r'applicationId\s+\'.*?\'', 'applicationId \"com.ibrahim.theatre.arts\"', content)
+                  content = re.sub(r'applicationId\s+\".*?\"', f'applicationId \"{target_app_id}\"', content)
+                  content = re.sub(r'applicationId\s+\'.*?\'', f'applicationId \"{target_app_id}\"', content)
               else:
-                  content = content.replace('defaultConfig {', 'defaultConfig {\n        applicationId \"com.ibrahim.theatre.arts\"', 1)
+                  content = content.replace('defaultConfig {', f'defaultConfig {{\n        applicationId \"{target_app_id}\"', 1)
 
               if 'signingConfigs {' not in content:
                   signing_block = f'''
@@ -161,7 +162,7 @@ jobs:
               with open(gradle_path, 'w') as f:
                   f.write(content)
 
-          print('🤖 [AI Agent]: Safe SDK 36 and package configurations completed successfully.')
+          print('🤖 [AI Agent]: Safe SDK 36 and correct package ID configurations completed successfully.')
           "
 
       - name: Build Official Release App Bundle
