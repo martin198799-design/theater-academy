@@ -36,25 +36,25 @@ jobs:
           import shutil
           import re
 
-          print('🤖 [AI Agent]: Initializing clean build and configuring SDK 36...')
+          print('🤖 [AI AGENT]: INITIALIZING CLEAN BUILD AND CONFIGURING SDK 36...')
 
-          # 1. ضبط رقم الإصدار ليصبح 36 بدقة
+          # 1. ضبط رقم الإصدار ليصبح 37 بدقة لتجنب التعارض
           pubspec_path = 'pubspec.yaml'
           if os.path.exists(pubspec_path):
               with open(pubspec_path, 'r') as f:
                   pub_content = f.read()
               
               if 'version:' in pub_content:
-                  pub_content = re.sub(r'version:\s+.*', 'version: 1.0.36+36', pub_content)
+                  pub_content = re.sub(r'version:\s+.*', 'version: 1.0.37+37', pub_content)
               
               with open(pubspec_path, 'w') as f:
                   f.write(pub_content)
-              print('🤖 [AI Agent]: Version locked to 1.0.36+36.')
+              print('🤖 [AI AGENT]: VERSION LOCKED TO 1.0.37+37.')
 
           # 2. التأكد من سلامة هيكل أندرويد بمعرف الحزمة الصحيح للمتجر
           manifest_path = 'android/app/src/main/AndroidManifest.xml'
           if not os.path.exists(manifest_path):
-              print('🤖 [AI Agent]: Recreating clean modern Android v2 template...')
+              print('🤖 [AI AGENT]: RECREATING CLEAN MODERN ANDROID V2 TEMPLATE...')
               if os.path.exists('android'):
                   shutil.rmtree('android')
               subprocess.run(['flutter', 'create', '.', '--platforms=android', '--org', 'com.ibrahim.theater2028', '--project-name', 'academy99'], check=True)
@@ -67,7 +67,7 @@ jobs:
           alias = 'upload'
 
           if not os.path.exists(keystore_path):
-              print('🤖 [AI Agent]: Generating permanent signing keystore...')
+              print('🤖 [AI AGENT]: GENERATING PERMANENT SIGNING KEYSTORE...')
               cmd = [
                   'keytool', '-genkey', '-v',
                   '-keystore', keystore_path,
@@ -81,11 +81,11 @@ jobs:
               ]
               subprocess.run(cmd, check=True)
           else:
-              print('🤖 [AI Agent]: Keystore already exists. Preserving it safely.')
+              print('🤖 [AI AGENT]: KEYSTORE ALREADY EXISTS. PRESERVING IT SAFELY.')
 
           # 4. استخراج شهادة الـ PEM المطلوبة لمتجر جوجل بلاي تلقائياً
           pem_path = 'upload_certificate.pem'
-          print('🤖 [AI Agent]: Exporting upload_certificate.pem for Play Console...')
+          print('🤖 [AI AGENT]: EXPORTING UPLOAD_CERTIFICATE.PEM FOR PLAY CONSOLE...')
           pem_cmd = [
               'keytool', '-export', '-rfc',
               '-keystore', keystore_path,
@@ -162,7 +162,7 @@ jobs:
               with open(gradle_path, 'w') as f:
                   f.write(content)
 
-          print('🤖 [AI Agent]: Safe SDK 36 and correct package ID configurations completed successfully.')
+          print('🤖 [AI AGENT]: SAFE SDK 36 AND CORRECT PACKAGE ID CONFIGURATIONS COMPLETED SUCCESSFULLY.')
           "
 
       - name: Build Official Release App Bundle
