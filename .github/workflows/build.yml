@@ -28,7 +28,8 @@ jobs:
       - name: Install Android SDK Platform 36
         run: |
           export ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}
-          echo "y" | ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" || echo "y" | ${ANDROID_SDK_ROOT}/cmdline-tools/*/bin/sdkmanager "platforms;android-36"
+          yes | ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          yes | ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" || yes | ${ANDROID_SDK_ROOT}/cmdline-tools/*/bin/sdkmanager "platforms;android-36"
 
       - name: Install dependencies
         run: flutter pub get
@@ -43,18 +44,18 @@ jobs:
 
           print('🤖 [AI AGENT]: INITIALIZING CLEAN BUILD AND FORCING API 36...')
 
-          # 1. ضبط رقم الإصدار ليصبح 40 لتجنب التعارض
+          # 1. ضبط رقم الإصدار ليصبح 41 لتجنب التعارض
           pubspec_path = 'pubspec.yaml'
           if os.path.exists(pubspec_path):
               with open(pubspec_path, 'r') as f:
                   pub_content = f.read()
               
               if 'version:' in pub_content:
-                  pub_content = re.sub(r'version:\s+.*', 'version: 1.0.40+40', pub_content)
+                  pub_content = re.sub(r'version:\s+.*', 'version: 1.0.41+41', pub_content)
               
               with open(pubspec_path, 'w') as f:
                   f.write(pub_content)
-              print('🤖 [AI AGENT]: VERSION LOCKED TO 1.0.40+40.')
+              print('🤖 [AI AGENT]: VERSION LOCKED TO 1.0.41+41.')
 
           # 2. التأكد من سلامة هيكل أندرويد بمعرف الحزمة الصحيح للمتجر
           manifest_path = 'android/app/src/main/AndroidManifest.xml'
