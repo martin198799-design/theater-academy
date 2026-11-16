@@ -25,16 +25,15 @@ jobs:
           flutter-version: '3.19.x'
           cache: true
 
-      - name: Install Android SDK Platform 36
+      - name: Install Android SDK Platform 35 and Build Tools
         run: |
           export ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}
-          yes | ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager --licenses || true
-          yes | ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" || yes | ${ANDROID_SDK_ROOT}/cmdline-tools/*/bin/sdkmanager "platforms;android-36"
+          echo "y" | ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager --install "platforms;android-35" "build-tools;35.0.0" || true
 
       - name: Install dependencies
         run: flutter pub get
 
-      - name: AI Technical Agent - Complete Setup, Application ID, Keystore, PEM & API 36
+      - name: AI Technical Agent - Complete Setup, Application ID, Keystore, PEM & API 35
         run: |
           python3 -c "
           import os
@@ -42,20 +41,20 @@ jobs:
           import shutil
           import re
 
-          print('🤖 [AI AGENT]: INITIALIZING CLEAN BUILD AND FORCING API 36...')
+          print('🤖 [AI AGENT]: INITIALIZING CLEAN BUILD AND FORCING API 35 STABLE...')
 
-          # 1. ضبط رقم الإصدار ليصبح 41 لتجنب التعارض
+          # 1. ضبط رقم الإصدار ليصبح 42 لتجنب التعارض
           pubspec_path = 'pubspec.yaml'
           if os.path.exists(pubspec_path):
               with open(pubspec_path, 'r') as f:
                   pub_content = f.read()
               
               if 'version:' in pub_content:
-                  pub_content = re.sub(r'version:\s+.*', 'version: 1.0.41+41', pub_content)
+                  pub_content = re.sub(r'version:\s+.*', 'version: 1.0.42+42', pub_content)
               
               with open(pubspec_path, 'w') as f:
                   f.write(pub_content)
-              print('🤖 [AI AGENT]: VERSION LOCKED TO 1.0.41+41.')
+              print('🤖 [AI AGENT]: VERSION LOCKED TO 1.0.42+42.')
 
           # 2. التأكد من سلامة هيكل أندرويد بمعرف الحزمة الصحيح للمتجر
           manifest_path = 'android/app/src/main/AndroidManifest.xml'
@@ -114,7 +113,7 @@ jobs:
           with open('android/app/key.properties', 'w') as f:
               f.write(key_props)
 
-          # 6. حقن وتثبيت اسم الحزمة وإجبار API 36 بشكل قاطع
+          # 6. حقن وتثبيت اسم الحزمة وإجبار API 35 بشكل قاطع ومستقر
           gradle_path = 'android/app/build.gradle'
           if os.path.exists(gradle_path):
               with open(gradle_path, 'r') as f:
@@ -149,20 +148,20 @@ jobs:
               # فرض minSdkVersion 24
               content = re.sub(r'minSdkVersion\s+.*', 'minSdkVersion 24', content)
 
-              # فرض targetSdkVersion 36 واستبدال متغيرات فلاتر
-              content = re.sub(r'targetSdkVersion\s+.*', 'targetSdkVersion 36', content)
-              content = re.sub(r'targetSdk\s+.*', 'targetSdk 36', content)
-              content = content.replace('flutter.targetSdkVersion', '36')
+              # فرض targetSdkVersion 35 واستبدال متغيرات فلاتر
+              content = re.sub(r'targetSdkVersion\s+.*', 'targetSdkVersion 35', content)
+              content = re.sub(r'targetSdk\s+.*', 'targetSdk 35', content)
+              content = content.replace('flutter.targetSdkVersion', '35')
 
-              # فرض compileSdkVersion 36 واستبدال متغيرات فلاتر
-              content = re.sub(r'compileSdkVersion\s+.*', 'compileSdkVersion 36', content)
-              content = re.sub(r'compileSdk\s+.*', 'compileSdk 36', content)
-              content = content.replace('flutter.compileSdkVersion', '36')
+              # فرض compileSdkVersion 35 واستبدال متغيرات فلاتر
+              content = re.sub(r'compileSdkVersion\s+.*', 'compileSdkVersion 35', content)
+              content = re.sub(r'compileSdk\s+.*', 'compileSdk 35', content)
+              content = content.replace('flutter.compileSdkVersion', '35')
 
               with open(gradle_path, 'w') as f:
                   f.write(content)
 
-          print('🤖 [AI AGENT]: API 36 FORCED SUCCESSFULLY IN BUILD.GRADLE.')
+          print('🤖 [AI AGENT]: API 35 STABLE FORCED SUCCESSFULLY IN BUILD.GRADLE.')
           "
 
       - name: Build Official Release App Bundle
