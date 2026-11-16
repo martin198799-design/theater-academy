@@ -36,20 +36,20 @@ jobs:
           import shutil
           import re
 
-          print('🤖 [AI AGENT]: INITIALIZING CLEAN BUILD AND CONFIGURING SDK 36...')
+          print('🤖 [AI AGENT]: INITIALIZING CLEAN BUILD AND FORCING API 36...')
 
-          # 1. ضبط رقم الإصدار ليصبح 37 بدقة لتجنب التعارض
+          # 1. ضبط رقم الإصدار ليصبح 38 لتجنب التعارض
           pubspec_path = 'pubspec.yaml'
           if os.path.exists(pubspec_path):
               with open(pubspec_path, 'r') as f:
                   pub_content = f.read()
               
               if 'version:' in pub_content:
-                  pub_content = re.sub(r'version:\s+.*', 'version: 1.0.37+37', pub_content)
+                  pub_content = re.sub(r'version:\s+.*', 'version: 1.0.38+38', pub_content)
               
               with open(pubspec_path, 'w') as f:
                   f.write(pub_content)
-              print('🤖 [AI AGENT]: VERSION LOCKED TO 1.0.37+37.')
+              print('🤖 [AI AGENT]: VERSION LOCKED TO 1.0.38+38.')
 
           # 2. التأكد من سلامة هيكل أندرويد بمعرف الحزمة الصحيح للمتجر
           manifest_path = 'android/app/src/main/AndroidManifest.xml'
@@ -108,13 +108,13 @@ jobs:
           with open('android/app/key.properties', 'w') as f:
               f.write(key_props)
 
-          # 6. حقن وتثبيت اسم الحزمة الصحيح والإعدادات والتوقيع بأمان تام
+          # 6. حقن وتثبيت اسم الحزمة وإجبار API 36 بشكل قاطع
           gradle_path = 'android/app/build.gradle'
           if os.path.exists(gradle_path):
               with open(gradle_path, 'r') as f:
                   content = f.read()
 
-              # ضمان توحيد اسم الحزمة بدقة مطابقة لمتطلبات المتجر
+              # توحيد اسم الحزمة
               target_app_id = 'com.ibrahim.theater2028.academy99'
               if 'applicationId' in content:
                   content = re.sub(r'applicationId\s+\".*?\"', f'applicationId \"{target_app_id}\"', content)
@@ -122,6 +122,7 @@ jobs:
               else:
                   content = content.replace('defaultConfig {', f'defaultConfig {{\n        applicationId \"{target_app_id}\"', 1)
 
+              # إعدادات التوقيع
               if 'signingConfigs {' not in content:
                   signing_block = f'''
                   android {{
@@ -139,30 +140,23 @@ jobs:
               if 'signingConfig signingConfigs.debug' in content:
                   content = content.replace('signingConfig signingConfigs.debug', 'signingConfig signingConfigs.release')
 
-              # ضبط minSdkVersion إلى 24
-              if 'minSdkVersion' in content:
-                  content = re.sub(r'minSdkVersion\s+.*', 'minSdkVersion 24', content)
-              else:
-                content = content.replace('defaultConfig {', 'defaultConfig {\n        minSdkVersion 24', 1)
+              # فرض minSdkVersion 24
+              content = re.sub(r'minSdkVersion\s+.*', 'minSdkVersion 24', content)
 
-              # ضبط targetSdkVersion إلى 36 بالشكل الصحيح
-              if 'targetSdkVersion' in content:
-                  content = re.sub(r'targetSdkVersion\s+\d+', 'targetSdkVersion 36', content)
-              else:
-                content = content.replace('defaultConfig {', 'defaultConfig {\n        targetSdkVersion 36', 1)
+              # فرض targetSdkVersion 36 واستبدال متغيرات فلاتر
+              content = re.sub(r'targetSdkVersion\s+.*', 'targetSdkVersion 36', content)
+              content = re.sub(r'targetSdk\s+.*', 'targetSdk 36', content)
+              content = content.replace('flutter.targetSdkVersion', '36')
 
-              # ضبط compileSdkVersion إلى 36 بالشكل الصحيح داخل android block
-              if 'compileSdkVersion' in content:
-                  content = re.sub(r'compileSdkVersion\s+\d+', 'compileSdkVersion 36', content)
-              elif 'compileSdk ' in content:
-                  content = re.sub(r'compileSdk\s+\d+', 'compileSdk 36', content)
-              else:
-                  content = content.replace('android {', 'android {\n    compileSdkVersion 36', 1)
+              # فرض compileSdkVersion 36 واستبدال متغيرات فلاتر
+              content = re.sub(r'compileSdkVersion\s+.*', 'compileSdkVersion 36', content)
+              content = re.sub(r'compileSdk\s+.*', 'compileSdk 36', content)
+              content = content.replace('flutter.compileSdkVersion', '36')
 
               with open(gradle_path, 'w') as f:
                   f.write(content)
 
-          print('🤖 [AI AGENT]: SAFE SDK 36 AND CORRECT PACKAGE ID CONFIGURATIONS COMPLETED SUCCESSFULLY.')
+          print('🤖 [AI AGENT]: API 36 FORCED SUCCESSFULLY IN BUILD.GRADLE.')
           "
 
       - name: Build Official Release App Bundle
