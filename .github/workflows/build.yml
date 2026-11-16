@@ -25,54 +25,37 @@ jobs:
           flutter-version: '3.19.x'
           cache: true
 
-      - name: Install Android SDK Platform 35 and Build Tools
-        run: |
-          export ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}
-          echo "y" | ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager --install "platforms;android-35" "build-tools;35.0.0" || true
-
       - name: Install dependencies
         run: flutter pub get
 
-      - name: AI Technical Agent - Complete Setup, Application ID, Keystore, PEM & API 35
+      - name: AI Technical Agent - Direct Gradle & Manifest Injection (API 34 Stable)
         run: |
           python3 -c "
           import os
-          import subprocess
-          import shutil
           import re
 
-          print('🤖 [AI AGENT]: INITIALIZING CLEAN BUILD AND FORCING API 35 STABLE...')
+          print('🤖 [AI TECH AGENT]: INJECTING CONFIGURATIONS SAFELY WITHOUT RECREATING ANDROID FOLDER...')
 
-          # 1. ضبط رقم الإصدار ليصبح 42 لتجنب التعارض
+          # 1. تحديث رقم الإصدار إلى 43
           pubspec_path = 'pubspec.yaml'
           if os.path.exists(pubspec_path):
               with open(pubspec_path, 'r') as f:
                   pub_content = f.read()
-              
               if 'version:' in pub_content:
-                  pub_content = re.sub(r'version:\s+.*', 'version: 1.0.42+42', pub_content)
-              
+                  pub_content = re.sub(r'version:\s+.*', 'version: 1.0.43+43', pub_content)
               with open(pubspec_path, 'w') as f:
                   f.write(pub_content)
-              print('🤖 [AI AGENT]: VERSION LOCKED TO 1.0.42+42.')
+              print('🤖 [AI TECH AGENT]: Version locked to 1.0.43+43.')
 
-          # 2. التأكد من سلامة هيكل أندرويد بمعرف الحزمة الصحيح للمتجر
-          manifest_path = 'android/app/src/main/AndroidManifest.xml'
-          if not os.path.exists(manifest_path):
-              print('🤖 [AI AGENT]: RECREATING CLEAN MODERN ANDROID V2 TEMPLATE...')
-              if os.path.exists('android'):
-                  shutil.rmtree('android')
-              subprocess.run(['flutter', 'create', '.', '--platforms=android', '--org', 'com.ibrahim.theater2028', '--project-name', 'academy99'], check=True)
-
-          # 3. توليد مفتاح التوقيع الدائم والثابت
+          # 2. توليد مفتاح التوقيع الدائم والثابت إذا لم يكن موجوداً
           os.makedirs('android/app', exist_ok=True)
           keystore_path = 'android/app/upload-keystore.jks'
-          
           store_pass = 'theatre_arts_secure_2026'
           alias = 'upload'
 
+          import subprocess
           if not os.path.exists(keystore_path):
-              print('🤖 [AI AGENT]: GENERATING PERMANENT SIGNING KEYSTORE...')
+              print('🤖 [AI TECH AGENT]: Generating permanent signing keystore...')
               cmd = [
                   'keytool', '-genkey', '-v',
                   '-keystore', keystore_path,
@@ -85,12 +68,9 @@ jobs:
                   '-dname', 'CN=Ibrahim, OU=TheatreArts, O=Ibrahim, L=Nasiriyah, C=IQ'
               ]
               subprocess.run(cmd, check=True)
-          else:
-              print('🤖 [AI AGENT]: KEYSTORE ALREADY EXISTS. PRESERVING IT SAFELY.')
 
-          # 4. استخراج شهادة الـ PEM المطلوبة لمتجر جوجل بلاي تلقائياً
+          # 3. استخراج شهادة PEM للـ Play Console
           pem_path = 'upload_certificate.pem'
-          print('🤖 [AI AGENT]: EXPORTING UPLOAD_CERTIFICATE.PEM FOR PLAY CONSOLE...')
           pem_cmd = [
               'keytool', '-export', '-rfc',
               '-keystore', keystore_path,
@@ -100,34 +80,29 @@ jobs:
           ]
           subprocess.run(pem_cmd, check=True)
 
-          # 5. كتابة ملفات key.properties
+          # 4. كتابة ملفات key.properties
           key_props = f'''storePassword={store_pass}
           keyPassword={store_pass}
           keyAlias={alias}
           storeFile=upload-keystore.jks
           '''
-          
           with open('android/key.properties', 'w') as f:
               f.write(key_props)
-          
           with open('android/app/key.properties', 'w') as f:
               f.write(key_props)
 
-          # 6. حقن وتثبيت اسم الحزمة وإجبار API 35 بشكل قاطع ومستقر
+          # 5. تعديل build.gradle مباشرة وبشكل آمن تماماً
           gradle_path = 'android/app/build.gradle'
           if os.path.exists(gradle_path):
               with open(gradle_path, 'r') as f:
                   content = f.read()
 
-              # توحيد اسم الحزمة
+              # ضبط Application ID
               target_app_id = 'com.ibrahim.theater2028.academy99'
-              if 'applicationId' in content:
-                  content = re.sub(r'applicationId\s+\".*?\"', f'applicationId \"{target_app_id}\"', content)
-                  content = re.sub(r'applicationId\s+\'.*?\'', f'applicationId \"{target_app_id}\"', content)
-              else:
-                  content = content.replace('defaultConfig {', f'defaultConfig {{\n        applicationId \"{target_app_id}\"', 1)
+              content = re.sub(r'applicationId\s+\".*?\"', f'applicationId \"{target_app_id}\"', content)
+              content = re.sub(r'applicationId\s+\'.*?\'', f'applicationId \"{target_app_id}\"', content)
 
-              # إعدادات التوقيع
+              # ضبط التوقيع
               if 'signingConfigs {' not in content:
                   signing_block = f'''
                   android {{
@@ -145,23 +120,16 @@ jobs:
               if 'signingConfig signingConfigs.debug' in content:
                   content = content.replace('signingConfig signingConfigs.debug', 'signingConfig signingConfigs.release')
 
-              # فرض minSdkVersion 24
+              # ضبط الإصدارات إلى API 34 لضمان التوافق التام مع بيئة الخادم
               content = re.sub(r'minSdkVersion\s+.*', 'minSdkVersion 24', content)
-
-              # فرض targetSdkVersion 35 واستبدال متغيرات فلاتر
-              content = re.sub(r'targetSdkVersion\s+.*', 'targetSdkVersion 35', content)
-              content = re.sub(r'targetSdk\s+.*', 'targetSdk 35', content)
-              content = content.replace('flutter.targetSdkVersion', '35')
-
-              # فرض compileSdkVersion 35 واستبدال متغيرات فلاتر
-              content = re.sub(r'compileSdkVersion\s+.*', 'compileSdkVersion 35', content)
-              content = re.sub(r'compileSdk\s+.*', 'compileSdk 35', content)
-              content = content.replace('flutter.compileSdkVersion', '35')
+              content = re.sub(r'targetSdkVersion\s+.*', 'targetSdkVersion 34', content)
+              content = re.sub(r'targetSdk\s+.*', 'targetSdk 34', content)
+              content = re.sub(r'compileSdkVersion\s+.*', 'compileSdkVersion 34', content)
+              content = re.sub(r'compileSdk\s+.*', 'compileSdk 34', content)
 
               with open(gradle_path, 'w') as f:
                   f.write(content)
-
-          print('🤖 [AI AGENT]: API 35 STABLE FORCED SUCCESSFULLY IN BUILD.GRADLE.')
+              print('🤖 [AI TECH AGENT]: Build.gradle successfully patched for API 34.')
           "
 
       - name: Build Official Release App Bundle
