@@ -22,14 +22,16 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.x'
+          flutter-version: '3.27.x'
           cache: true
 
-      - name: Install & Verify Android SDK Platform 36
+      - name: Clean & Install Android SDK Platform 36 and Build-Tools 36.0.0
         run: |
           set -e
           export ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}
           export ANDROID_HOME=$ANDROID_SDK_ROOT
+
+          rm -rf "${ANDROID_SDK_ROOT}/platforms/android-36"
 
           SDKMANAGER=""
           if [ -x "${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager" ]; then
@@ -39,7 +41,6 @@ jobs:
           fi
 
           if [ -z "$SDKMANAGER" ]; then
-            echo "Downloading Android command-line tools..."
             mkdir -p "${ANDROID_SDK_ROOT}/cmdline-tools"
             curl -sSL https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -o /tmp/cmdtools.zip
             unzip -q /tmp/cmdtools.zip -d "${ANDROID_SDK_ROOT}/cmdline-tools/temp"
@@ -50,15 +51,17 @@ jobs:
           fi
 
           yes | "$SDKMANAGER" --sdk_root="${ANDROID_SDK_ROOT}" --licenses > /dev/null || true
-          yes | "$SDKMANAGER" --sdk_root="${ANDROID_SDK_ROOT}" "platform-tools" "platforms;android-36" "build-tools;35.0.0"
+          yes | "$SDKMANAGER" --sdk_root="${ANDROID_SDK_ROOT}" "platform-tools" "platforms;android-36" "build-tools;36.0.0"
 
-          test -f "${ANDROID_SDK_ROOT}/platforms/android-36/android.jar"
-          echo "Verified android-36/android.jar exists!"
+          JAR_PATH="${ANDROID_SDK_ROOT}/platforms/android-36/android.jar"
+          test -s "$JAR_PATH"
+          unzip -t "$JAR_PATH" > /dev/null
+          echo "Verified valid android-36/android.jar ($(du -h "$JAR_PATH" | cut -f1))"
 
       - name: Install dependencies
         run: flutter pub get
 
-      - name: AI Technical Agent - Ensure Modern Android v2 & Force API 36
+      - name: AI Technical Agent - Configure v1.0.46+46 & API 36
         run: |
           python3 -c "
           import os
@@ -66,35 +69,27 @@ jobs:
           import shutil
           import re
 
-          print('🤖 [AI TECH AGENT]: CONFIGURING MODERN ANDROID V2 AND API 36...')
-
-          # 1. التأكد من وجود هيكل أندرويد الحديث v2
           manifest_path = 'android/app/src/main/AndroidManifest.xml'
           if not os.path.exists(manifest_path):
-              print('🤖 [AI TECH AGENT]: Android folder or manifest missing. Recreating clean v2 template...')
               if os.path.exists('android'):
                   shutil.rmtree('android')
               subprocess.run(['flutter', 'create', '.', '--platforms=android', '--org', 'com.ibrahim.theater2028', '--project-name', 'academy99'], check=True)
 
-          # 2. تحديث رقم الإصدار إلى 45
           pubspec_path = 'pubspec.yaml'
           if os.path.exists(pubspec_path):
               with open(pubspec_path, 'r') as f:
                   pub_content = f.read()
               if 'version:' in pub_content:
-                  pub_content = re.sub(r'version:\s+.*', 'version: 1.0.45+45', pub_content)
+                  pub_content = re.sub(r'version:\s+.*', 'version: 1.0.46+46', pub_content)
               with open(pubspec_path, 'w') as f:
                   f.write(pub_content)
-              print('🤖 [AI TECH AGENT]: Version locked to 1.0.45+45.')
 
-          # 3. توليد مفتاح التوقيع الدائم إذا لم يكن موجوداً
           os.makedirs('android/app', exist_ok=True)
           keystore_path = 'android/app/upload-keystore.jks'
           store_pass = 'theatre_arts_secure_2026'
           alias = 'upload'
 
           if not os.path.exists(keystore_path):
-              print('🤖 [AI TECH AGENT]: Generating permanent signing keystore...')
               cmd = [
                   'keytool', '-genkey', '-v',
                   '-keystore', keystore_path,
@@ -108,7 +103,6 @@ jobs:
               ]
               subprocess.run(cmd, check=True)
 
-          # 4. استخراج شهادة PEM للـ Play Console
           pem_path = 'upload_certificate.pem'
           pem_cmd = [
               'keytool', '-export', '-rfc',
@@ -119,7 +113,6 @@ jobs:
           ]
           subprocess.run(pem_cmd, check=True)
 
-          # 5. كتابة ملفات key.properties
           key_props = f'''storePassword={store_pass}
           keyPassword={store_pass}
           keyAlias={alias}
@@ -130,7 +123,6 @@ jobs:
           with open('android/app/key.properties', 'w') as f:
               f.write(key_props)
 
-          # 6. تعديل build.gradle لضبط معرف الحزمة والتوقيع وإجبار API 36
           gradle_path = 'android/app/build.gradle'
           if os.path.exists(gradle_path):
               with open(gradle_path, 'r') as f:
@@ -166,9 +158,13 @@ jobs:
               content = re.sub(r'compileSdk\s+.*', 'compileSdk 36', content)
               content = content.replace('flutter.compileSdkVersion', '36')
 
+              if 'buildToolsVersion' in content:
+                  content = re.sub(r'buildToolsVersion\s+.*', 'buildToolsVersion \"36.0.0\"', content)
+              else:
+                  content = content.replace('compileSdkVersion 36', 'compileSdkVersion 36\n    buildToolsVersion \"36.0.0\"', 1)
+
               with open(gradle_path, 'w') as f:
                   f.write(content)
-              print('🤖 [AI TECH AGENT]: Build.gradle configured with API 36.')
           "
 
       - name: Build Official Release App Bundle
