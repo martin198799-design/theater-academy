@@ -61,7 +61,7 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: AI Technical Agent - Configure v1.0.48+48 & API 36
+      - name: AI Technical Agent - Configure v1.0.49+49 & API 36
         run: |
           python3 -c "
           import os
@@ -80,7 +80,7 @@ jobs:
               with open(pubspec_path, 'r') as f:
                   pub_content = f.read()
               if 'version:' in pub_content:
-                  pub_content = re.sub(r'version:\s+.*', 'version: 1.0.48+48', pub_content)
+                  pub_content = re.sub(r'version:\s+.*', 'version: 1.0.49+49', pub_content)
               with open(pubspec_path, 'w') as f:
                   f.write(pub_content)
 
@@ -148,8 +148,8 @@ jobs:
               if 'signingConfig signingConfigs.debug' in content:
                   content = content.replace('signingConfig signingConfigs.debug', 'signingConfig signingConfigs.release')
 
-              # إصلاح أي سطر تالف مثل (36 = ...) إلى compileSdk = 36
-              content = re.sub(r'^\s*\d+\s*=\s*flutter\.\w+.*$', '    compileSdk = 36', content, flags=re.MULTILINE)
+              # إصلاح (36 = flutter.ndkVersion) وإعادتها إلى (ndkVersion = flutter.ndkVersion)
+              content = re.sub(r'(?m)^(\s*)\d+(\s*=\s*flutter\.ndkVersion\b)', r'\1ndkVersion\2', content)
 
               # إزالة أي minSdkVersion خاطئ داخل كتلة flutter
               flutter_block_match = re.search(r'(flutter\s*\{)(.*?)(\n\})', content, flags=re.DOTALL)
@@ -162,7 +162,7 @@ jobs:
                       f_body += '\n    minSdk = 24'
                   content = content[:flutter_block_match.start()] + f_head + f_body + f_tail + content[flutter_block_match.end():]
 
-              # تحديث القيم فقط مع الحفاظ على اسم المتغير في الطرف الأيسر
+              # ضبط القيم المطلوبة لـ API 36 و minSdk 24 دون المساس بـ ndkVersion
               content = re.sub(r'(\bminSdkVersion\s*=?\s*)[^\s\r\n]+', r'\g<1>24', content)
               content = re.sub(r'(\btargetSdkVersion\s*=?\s*)[^\s\r\n]+', r'\g<1>36', content)
               content = re.sub(r'(\btargetSdk\s*=?\s*)[^\s\r\n]+', r'\g<1>36', content)
