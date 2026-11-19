@@ -61,9 +61,15 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: AI Technical Agent - Configure v1.0.50+50 & API 36
+      - name: AI Technical Agent - Persistent Keystore & Configure v1.0.51+51
+        env:
+          UPLOAD_KEYSTORE_B64: ${{ secrets.UPLOAD_KEYSTORE_B64 }}
+          UPLOAD_STORE_PASSWORD: ${{ secrets.UPLOAD_STORE_PASSWORD }}
+          UPLOAD_KEY_PASSWORD: ${{ secrets.UPLOAD_KEY_PASSWORD }}
+          UPLOAD_KEY_ALIAS: ${{ secrets.UPLOAD_KEY_ALIAS }}
         run: |
           python3 -c '
+          import base64
           import os
           import subprocess
           import shutil
@@ -80,16 +86,22 @@ jobs:
               with open(pubspec_path, "r") as f:
                   pub_content = f.read()
               if "version:" in pub_content:
-                  pub_content = re.sub(r"version:\s+.*", "version: 1.0.50+50", pub_content)
+                  pub_content = re.sub(r"version:\s+.*", "version: 1.0.51+51", pub_content)
               with open(pubspec_path, "w") as f:
                   f.write(pub_content)
 
           os.makedirs("android/app", exist_ok=True)
           keystore_path = "android/app/upload-keystore.jks"
-          store_pass = "theatre_arts_secure_2026"
-          alias = "upload"
+          store_pass = os.environ.get("UPLOAD_STORE_PASSWORD") or "theatre_arts_secure_2026"
+          key_pass = os.environ.get("UPLOAD_KEY_PASSWORD") or store_pass
+          alias = os.environ.get("UPLOAD_KEY_ALIAS") or "upload"
+          b64_data = (os.environ.get("UPLOAD_KEYSTORE_B64") or "").strip()
 
-          if not os.path.exists(keystore_path):
+          if b64_data:
+              with open(keystore_path, "wb") as kf:
+                  kf.write(base64.b64decode(b64_data))
+              print("Restored persistent keystore from UPLOAD_KEYSTORE_B64 secret.")
+          elif not os.path.exists(keystore_path):
               cmd = [
                   "keytool", "-genkey", "-v",
                   "-keystore", keystore_path,
@@ -98,10 +110,15 @@ jobs:
                   "-keysize", "2048",
                   "-validity", "10000",
                   "-storepass", store_pass,
-                  "-keypass", store_pass,
+                  "-keypass", key_pass,
                   "-dname", "CN=Ibrahim, OU=TheatreArts, O=Ibrahim, L=Nasiriyah, C=IQ"
               ]
               subprocess.run(cmd, check=True)
+              with open(keystore_path, "rb") as kf:
+                  encoded = base64.b64encode(kf.read()).decode("ascii")
+              with open("keystore_base64.txt", "w") as out_b64:
+                  out_b64.write(encoded)
+              print("Generated new keystore and saved Base64 to keystore_base64.txt in artifacts.")
 
           pem_path = "upload_certificate.pem"
           pem_cmd = [
@@ -113,11 +130,7 @@ jobs:
           ]
           subprocess.run(pem_cmd, check=True)
 
-          key_props = f"""storePassword={store_pass}
-          keyPassword={store_pass}
-          keyAlias={alias}
-          storeFile=upload-keystore.jks
-          """
+          key_props = f"storePassword={store_pass}\nkeyPassword={key_pass}\nkeyAlias={alias}\nstoreFile=upload-keystore.jks\n"
           with open("android/key.properties", "w") as f:
               f.write(key_props)
           with open("android/app/key.properties", "w") as f:
@@ -149,7 +162,7 @@ jobs:
                               storeFile file("upload-keystore.jks")
                               storePassword "{store_pass}"
                               keyAlias "{alias}"
-                              keyPassword "{store_pass}"
+                              keyPassword "{key_pass}"
                           }}
                       }}
                   """
@@ -176,22 +189,72 @@ jobs:
 
               with open(gradle_path, "w") as f:
                   f.write(content)
-
-              print("--- build.gradle lines 18-25 ---")
-              with open(gradle_path, "r") as f:
-                  all_l = f.readlines()
-                  for idx in range(17, min(25, len(all_l))):
-                      print(f"{idx+1}: {all_l[idx].rstrip()}")
           '
 
       - name: Build Official Release App Bundle
-        run: flutter build appbundle --release
+        id: build_aab
+        run: |
+          set -o pipefail
+          flutter build appbundle --release 2>&1 | tee build.log
 
       - name: Upload Verified Release Artifact & PEM Certificate
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: app-release-and-cert
           path: |
             build/app/outputs/bundle/release/app-release.aab
             upload_certificate.pem
+            keystore_base64.txt
           compression-level: 0
+          if-no-files-found: ignore
+
+      - name: AI Log Analyzer (On Failure)
+        if: failure() && env.GEMINI_API_KEY != ''
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python3 -c '
+          import json, os, urllib.request
+
+          api_key = os.environ.get("GEMINI_API_KEY", "").strip()
+          if not api_key:
+              exit(0)
+
+          log_text = ""
+          if os.path.exists("build.log"):
+              with open("build.log", "r", errors="replace") as f:
+                  log_text = "".join(f.readlines()[-120:])
+
+          gradle_text = ""
+          if os.path.exists("android/app/build.gradle"):
+              with open("android/app/build.gradle", "r", errors="replace") as f:
+                  gradle_text = f.read()
+
+          prompt = (
+              "You are an Android/Flutter build engineer. Analyze this build failure log and "
+              "android/app/build.gradle, explain the exact root cause concisely in Arabic, and provide "
+              "the exact corrected lines/patch.\n\n"
+              f"FAILURE LOG:\n{log_text}\n\n"
+              f"BUILD.GRADLE:\n{gradle_text}"
+          )
+
+          url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
+          payload = json.dumps({
+              "contents": [{"parts": [{"text": prompt}]}]
+          }).encode("utf-8")
+
+          req = urllib.request.Request(
+              url,
+              data=payload,
+              headers={"Content-Type": "application/json"},
+              method="POST"
+          )
+          with urllib.request.urlopen(req, timeout=45) as resp:
+              data = json.loads(resp.read().decode("utf-8"))
+              candidates = data.get("candidates", [])
+              if candidates:
+                  parts = candidates[0].get("content", {}).get("parts", [])
+                  reply = "".join(p.get("text", "") for p in parts)
+                  print("=== AI DIAGNOSIS ===\n" + reply)
+          '
