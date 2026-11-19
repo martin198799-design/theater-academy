@@ -61,117 +61,128 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: AI Technical Agent - Configure v1.0.49+49 & API 36
+      - name: AI Technical Agent - Configure v1.0.50+50 & API 36
         run: |
-          python3 -c "
+          python3 -c '
           import os
           import subprocess
           import shutil
           import re
 
-          manifest_path = 'android/app/src/main/AndroidManifest.xml'
+          manifest_path = "android/app/src/main/AndroidManifest.xml"
           if not os.path.exists(manifest_path):
-              if os.path.exists('android'):
-                  shutil.rmtree('android')
-              subprocess.run(['flutter', 'create', '.', '--platforms=android', '--org', 'com.ibrahim.theater2028', '--project-name', 'academy99'], check=True)
+              if os.path.exists("android"):
+                  shutil.rmtree("android")
+              subprocess.run(["flutter", "create", ".", "--platforms=android", "--org", "com.ibrahim.theater2028", "--project-name", "academy99"], check=True)
 
-          pubspec_path = 'pubspec.yaml'
+          pubspec_path = "pubspec.yaml"
           if os.path.exists(pubspec_path):
-              with open(pubspec_path, 'r') as f:
+              with open(pubspec_path, "r") as f:
                   pub_content = f.read()
-              if 'version:' in pub_content:
-                  pub_content = re.sub(r'version:\s+.*', 'version: 1.0.49+49', pub_content)
-              with open(pubspec_path, 'w') as f:
+              if "version:" in pub_content:
+                  pub_content = re.sub(r"version:\s+.*", "version: 1.0.50+50", pub_content)
+              with open(pubspec_path, "w") as f:
                   f.write(pub_content)
 
-          os.makedirs('android/app', exist_ok=True)
-          keystore_path = 'android/app/upload-keystore.jks'
-          store_pass = 'theatre_arts_secure_2026'
-          alias = 'upload'
+          os.makedirs("android/app", exist_ok=True)
+          keystore_path = "android/app/upload-keystore.jks"
+          store_pass = "theatre_arts_secure_2026"
+          alias = "upload"
 
           if not os.path.exists(keystore_path):
               cmd = [
-                  'keytool', '-genkey', '-v',
-                  '-keystore', keystore_path,
-                  '-alias', alias,
-                  '-keyalg', 'RSA',
-                  '-keysize', '2048',
-                  '-validity', '10000',
-                  '-storepass', store_pass,
-                  '-keypass', store_pass,
-                  '-dname', 'CN=Ibrahim, OU=TheatreArts, O=Ibrahim, L=Nasiriyah, C=IQ'
+                  "keytool", "-genkey", "-v",
+                  "-keystore", keystore_path,
+                  "-alias", alias,
+                  "-keyalg", "RSA",
+                  "-keysize", "2048",
+                  "-validity", "10000",
+                  "-storepass", store_pass,
+                  "-keypass", store_pass,
+                  "-dname", "CN=Ibrahim, OU=TheatreArts, O=Ibrahim, L=Nasiriyah, C=IQ"
               ]
               subprocess.run(cmd, check=True)
 
-          pem_path = 'upload_certificate.pem'
+          pem_path = "upload_certificate.pem"
           pem_cmd = [
-              'keytool', '-export', '-rfc',
-              '-keystore', keystore_path,
-              '-alias', alias,
-              '-file', pem_path,
-              '-storepass', store_pass
+              "keytool", "-export", "-rfc",
+              "-keystore", keystore_path,
+              "-alias", alias,
+              "-file", pem_path,
+              "-storepass", store_pass
           ]
           subprocess.run(pem_cmd, check=True)
 
-          key_props = f'''storePassword={store_pass}
+          key_props = f"""storePassword={store_pass}
           keyPassword={store_pass}
           keyAlias={alias}
           storeFile=upload-keystore.jks
-          '''
-          with open('android/key.properties', 'w') as f:
+          """
+          with open("android/key.properties", "w") as f:
               f.write(key_props)
-          with open('android/app/key.properties', 'w') as f:
+          with open("android/app/key.properties", "w") as f:
               f.write(key_props)
 
-          gradle_path = 'android/app/build.gradle'
+          gradle_path = "android/app/build.gradle"
           if os.path.exists(gradle_path):
-              with open(gradle_path, 'r') as f:
-                  content = f.read()
+              with open(gradle_path, "r") as f:
+                  lines = f.readlines()
 
-              target_app_id = 'com.ibrahim.theater2028.academy99'
-              content = re.sub(r'(applicationId\s*=?\s*)([\"\\']).*?\\2', rf'\g<1>\g<2>{target_app_id}\g<2>', content)
+              fixed_lines = []
+              for line in lines:
+                  if "flutter.ndkVersion" in line:
+                      indent = line[:len(line) - len(line.lstrip(" \t"))]
+                      fixed_lines.append(f"{indent}ndkVersion = flutter.ndkVersion\n")
+                  else:
+                      fixed_lines.append(line)
 
-              if 'signingConfigs {' not in content:
-                  signing_block = f'''
+              content = "".join(fixed_lines)
+
+              target_app_id = "com.ibrahim.theater2028.academy99"
+              content = re.sub(r"(applicationId\s*=?\s*)([\"'\'']).*?\2", lambda m: f"{m.group(1)}{m.group(2)}{target_app_id}{m.group(2)}", content)
+
+              if "signingConfigs {" not in content:
+                  signing_block = f"""
                   android {{
                       signingConfigs {{
                           release {{
-                              storeFile file('upload-keystore.jks')
-                              storePassword '{store_pass}'
-                              keyAlias '{alias}'
-                              keyPassword '{store_pass}'
+                              storeFile file("upload-keystore.jks")
+                              storePassword "{store_pass}"
+                              keyAlias "{alias}"
+                              keyPassword "{store_pass}"
                           }}
                       }}
-                  '''
-                  content = content.replace('android {', signing_block, 1)
+                  """
+                  content = content.replace("android {", signing_block, 1)
 
-              if 'signingConfig signingConfigs.debug' in content:
-                  content = content.replace('signingConfig signingConfigs.debug', 'signingConfig signingConfigs.release')
+              if "signingConfig signingConfigs.debug" in content:
+                  content = content.replace("signingConfig signingConfigs.debug", "signingConfig signingConfigs.release")
 
-              # إصلاح (36 = flutter.ndkVersion) وإعادتها إلى (ndkVersion = flutter.ndkVersion)
-              content = re.sub(r'(?m)^(\s*)\d+(\s*=\s*flutter\.ndkVersion\b)', r'\1ndkVersion\2', content)
-
-              # إزالة أي minSdkVersion خاطئ داخل كتلة flutter
-              flutter_block_match = re.search(r'(flutter\s*\{)(.*?)(\n\})', content, flags=re.DOTALL)
+              flutter_block_match = re.search(r"(flutter\s*\{)(.*?)(\n\})", content, flags=re.DOTALL)
               if flutter_block_match:
                   f_head, f_body, f_tail = flutter_block_match.groups()
-                  f_body = re.sub(r'^\s*minSdkVersion\b.*$', '', f_body, flags=re.MULTILINE)
-                  if re.search(r'\bminSdk\b', f_body):
-                      f_body = re.sub(r'(\bminSdk\s*=?\s*)[^\s\r\n]+', r'\g<1>24', f_body)
+                  f_body = re.sub(r"^\s*minSdkVersion\b.*$", "", f_body, flags=re.MULTILINE)
+                  if re.search(r"\bminSdk\b", f_body):
+                      f_body = re.sub(r"(\bminSdk\s*=?\s*)[^\s\r\n]+", r"\g<1>24", f_body)
                   else:
-                      f_body += '\n    minSdk = 24'
+                      f_body += "\n    minSdk = 24"
                   content = content[:flutter_block_match.start()] + f_head + f_body + f_tail + content[flutter_block_match.end():]
 
-              # ضبط القيم المطلوبة لـ API 36 و minSdk 24 دون المساس بـ ndkVersion
-              content = re.sub(r'(\bminSdkVersion\s*=?\s*)[^\s\r\n]+', r'\g<1>24', content)
-              content = re.sub(r'(\btargetSdkVersion\s*=?\s*)[^\s\r\n]+', r'\g<1>36', content)
-              content = re.sub(r'(\btargetSdk\s*=?\s*)[^\s\r\n]+', r'\g<1>36', content)
-              content = re.sub(r'(\bcompileSdkVersion\s*=?\s*)[^\s\r\n]+', r'\g<1>36', content)
-              content = re.sub(r'(\bcompileSdk\s*=?\s*)[^\s\r\n]+', r'\g<1>36', content)
+              content = re.sub(r"(\bminSdkVersion\s*=?\s*)[^\s\r\n]+", r"\g<1>24", content)
+              content = re.sub(r"(\btargetSdkVersion\s*=?\s*)[^\s\r\n]+", r"\g<1>36", content)
+              content = re.sub(r"(\btargetSdk\s*=?\s*)[^\s\r\n]+", r"\g<1>36", content)
+              content = re.sub(r"(\bcompileSdkVersion\s*=?\s*)[^\s\r\n]+", r"\g<1>36", content)
+              content = re.sub(r"(\bcompileSdk\s*=?\s*)[^\s\r\n]+", r"\g<1>36", content)
 
-              with open(gradle_path, 'w') as f:
+              with open(gradle_path, "w") as f:
                   f.write(content)
-          "
+
+              print("--- build.gradle lines 18-25 ---")
+              with open(gradle_path, "r") as f:
+                  all_l = f.readlines()
+                  for idx in range(17, min(25, len(all_l))):
+                      print(f"{idx+1}: {all_l[idx].rstrip()}")
+          '
 
       - name: Build Official Release App Bundle
         run: flutter build appbundle --release
