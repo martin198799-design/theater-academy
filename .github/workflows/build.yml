@@ -25,41 +25,69 @@ jobs:
           flutter-version: '3.19.x'
           cache: true
 
+      - name: Install & Verify Android SDK Platform 36
+        run: |
+          set -e
+          export ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}
+          export ANDROID_HOME=$ANDROID_SDK_ROOT
+
+          SDKMANAGER=""
+          if [ -x "${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager" ]; then
+            SDKMANAGER="${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager"
+          else
+            SDKMANAGER=$(find "${ANDROID_SDK_ROOT}/cmdline-tools" -name "sdkmanager" -type f 2>/dev/null | head -n 1 || true)
+          fi
+
+          if [ -z "$SDKMANAGER" ]; then
+            echo "Downloading Android command-line tools..."
+            mkdir -p "${ANDROID_SDK_ROOT}/cmdline-tools"
+            curl -sSL https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -o /tmp/cmdtools.zip
+            unzip -q /tmp/cmdtools.zip -d "${ANDROID_SDK_ROOT}/cmdline-tools/temp"
+            mkdir -p "${ANDROID_SDK_ROOT}/cmdline-tools/latest"
+            mv "${ANDROID_SDK_ROOT}/cmdline-tools/temp/cmdline-tools/"* "${ANDROID_SDK_ROOT}/cmdline-tools/latest/"
+            rm -rf /tmp/cmdtools.zip "${ANDROID_SDK_ROOT}/cmdline-tools/temp"
+            SDKMANAGER="${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager"
+          fi
+
+          yes | "$SDKMANAGER" --sdk_root="${ANDROID_SDK_ROOT}" --licenses > /dev/null || true
+          yes | "$SDKMANAGER" --sdk_root="${ANDROID_SDK_ROOT}" "platform-tools" "platforms;android-36" "build-tools;35.0.0"
+
+          test -f "${ANDROID_SDK_ROOT}/platforms/android-36/android.jar"
+          echo "Verified android-36/android.jar exists!"
+
       - name: Install dependencies
         run: flutter pub get
 
-      - name: AI Technical Agent - Ensure Modern Android v2 & API 34 Setup
+      - name: AI Technical Agent - Ensure Modern Android v2 & Force API 36
         run: |
           python3 -c "
           import os
           import subprocess
+          import shutil
           import re
 
-          print('🤖 [AI TECH AGENT]: CHECKING AND ENSURING MODERN ANDROID V2 STRUCTURE...')
+          print('🤖 [AI TECH AGENT]: CONFIGURING MODERN ANDROID V2 AND API 36...')
 
-          # 1. التأكد من وجود مجلد أندرويد الحديث v2 بمعرف الحزمة الصحيح
+          # 1. التأكد من وجود هيكل أندرويد الحديث v2
           manifest_path = 'android/app/src/main/AndroidManifest.xml'
           if not os.path.exists(manifest_path):
               print('🤖 [AI TECH AGENT]: Android folder or manifest missing. Recreating clean v2 template...')
               if os.path.exists('android'):
-                  import shutil
                   shutil.rmtree('android')
               subprocess.run(['flutter', 'create', '.', '--platforms=android', '--org', 'com.ibrahim.theater2028', '--project-name', 'academy99'], check=True)
-          else:
-              print('🤖 [AI TECH AGENT]: Android v2 structure already exists.')
 
-          # 2. تحديث رقم الإصدار إلى 44
+          # 2. تحديث رقم الإصدار إلى 45
           pubspec_path = 'pubspec.yaml'
           if os.path.exists(pubspec_path):
               with open(pubspec_path, 'r') as f:
                   pub_content = f.read()
               if 'version:' in pub_content:
-                  pub_content = re.sub(r'version:\s+.*', 'version: 1.0.44+44', pub_content)
+                  pub_content = re.sub(r'version:\s+.*', 'version: 1.0.45+45', pub_content)
               with open(pubspec_path, 'w') as f:
                   f.write(pub_content)
-              print('🤖 [AI TECH AGENT]: Version locked to 1.0.44+44.')
+              print('🤖 [AI TECH AGENT]: Version locked to 1.0.45+45.')
 
-          # 3. توليد مفتاح التوقيع الثابت
+          # 3. توليد مفتاح التوقيع الدائم إذا لم يكن موجوداً
           os.makedirs('android/app', exist_ok=True)
           keystore_path = 'android/app/upload-keystore.jks'
           store_pass = 'theatre_arts_secure_2026'
@@ -102,7 +130,7 @@ jobs:
           with open('android/app/key.properties', 'w') as f:
               f.write(key_props)
 
-          # 6. تعديل build.gradle لضبط التطبيق والتوقيع و API 34
+          # 6. تعديل build.gradle لضبط معرف الحزمة والتوقيع وإجبار API 36
           gradle_path = 'android/app/build.gradle'
           if os.path.exists(gradle_path):
               with open(gradle_path, 'r') as f:
@@ -130,14 +158,17 @@ jobs:
                   content = content.replace('signingConfig signingConfigs.debug', 'signingConfig signingConfigs.release')
 
               content = re.sub(r'minSdkVersion\s+.*', 'minSdkVersion 24', content)
-              content = re.sub(r'targetSdkVersion\s+.*', 'targetSdkVersion 34', content)
-              content = re.sub(r'targetSdk\s+.*', 'targetSdk 34', content)
-              content = re.sub(r'compileSdkVersion\s+.*', 'compileSdkVersion 34', content)
-              content = re.sub(r'compileSdk\s+.*', 'compileSdk 34', content)
+              content = re.sub(r'targetSdkVersion\s+.*', 'targetSdkVersion 36', content)
+              content = re.sub(r'targetSdk\s+.*', 'targetSdk 36', content)
+              content = content.replace('flutter.targetSdkVersion', '36')
+
+              content = re.sub(r'compileSdkVersion\s+.*', 'compileSdkVersion 36', content)
+              content = re.sub(r'compileSdk\s+.*', 'compileSdk 36', content)
+              content = content.replace('flutter.compileSdkVersion', '36')
 
               with open(gradle_path, 'w') as f:
                   f.write(content)
-              print('🤖 [AI TECH AGENT]: Build.gradle successfully configured.')
+              print('🤖 [AI TECH AGENT]: Build.gradle configured with API 36.')
           "
 
       - name: Build Official Release App Bundle
