@@ -61,7 +61,7 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: AI Technical Agent - Persistent Keystore & Configure v1.0.51+51
+      - name: AI Technical Agent - Persistent Keystore & Clean Gradle v1.0.52+52
         env:
           UPLOAD_KEYSTORE_B64: ${{ secrets.UPLOAD_KEYSTORE_B64 }}
           UPLOAD_STORE_PASSWORD: ${{ secrets.UPLOAD_STORE_PASSWORD }}
@@ -86,7 +86,9 @@ jobs:
               with open(pubspec_path, "r") as f:
                   pub_content = f.read()
               if "version:" in pub_content:
-                  pub_content = re.sub(r"version:\s+.*", "version: 1.0.51+51", pub_content)
+                  pub_content = re.sub(r"version:\s+.*", "version: 1.0.52+52", pub_content)
+              else:
+                  pub_content += "\nversion: 1.0.52+52\n"
               with open(pubspec_path, "w") as f:
                   f.write(pub_content)
 
@@ -118,7 +120,7 @@ jobs:
                   encoded = base64.b64encode(kf.read()).decode("ascii")
               with open("keystore_base64.txt", "w") as out_b64:
                   out_b64.write(encoded)
-              print("Generated new keystore and saved Base64 to keystore_base64.txt in artifacts.")
+              print("Generated new keystore and saved Base64 to keystore_base64.txt.")
 
           pem_path = "upload_certificate.pem"
           pem_cmd = [
@@ -136,59 +138,71 @@ jobs:
           with open("android/app/key.properties", "w") as f:
               f.write(key_props)
 
-          gradle_path = "android/app/build.gradle"
-          if os.path.exists(gradle_path):
-              with open(gradle_path, "r") as f:
-                  lines = f.readlines()
+          gradle_clean = f"""plugins {{
+              id "com.android.application"
+              id "kotlin-android"
+              id "dev.flutter.flutter-gradle-plugin"
+          }}
 
-              fixed_lines = []
-              for line in lines:
-                  if "flutter.ndkVersion" in line:
-                      indent = line[:len(line) - len(line.lstrip(" \t"))]
-                      fixed_lines.append(f"{indent}ndkVersion = flutter.ndkVersion\n")
-                  else:
-                      fixed_lines.append(line)
+          def localProperties = new Properties()
+          def localPropertiesFile = rootProject.file("local.properties")
+          if (localPropertiesFile.exists()) {{
+              localPropertiesFile.withReader("UTF-8") {{ reader ->
+                  localProperties.load(reader)
+              }}
+          }}
 
-              content = "".join(fixed_lines)
+          def flutterVersionCode = localProperties.getProperty("flutter.versionCode") ?: "52"
+          def flutterVersionName = localProperties.getProperty("flutter.versionName") ?: "1.0.52"
 
-              target_app_id = "com.ibrahim.theater2028.academy99"
-              content = re.sub(r"(applicationId\s*=?\s*)([\"'\'']).*?\2", lambda m: f"{m.group(1)}{m.group(2)}{target_app_id}{m.group(2)}", content)
+          android {{
+              namespace = "com.ibrahim.theater2028.academy99"
+              compileSdk = 36
+              ndkVersion = flutter.ndkVersion
 
-              if "signingConfigs {" not in content:
-                  signing_block = f"""
-                  android {{
-                      signingConfigs {{
-                          release {{
-                              storeFile file("upload-keystore.jks")
-                              storePassword "{store_pass}"
-                              keyAlias "{alias}"
-                              keyPassword "{key_pass}"
-                          }}
-                      }}
-                  """
-                  content = content.replace("android {", signing_block, 1)
+              compileOptions {{
+                  sourceCompatibility = JavaVersion.VERSION_17
+                  targetCompatibility = JavaVersion.VERSION_17
+              }}
 
-              if "signingConfig signingConfigs.debug" in content:
-                  content = content.replace("signingConfig signingConfigs.debug", "signingConfig signingConfigs.release")
+              kotlinOptions {{
+                  jvmTarget = JavaVersion.VERSION_17
+              }}
 
-              flutter_block_match = re.search(r"(flutter\s*\{)(.*?)(\n\})", content, flags=re.DOTALL)
-              if flutter_block_match:
-                  f_head, f_body, f_tail = flutter_block_match.groups()
-                  f_body = re.sub(r"^\s*minSdkVersion\b.*$", "", f_body, flags=re.MULTILINE)
-                  if re.search(r"\bminSdk\b", f_body):
-                      f_body = re.sub(r"(\bminSdk\s*=?\s*)[^\s\r\n]+", r"\g<1>24", f_body)
-                  else:
-                      f_body += "\n    minSdk = 24"
-                  content = content[:flutter_block_match.start()] + f_head + f_body + f_tail + content[flutter_block_match.end():]
+              signingConfigs {{
+                  release {{
+                      storeFile file("upload-keystore.jks")
+                      storePassword "{store_pass}"
+                      keyAlias "{alias}"
+                      keyPassword "{key_pass}"
+                  }}
+              }}
 
-              content = re.sub(r"(\bminSdkVersion\s*=?\s*)[^\s\r\n]+", r"\g<1>24", content)
-              content = re.sub(r"(\btargetSdkVersion\s*=?\s*)[^\s\r\n]+", r"\g<1>36", content)
-              content = re.sub(r"(\btargetSdk\s*=?\s*)[^\s\r\n]+", r"\g<1>36", content)
-              content = re.sub(r"(\bcompileSdkVersion\s*=?\s*)[^\s\r\n]+", r"\g<1>36", content)
-              content = re.sub(r"(\bcompileSdk\s*=?\s*)[^\s\r\n]+", r"\g<1>36", content)
+              defaultConfig {{
+                  applicationId = "com.ibrahim.theater2028.academy99"
+                  minSdk = 24
+                  targetSdk = 36
+                  versionCode = flutterVersionCode.toInteger()
+                  versionName = flutterVersionName
+              }}
 
-              with open(gradle_path, "w") as f:
-                  f.write(content)
+              buildTypes {{
+                  release {{
+                      signingConfig = signingConfigs.release
+                      minifyEnabled false
+                      shrinkResources false
+                  }}
+              }}
+          }}
+
+          flutter {{
+              source = "../.."
+          }}
+          """
+
+          with open("android/app/build.gradle", "w") as gf:
+              gf.write(gradle_clean)
+          print("Wrote clean android/app/build.gradle with API 36 and permanent signing.")
           '
 
       - name: Build Official Release App Bundle
@@ -208,53 +222,3 @@ jobs:
             keystore_base64.txt
           compression-level: 0
           if-no-files-found: ignore
-
-      - name: AI Log Analyzer (On Failure)
-        if: failure() && env.GEMINI_API_KEY != ''
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: |
-          python3 -c '
-          import json, os, urllib.request
-
-          api_key = os.environ.get("GEMINI_API_KEY", "").strip()
-          if not api_key:
-              exit(0)
-
-          log_text = ""
-          if os.path.exists("build.log"):
-              with open("build.log", "r", errors="replace") as f:
-                  log_text = "".join(f.readlines()[-120:])
-
-          gradle_text = ""
-          if os.path.exists("android/app/build.gradle"):
-              with open("android/app/build.gradle", "r", errors="replace") as f:
-                  gradle_text = f.read()
-
-          prompt = (
-              "You are an Android/Flutter build engineer. Analyze this build failure log and "
-              "android/app/build.gradle, explain the exact root cause concisely in Arabic, and provide "
-              "the exact corrected lines/patch.\n\n"
-              f"FAILURE LOG:\n{log_text}\n\n"
-              f"BUILD.GRADLE:\n{gradle_text}"
-          )
-
-          url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
-          payload = json.dumps({
-              "contents": [{"parts": [{"text": prompt}]}]
-          }).encode("utf-8")
-
-          req = urllib.request.Request(
-              url,
-              data=payload,
-              headers={"Content-Type": "application/json"},
-              method="POST"
-          )
-          with urllib.request.urlopen(req, timeout=45) as resp:
-              data = json.loads(resp.read().decode("utf-8"))
-              candidates = data.get("candidates", [])
-              if candidates:
-                  parts = candidates[0].get("content", {}).get("parts", [])
-                  reply = "".join(p.get("text", "") for p in parts)
-                  print("=== AI DIAGNOSIS ===\n" + reply)
-          '
