@@ -61,7 +61,7 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: AI Technical Agent - Configure v1.0.46+46 & API 36
+      - name: AI Technical Agent - Configure v1.0.47+47 & API 36
         run: |
           python3 -c "
           import os
@@ -80,7 +80,7 @@ jobs:
               with open(pubspec_path, 'r') as f:
                   pub_content = f.read()
               if 'version:' in pub_content:
-                  pub_content = re.sub(r'version:\s+.*', 'version: 1.0.46+46', pub_content)
+                  pub_content = re.sub(r'version:\s+.*', 'version: 1.0.47+47', pub_content)
               with open(pubspec_path, 'w') as f:
                   f.write(pub_content)
 
@@ -149,19 +149,26 @@ jobs:
               if 'signingConfig signingConfigs.debug' in content:
                   content = content.replace('signingConfig signingConfigs.debug', 'signingConfig signingConfigs.release')
 
-              content = re.sub(r'minSdkVersion\s+.*', 'minSdkVersion 24', content)
-              content = re.sub(r'targetSdkVersion\s+.*', 'targetSdkVersion 36', content)
-              content = re.sub(r'targetSdk\s+.*', 'targetSdk 36', content)
+              # إزالة أي minSdkVersion خاطئ داخل كتلة flutter
+              flutter_block_match = re.search(r'(flutter\s*\{)(.*?)(\n\})', content, flags=re.DOTALL)
+              if flutter_block_match:
+                  f_head, f_body, f_tail = flutter_block_match.groups()
+                  f_body = re.sub(r'^\s*minSdkVersion.*$', '', f_body, flags=re.MULTILINE)
+                  if re.search(r'\bminSdk\b', f_body):
+                      f_body = re.sub(r'(\bminSdk\s*=?\s*)[^\s\r\n]+', r'\g<1>24', f_body)
+                  else:
+                      f_body += '\n    minSdk = 24'
+                  content = content[:flutter_block_match.start()] + f_head + f_body + f_tail + content[flutter_block_match.end():]
+
+              # ضبط minSdkVersion / targetSdkVersion / compileSdkVersion في بقية الملف (مثل defaultConfig و android)
+              content = re.sub(r'(\bminSdkVersion\s*=?\s*)[^\s\r\n]+', r'\g<1>24', content)
+              content = re.sub(r'(\btargetSdkVersion\s*=?\s*)[^\s\r\n]+', r'\g<1>36', content)
+              content = re.sub(r'(\btargetSdk\s*=?\s*)[^\s\r\n]+', r'\g<1>36', content)
               content = content.replace('flutter.targetSdkVersion', '36')
 
-              content = re.sub(r'compileSdkVersion\s+.*', 'compileSdkVersion 36', content)
-              content = re.sub(r'compileSdk\s+.*', 'compileSdk 36', content)
+              content = re.sub(r'(\bcompileSdkVersion\s*=?\s*)[^\s\r\n]+', r'\g<1>36', content)
+              content = re.sub(r'(\bcompileSdk\s*=?\s*)[^\s\r\n]+', r'\g<1>36', content)
               content = content.replace('flutter.compileSdkVersion', '36')
-
-              if 'buildToolsVersion' in content:
-                  content = re.sub(r'buildToolsVersion\s+.*', 'buildToolsVersion \"36.0.0\"', content)
-              else:
-                  content = content.replace('compileSdkVersion 36', 'compileSdkVersion 36\n    buildToolsVersion \"36.0.0\"', 1)
 
               with open(gradle_path, 'w') as f:
                   f.write(content)
